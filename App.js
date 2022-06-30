@@ -10,12 +10,14 @@
  import { SafeAreaView, StyleSheet, Text, View} from 'react-native';
   import SigninScreen from './src/screens/SigninScreen';
  import SignupScreen from './src/screens/SignupScreen';
-  export default class App extends Component {
+ import WelcomeScreen from './src/screens/WelcomeScreen'; 
+ export default class App extends Component {
    render() {
      return (
        <SafeAreaView style={styles.root}>
         {/*  <SigninScreen /> */}
-        <SignupScreen /> 
+        {/* <SignupScreen />  */}
+        <WelcomeScreen />
        </SafeAreaView>
      );
    }
