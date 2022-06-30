@@ -5,26 +5,34 @@ import ProfileScreen from './screens/ProfileScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import AuthScreen from './screens/AuthScreen';
+import SigninScreen from './screens/SigninScreen';
+import SignupScreen from './screens/SignupScreen';
 
 const Stack = createNativeStackNavigator();
 
 
 import type {Node} from 'react';
-import {
-  SafeAreaView,
-} from 'react-native';
 
 
 const App: () => Node = () => {
   return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator initialRouteName="AuthScreen">
           <Stack.Screen
-            name="Home"
-            component={HomeScreen}
+            name="AuthScreen"
+            component={AuthScreen}
             options={{ title: 'Welcome' }}
           />
-          <Stack.Screen name="Profile" component={ProfileScreen} />
+          <Stack.Screen
+            name="SignIn"
+            component={SigninScreen}
+            options={{ title: 'Welcome' }}
+          />
+          <Stack.Screen 
+            name="SignUp" 
+            component={SignupScreen} 
+          />
         </Stack.Navigator>
       </NavigationContainer>
   );

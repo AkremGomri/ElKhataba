@@ -7,7 +7,7 @@ export default function HomeScreen({ navigation: { navigate } }) {
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>This is the home screen of the app</Text>
       <Button
-        title="Go to Home"
+        title="Go to Profile"
         onPress={() => navigate('Profile', { caption: 'Some caption' })}
       />
     </View>
