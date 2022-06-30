@@ -1,8 +1,10 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import HomeScreen from './screens/HomeScreen'
+import HomeScreen from './screens/HomeScreen';
+import ProfileScreen from './screens/ProfileScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -15,18 +17,16 @@ import {
 
 const App: () => Node = () => {
   return (
-    <SafeAreaView>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName="Home">
           <Stack.Screen
             name="Home"
             component={HomeScreen}
             options={{ title: 'Welcome' }}
           />
-          {/* <Stack.Screen name="Profile" component={ProfileScreen} /> */}
+          <Stack.Screen name="Profile" component={ProfileScreen} />
         </Stack.Navigator>
       </NavigationContainer>
-    </SafeAreaView>
   );
 };
 
