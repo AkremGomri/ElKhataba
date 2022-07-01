@@ -1,19 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ScreenContainer } from 'react-native-screens';
 import { Text, Button, View } from "react-native";
 
 export default function AuthScreen({ navigation }) {
-  return (
+   const  [disable, setDisable] = useState(false);
+   function onPressHandler(name){
+    setDisable(true);
+    navigation.push(name);
+    setTimeout(()=>{
+        setDisable(false);
+    },400);
+   }
+
+    return (
     <View>
         <Text> SigninScreen </Text>
         <Button 
             title='Sign In' 
-            onPress={() => navigation.push("SignIn")}
+            disabled={disable}
+            onPress={() => onPressHandler("SignIn")}
         />
 
         <Button 
-            title='Register' 
-            onPress={() => navigation.push("SignUp")}
+            title='Register'
+            disabled={disable} 
+            onPress={() => onPressHandler("SignUp")}
         />
     </View>
   )
