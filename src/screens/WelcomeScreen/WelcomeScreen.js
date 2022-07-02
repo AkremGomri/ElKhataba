@@ -2,7 +2,6 @@ import { Text, View, StyleSheet } from 'react-native'
 import React, {useEffect, useState} from 'react';
 import Button from 'react-native-button';
 import {AppStyles} from '../../AppStyles';
-
 const WelcomeScreen = ({ navigation }) => {
   const  [disable, setDisable] = useState(false);
   function onPressHandler(name){
@@ -14,7 +13,7 @@ const WelcomeScreen = ({ navigation }) => {
   }
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Bienvenu dans votre nouvelle application</Text>
+      <Text style={styles.title}>ElKhataba vous souhaite la bienvenue</Text>
       <Button
         containerStyle={styles.loginContainer}
         style={styles.loginText}

@@ -8,7 +8,6 @@ import { View,
 import { useState } from 'react';
 import {AppStyles} from '../../AppStyles';
 const SigninScreen = () => {
-  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 const onSignInPressed=() => {
@@ -19,7 +18,7 @@ const onPressFacebook=()=>{
 }
   return (
     <View style={styles.container}>
-    <Text style={[styles.title, styles.leftTitle]}>Sign In</Text>
+    <Text style={[styles.title, styles.leftTitle]}>Connectez-vous ici</Text>
     <View style={styles.InputContainer}>
       <TextInput
         style={styles.body}
@@ -47,7 +46,7 @@ const onPressFacebook=()=>{
       onPress={() => onSignInPressed()}>
       Se connecter
     </Button>
-    <Text style={styles.or}>OR</Text>
+    <Text style={styles.or}>OU</Text>
     <Button
       containerStyle={styles.facebookContainer}
       style={styles.facebookText}
@@ -123,14 +122,6 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   facebookText: {
-    color: AppStyles.color.white,
-  },
-  googleContainer: {
-    width: 192,
-    height: 48,
-    marginTop: 30,
-  },
-  googleText: {
     color: AppStyles.color.white,
   },
 });

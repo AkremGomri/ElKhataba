@@ -15,7 +15,7 @@ const SignupScreen = () => {
   }
   return (
     <View style={styles.container}>
-    <Text style={[styles.title, styles.leftTitle]}>Créer un nouveau compte</Text>
+    <Text style={[styles.title, styles.leftTitle]}>Créer votre nouveau compte</Text>
     <View style={styles.InputContainer}>
       <TextInput
         style={styles.body}
