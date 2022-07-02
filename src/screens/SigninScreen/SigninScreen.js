@@ -1,18 +1,59 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import { View,
    Text, 
   Image, 
   StyleSheet,
-  TextInput } from 'react-native';
+  TextInput,
+  Alert,
+  FlatList  } from 'react-native';
   import Button from 'react-native-button';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {AppStyles} from '../../AppStyles';
-const SigninScreen = () => {
+// import useFetch from './../../services/useFetch';
+const SigninScreen = ({ navigation }) => {
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const [response, setResponse] = useState('')
+
 const onSignInPressed=() => {
-  console.warn('Sign in');
+  
+  const data = { 
+      email: email,
+      password: password,
+    };
+    
+  const options = {
+    method: "POST",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data),
+  }
+
+  fetch("http://192.168.43.27:8080/login", options)
+    .then((res) =>  {
+      if(res.status === 500){
+        Alert.alert("vérifier la connection s'il vous plait: ");
+      }  else{
+        
+        res.json()
+        .then((data) => {
+          setResponse(data);
+          console.warn(data);
+          console.warn("error: " + response.error);
+          if(response.error){
+            Alert.alert("vérifier l'email et le mot de passe: ", message.error)
+          } else {
+            navigation.push("Home");
+          }
+        })
+      }
+      })
+    .catch((err) => Alert.alert("problem connecting to the server: " + err))
 };
 const onPressFacebook=()=>{
   console.warn('login with fb');
@@ -54,6 +95,14 @@ const onPressFacebook=()=>{
       onPress={() => onPressFacebook()}>
       Se connecter via FaceBook.
     </Button>
+    
+    {/* <FlatList
+        data={data}
+        renderItem={({ item, index, separators }) => <Text item={item} > {item.email} </Text>}
+        keyExtractor={item => item._id}
+      /> */}
+    { response.message && <Text>{response.message}</Text> }
+    { response.error && <Text>erreur</Text> }
     
   </View>
   )
@@ -135,4 +184,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SigninScreen
+export default SigninScreen;

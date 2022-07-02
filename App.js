@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -5,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import WelcomeScreen from './src/screens/WelcomeScreen'; 
 import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
+import HomeScreen from './src/screens/HomeScreen/HomeScreen';
 import { Text, Button, View, StyleSheet } from "react-native";
 
 const Stack = createNativeStackNavigator();
@@ -30,6 +32,11 @@ const App: () => Node = () => {
           <Stack.Screen 
             name="SignUp" 
             component={SignupScreen} 
+          />
+
+          <Stack.Screen 
+            name="Home" 
+            component={HomeScreen} 
           />
         </Stack.Navigator>
       </NavigationContainer>

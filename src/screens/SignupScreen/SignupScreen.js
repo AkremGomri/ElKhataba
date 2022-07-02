@@ -1,17 +1,45 @@
-import { StyleSheet, Text, TextInput, View } from 'react-native'
+/* eslint-disable prettier/prettier */
+import { StyleSheet, Text, TextInput, View, Alert } from 'react-native'
 import React ,{useState} from 'react'
 import {AppStyles} from '../../AppStyles';
 import Button from 'react-native-button';
 
 const SignupScreen = () => {
 
-    const [fullname, setFullname] = useState('');
+  const [fullname, setFullname] = useState('');
   const [pseudo, setPseudo] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [response, setResponse] = useState('');
 
-  const onRegister = () => {
-    console.warn('register');
+  const onRegister = ({ navigation }) => {
+    const data = { 
+      fullname: fullname,
+      email: email,
+      pseudo: pseudo,
+      password: password,
+    };
+
+    const options = {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data),
+    }
+  
+    fetch("http://192.168.43.27:8080/signup", options)
+      .then((res) =>  res.json())
+      .then((data) => {
+        setResponse(data);
+        if(response.error){
+          Alert.alert("vous n'êtes pas enregistré: " )
+        } else {
+          navigation.push("SignIn");
+        }
+      })
+      .catch((err) => Alert.alert("problem connecting to the server: " + err))
   }
   return (
     <View style={styles.container}>
@@ -63,6 +91,10 @@ const SignupScreen = () => {
       onPress={() => onRegister()}>
       Créer un compte
     </Button>
+
+    { response.message && <Text>{response.message}</Text> }
+    { response.error && <Text>erreur</Text> }
+    
   </View>
   )
 }
