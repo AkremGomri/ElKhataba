@@ -5,6 +5,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { AppStyles } from '../../AppStyles';
 const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
 const LocScreen = ({ navigation }) => {
+    const [city, setCity] = useState('');
+    
     const  [disable, setDisable] = useState(false);
   function onPressHandler(name){
    setDisable(true);
@@ -13,7 +15,6 @@ const LocScreen = ({ navigation }) => {
        setDisable(false);
    },400);
   }
-    const [ville, setVille] = useState('');
     return (
         <ImageBackground source={ image } resizeMode="cover" style={ styles.image }>
             <View style={ styles.container }>
@@ -23,15 +24,15 @@ const LocScreen = ({ navigation }) => {
                 <TextInput
         style={styles.body}
         placeholder="entrez ici votre Ville"
-        onChangeText={setVille}
-        value={ville}
+        onChangeText={setCity}
+        value={city}
         placeholderTextColor={AppStyles.color.grey}
         underlineColorAndroid="transparent"
       />
         <Button
                     containerStyle={ styles.suivantContainer }
                     style={ styles.suivantText }
-                    onPress={() => onPressHandler("Photo")}
+                    onPress={() =>onPressHandler("Photo")}
                     >
                     <Icon name="forward"
                         size={ 70 }

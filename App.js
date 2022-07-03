@@ -18,6 +18,7 @@ const Stack = createNativeStackNavigator();
 
 const App: () => Node = () => {
   return (
+    //<LocScreen /> 
       <NavigationContainer style={styles.root}>
         <Stack.Navigator initialRouteName="WelcomeScreen">
           <Stack.Screen
