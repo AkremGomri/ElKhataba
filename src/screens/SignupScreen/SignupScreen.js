@@ -29,7 +29,7 @@ const SignupScreen = ({ navigation }) => {
       body: JSON.stringify(data),
     }
   
-    fetch("http://192.168.43.27:8080/signup", options)
+    fetch("http://192.168.1.17:8080/signup", options)
       .then((res) =>  res.json())
       .then((data) => {
         setResponse(data);

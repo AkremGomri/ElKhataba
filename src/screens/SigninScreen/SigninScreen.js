@@ -34,7 +34,7 @@ const onSignInPressed=() => {
     body: JSON.stringify(data),
   }
 
-  fetch("http://192.168.43.27:8080/login", options)
+  fetch("http://192.168.1.17:8080/login", options)
     .then((res) =>  {
       if(res.status === 500){
         Alert.alert("vérifier la connection s'il vous plait: ");
