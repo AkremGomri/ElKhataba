@@ -4,7 +4,7 @@ import React ,{useState} from 'react'
 import {AppStyles} from '../../AppStyles';
 import Button from 'react-native-button';
 
-const SignupScreen = () => {
+const SignupScreen = ({ navigation }) => {
 
   const [fullname, setFullname] = useState('');
   const [pseudo, setPseudo] = useState('');
@@ -12,7 +12,7 @@ const SignupScreen = () => {
   const [password, setPassword] = useState('');
   const [response, setResponse] = useState('');
 
-  const onRegister = ({ navigation }) => {
+  const onRegister = () => {
     const data = { 
       fullname: fullname,
       email: email,
@@ -43,7 +43,7 @@ const SignupScreen = () => {
   }
   return (
     <View style={styles.container}>
-    <Text style={[styles.title, styles.leftTitle]}>Créer un nouveau compte</Text>
+    <Text style={[styles.title, styles.leftTitle]}>Créer votre nouveau compte</Text>
     <View style={styles.InputContainer}>
       <TextInput
         style={styles.body}

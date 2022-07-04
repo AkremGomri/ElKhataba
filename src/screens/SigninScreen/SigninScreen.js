@@ -39,28 +39,27 @@ const onSignInPressed=() => {
       if(res.status === 500){
         Alert.alert("vérifier la connection s'il vous plait: ");
       }  else{
-        
         res.json()
         .then((data) => {
           setResponse(data);
-          console.warn(data);
           console.warn("error: " + response.error);
           if(response.error){
-            Alert.alert("vérifier l'email et le mot de passe: ", message.error)
+            return Alert.alert("vérifier l'email et le mot de passe: ", response.error);
           } else {
-            navigation.push("Home");
+            return navigation.push("Home");
           }
         })
       }
       })
     .catch((err) => Alert.alert("problem connecting to the server: " + err))
+
 };
 const onPressFacebook=()=>{
   console.warn('login with fb');
 }
   return (
     <View style={styles.container}>
-    <Text style={[styles.title, styles.leftTitle]}>Sign In</Text>
+    <Text style={[styles.title, styles.leftTitle]}>Connectez-vous ici</Text>
     <View style={styles.InputContainer}>
       <TextInput
         style={styles.body}
@@ -88,7 +87,7 @@ const onPressFacebook=()=>{
       onPress={() => onSignInPressed()}>
       Se connecter
     </Button>
-    <Text style={styles.or}>OR</Text>
+    <Text style={styles.or}>OU</Text>
     <Button
       containerStyle={styles.facebookContainer}
       style={styles.facebookText}
@@ -172,14 +171,6 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   facebookText: {
-    color: AppStyles.color.white,
-  },
-  googleContainer: {
-    width: 192,
-    height: 48,
-    marginTop: 30,
-  },
-  googleText: {
     color: AppStyles.color.white,
   },
 });

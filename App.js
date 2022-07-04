@@ -1,22 +1,26 @@
 /* eslint-disable prettier/prettier */
+// import at the very top of everything.
+import "./ignoreWarnings";
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import PhotoScreen from './src/screens/PhotoScreen/PhotoScreen'
+import LocScreen from './src/screens/LocScreen';
+import GenderScreen from './src/screens/GenderScreen';
+import HoroscopeScreen from './src/screens/HoroscopeScreen';
+import BirthDateScreen from './src/screens/BirthDateScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen'; 
 import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import HomeScreen from './src/screens/HomeScreen/HomeScreen';
 import { Text, Button, View, StyleSheet } from "react-native";
+import type {Node} from 'react';
 
 const Stack = createNativeStackNavigator();
 
-
-import type {Node} from 'react';
-
-
 const App: () => Node = () => {
   return (
+    //<LocScreen /> 
       <NavigationContainer style={styles.root}>
         <Stack.Navigator initialRouteName="WelcomeScreen">
           <Stack.Screen
@@ -37,6 +41,26 @@ const App: () => Node = () => {
           <Stack.Screen 
             name="Home" 
             component={HomeScreen} 
+            />
+          <Stack.Screen 
+            name="BirthDate" 
+            component={BirthDateScreen} 
+          />
+          <Stack.Screen 
+            name="Horoscope" 
+            component={HoroscopeScreen} 
+          />
+          <Stack.Screen 
+            name="Gender" 
+            component={GenderScreen} 
+          />
+          <Stack.Screen 
+            name="Location" 
+            component={LocScreen} 
+          />
+          <Stack.Screen 
+            name="Photo" 
+            component={PhotoScreen} 
           />
         </Stack.Navigator>
       </NavigationContainer>
