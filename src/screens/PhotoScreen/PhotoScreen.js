@@ -1,3 +1,5 @@
+/* eslint-disable quotes */
+/* eslint-disable prettier/prettier */
 import { View, Text, StyleSheet, ImageBackground, TextInput, ImagePickerIOS } from 'react-native'
 import React, { useState } from 'react'
 //import ImagePicker from 'react-native-image-picker';

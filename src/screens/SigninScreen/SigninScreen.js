@@ -10,6 +10,7 @@ import { View,
   import Button from 'react-native-button';
 import { useState, useEffect } from 'react';
 import {AppStyles} from '../../AppStyles';
+import env from '../../../env'
 // import useFetch from './../../services/useFetch';
 const SigninScreen = ({ navigation }) => {
   
@@ -34,7 +35,7 @@ const onSignInPressed=() => {
     body: JSON.stringify(data),
   }
 
-  fetch("http://192.168.1.17:8080/login", options)
+  fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/login", options)
     .then((res) =>  {
       if(res.status === 500){
         Alert.alert("vérifier la connection s'il vous plait: ");

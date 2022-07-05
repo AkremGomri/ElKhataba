@@ -3,6 +3,7 @@ import { StyleSheet, Text, TextInput, View, Alert } from 'react-native'
 import React ,{useState} from 'react'
 import {AppStyles} from '../../AppStyles';
 import Button from 'react-native-button';
+import env from '../../../env';
 
 const SignupScreen = ({ navigation }) => {
 
@@ -29,7 +30,7 @@ const SignupScreen = ({ navigation }) => {
       body: JSON.stringify(data),
     }
   
-    fetch("http://192.168.1.17:8080/signup", options)
+    fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/signup", options)
       .then((res) =>  res.json())
       .then((data) => {
         setResponse(data);

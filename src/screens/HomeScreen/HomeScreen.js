@@ -3,25 +3,23 @@ import React from 'react';
 import { View, Text, ScrollView, Dimensions, FlatList, Image, StyleSheet} from 'react-native';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import useEffectFetch from './../../services/useEffectFetch';
+import env from '../../../env';
+import { Button } from 'react-native';
 
 const { width, height } = Dimensions.get("window");
 const HomeScreen = () => {
-  // const [data, setData] = useState([]);
-  // useEffect(() => {
-  //   setData([`https://www.shutterstock.com/image-photo/word-link-serious-businessman-hands-on-180015809`, `https://www.shutterstock.com/image-vector/smartphone-speech-bubble-social-media-icons-249041452`])
-  // }, [])
-
-  const data = [`https://www.shutterstock.com/image-photo/word-link-serious-businessman-hands-on-180015809`, `https://www.shutterstock.com/image-vector/smartphone-speech-bubble-social-media-icons-249041452`]
+  const {data, isPending, error} = useEffectFetch(env.BACKEND_SERVER_URL +":"+ env.PORT);
   return (
-    <View>
-      <Text>akrem</Text>
-        <ScrollView snapToInterval={width} decelerationRate="fast" horizontal>
+    <View >
+        <ScrollView snapToInterval={height} decelerationRate="fast" horizontal nestedScrollEnabled={true}>
           <FlatList
+           horizontal
             data={data}
             renderItem={
-              ({item}) =><Image style={styles.container} source={{ item }} />
+            ({ item }) => <Image source={{ uri: item.Photo}}  style = {{ width, height }} />
             }
-            keyExtractor={item => item}
+            keyExtractor={item => item._id}
           />
         </ScrollView>
     </View>
@@ -34,7 +32,6 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
   },
   pictures: {
-    // width: width * data.length,
     height,
     flexDirection: "row",
   },
@@ -45,9 +42,14 @@ const styles = StyleSheet.create({
   },
   image: {
     ...StyleSheet.absoluteFillObject,
-    width: undefined,
-    height: undefined,
+    width,
+    height,
   },
+  view: {
+    borderWidth: 4,
+    borderColor: "#20232a",
+
+  }
 });
 
 export default HomeScreen;
