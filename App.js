@@ -14,10 +14,11 @@ import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import HomeScreen from './src/screens/HomeScreen/HomeScreen';
 import { Text, Button, View, StyleSheet } from "react-native";
+ 
+
 import type {Node} from 'react';
 
 const Stack = createNativeStackNavigator();
-
 const App: () => Node = () => {
   return (
     //<LocScreen /> 
@@ -26,7 +27,7 @@ const App: () => Node = () => {
           <Stack.Screen
             name="WelcomeScreen"
             component={WelcomeScreen}
-            options={{ title: 'Welcome' }}
+            options={{ title: 'Welcome', headerLeft: (props) => null  }}
           />
           <Stack.Screen
             name="SignIn"
@@ -41,6 +42,8 @@ const App: () => Node = () => {
           <Stack.Screen 
             name="Home" 
             component={HomeScreen} 
+            options={{ title: 'Home', headerLeft: (props) => undefined, headerBackVisible:false }}
+
             />
           <Stack.Screen 
             name="BirthDate" 

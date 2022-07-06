@@ -10,19 +10,23 @@ import useEffectFetch from './../../services/useEffectFetch';
 import env from '../../../env';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Card from '../../components/Card/Card';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
 
 const { width, height } = Dimensions.get("window");
+const Tabs = createBottomTabNavigator();
+
 const HomeScreen = () => {
   const {data, isPending, error} = useEffectFetch(env.BACKEND_SERVER_URL +":"+ env.PORT);
   return (
     <SafeAreaView >
-        <ScrollView snapToInterval={height} decelerationRate="fast" horizontal nestedScrollEnabled={true}>
+        <ScrollView snapToInterval={height} decelerationRate="fast" horizontal >
           <FlatList
           snapToInterval={height}
            horizontal
             data={data}
             renderItem={
-            ({ item }) => <Card source= { item.Photo }  />
+            ({ item }) => <Card source= { item.Photo } fullname= {item.fullname} gender= { item.gender} />
             }
             keyExtractor={item => item._id}
           />

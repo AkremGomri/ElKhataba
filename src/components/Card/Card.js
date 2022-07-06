@@ -1,27 +1,29 @@
 /* eslint-disable prettier/prettier */
 import React from 'react'
 import { View, Dimensions, StyleSheet,
-        Image } from 'react-native';
+        Image, TouchableHighlight,TouchableOpacity,
+        Alert  } from 'react-native';
 
-// import Icon from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/AntDesign';
 // import { Icon } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+// import Icon from 'react-native-vector-icons/FontAwesome5';
+// import Hoverable from "./Hoverable";
 
 const { width, height } = Dimensions.get("window");
 
 
-const Card = ({ source }) => {
+const Card = ({ source, fullname, gender }) => {
 
   return (
     <View style={{width, height}}>
       <Image source={{ uri: source}}  style = {styles.image} />
       <View style={styles.footer}>
-            <View style={[styles.circle, styles.cross]}>
-              <Icon name="X" size={32} color="#ec5288" style={ styles.icon }/>
-            </View>
-            <View style={[styles.circle, styles.heart]}>
+            <TouchableOpacity onPress={() => Alert.alert(gender)} style={[styles.circle, styles.cross]} underlayColor="black">
+                <Icon name="close" size={60} color="rgba(10,10,10,1)" style={ styles.icon }/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => Alert.alert(fullname)} style={[styles.circle, styles.heart]}>
               <Icon name="heart" size={32} color="#6ee3b4" />
-            </View>
+            </TouchableOpacity>
       </View>
     </View>
   )
@@ -53,13 +55,13 @@ const styles = StyleSheet.create({
     circle: {
       position: 'absolute',
       top: -250,
-      width: 75,
-      height: 75,
-      borderRadius: 40,
+      width: 90,
+      height: 90,
+      borderRadius: 60,
       padding: 12,
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor: "gray",
+      backgroundColor: "rgba(255,255,255,0.2)",
       shadowColor: "gray",
       shadowOffset: { width: 1, height: 1 },
       shadowOpacity: 0.18,
