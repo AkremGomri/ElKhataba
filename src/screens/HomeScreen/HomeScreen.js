@@ -14,12 +14,15 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 
 const { width, height } = Dimensions.get("window");
-const Tabs = createBottomTabNavigator();
+// const Tab = createBottomTabNavigator();
 
 const HomeScreen = () => {
   const {data, isPending, error} = useEffectFetch(env.BACKEND_SERVER_URL +":"+ env.PORT);
   return (
     <SafeAreaView >
+          {/* <Tab.Navigator>
+      <Tab.Screen name="Home" component={HomeScreen} />
+    </Tab.Navigator> */}
         <ScrollView snapToInterval={height} decelerationRate="fast" horizontal >
           <FlatList
           snapToInterval={height}
