@@ -6,11 +6,14 @@ import { View,
   StyleSheet,
   TextInput,
   Alert,
-  FlatList  } from 'react-native';
+  FlatList,  
+  AsyncStorage} from 'react-native';
   import Button from 'react-native-button';
 import { useState, useEffect } from 'react';
 import {AppStyles} from '../../AppStyles';
 import env from '../../../env'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 // import useFetch from './../../services/useFetch';
 const SigninScreen = ({ navigation }) => {
   
@@ -19,7 +22,7 @@ const SigninScreen = ({ navigation }) => {
 
   const [response, setResponse] = useState('')
 
-const onSignInPressed=() => {
+const onSignInPressed= async () => {
   
   const data = { 
       email: email,
@@ -47,6 +50,9 @@ const onSignInPressed=() => {
           if(response.error){
             return Alert.alert("vérifier l'email et le mot de passe: ", response.error);
           } else {
+            try{
+              await AsyncStorage.setItem()
+            }
             return navigation.push("Recommandation");
           }
         })

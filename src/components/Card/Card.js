@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Dimensions, StyleSheet,
         Image, TouchableHighlight,TouchableOpacity,
-        Alert  } from 'react-native';
+        Alert, Text  } from 'react-native';
 
 import Icon from 'react-native-vector-icons/AntDesign';
 // import { Icon } from 'react-native-elements';
@@ -14,17 +14,48 @@ const { width, height } = Dimensions.get("window");
 
 const Card = ({ source, fullname, gender }) => {
 
+  const [ lovePressed, setLovePressed ] = useState(false);
+  const [ closePressed, setClosePressed ] = useState(false);
+
+  function heartEventHandler(){
+    if ( lovePressed ){
+      setLovePressed(!lovePressed);
+    } else {
+      setLovePressed(!lovePressed);
+      setClosePressed(false);
+    }
+  }
+
+  function closePress() {
+    if ( closePressed ){
+      setClosePressed(!closePressed);
+    } else {
+      setClosePressed(!closePressed);
+      setLovePressed(false);
+    }
+
+  }
+
+  var touchCLoseProps = {
+    style: closePressed ? [styles.circle, styles.cross, styles.circlePressed] : [styles.circle, styles.cross, styles.circleNotPressed]
+  }
+
+  var touchHeartProps = {
+    style: lovePressed ? [styles.circle, styles.heart, styles.circlePressed] : [styles.circle, styles.heart, styles.circleNotPressed] 
+  }
+
   return (
     <View style={{width, height}}>
       <Image source={{ uri: source}}  style = {styles.image} />
       <View style={styles.footer}>
-            <TouchableOpacity onPress={() => Alert.alert(gender)} style={[styles.circle, styles.cross]} underlayColor="black">
-                <Icon name="close" size={60} color="rgba(10,10,10,1)" style={ styles.icon }/>
+            <TouchableOpacity onPress={() => closePress()} onLongPress={closePress} { ...touchCLoseProps}  underlayColor="black">
+                <Icon name="close" size={60} color={closePressed? "rgba(10,10,10,1)": "rgba(10,10,10,0.5)"} style={ styles.icon }/>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => Alert.alert(fullname)} style={[styles.circle, styles.heart]}>
-              <Icon name="heart" size={32} color="#6ee3b4" />
+            <TouchableOpacity onPress={() => heartEventHandler()} onLongPress={heartEventHandler} {...touchHeartProps}>
+              <Icon name = {lovePressed? "heart": "hearto"} size={45} color="red" />
             </TouchableOpacity>
       </View>
+      <Text style={ styles.text }>{ fullname }</Text>
     </View>
   )
 }
@@ -54,18 +85,24 @@ const styles = StyleSheet.create({
     },
     circle: {
       position: 'absolute',
-      top: -250,
+      top: -300,
       width: 90,
       height: 90,
       borderRadius: 60,
       padding: 12,
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor: "rgba(255,255,255,0.2)",
       shadowColor: "gray",
       shadowOffset: { width: 1, height: 1 },
       shadowOpacity: 0.18,
       shadowRadius: 2,
+    },
+
+    circlePressed:{
+      backgroundColor: "rgba(255,255,255,0.4)",
+    },
+    circleNotPressed: {
+      backgroundColor: "rgba(255,255,255,0.1)",
     },
     heart: {
       left: (Dimensions.get('window').width / 2) + 40 ,
@@ -84,6 +121,14 @@ const styles = StyleSheet.create({
     },
     icon: {
 
+    },
+    text: {
+      position:"absolute",
+      top: height - (height*2.2/8),
+      width: width,
+      textAlign: 'center', // <-- the magic
+      fontWeight: 'bold',
+      fontSize: 40
     }
   });
 

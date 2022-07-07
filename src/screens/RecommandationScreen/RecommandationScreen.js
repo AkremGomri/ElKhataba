@@ -10,7 +10,7 @@ import useEffectFetch from '../../services/useEffectFetch';
 import env from '../../../env';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Card from '../../components/Card/Card';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator, BottomTabBar } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from './../HomeScreen/';
 import SigninScreen from './../SigninScreen/SigninScreen';
@@ -28,15 +28,21 @@ const RecommandationScreen = () => {
   return (
       <Tabs.Navigator initialRouteName="Home" 
       tabBarOptions={{
-        activeTintColor: '#fff',
-       inactiveTintColor: 'lightgray',
-       activeBackgroundColor: '#c4461c',
-       inactiveBackgroundColor: '#b55031',
-           style: {
-                 backgroundColor: '#CE4418',
-                 paddingBottom: 3
-           }
-      }}>
+        showIcon: true,
+        showLabel: false,
+        activeTintColor: 'rgba(161, 16, 59, 0.8)',
+       activeBackgroundColor: 'rgba(0,0,0,0.2)',
+      }}
+      tabBar={props => (
+        <View style={{ position: 'absolute', left: -8, bottom: 0, right: 0 }}>
+          <BottomTabBar {...props} />
+        </View>
+      )}
+      screenOptions={{
+        tabBarStyle: {backgroundColor: 'transparent',
+        elevation: 0,},
+      }}
+      >
 
         <Tabs.Screen name='notifications' component={OnConstruction} options={{ tabBarBadge:3 ,tabBarIcon: ({ color, size }) => (
           <IconFeather name="bell" color={color} size={36} />

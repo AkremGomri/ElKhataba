@@ -17,7 +17,12 @@ const { width, height } = Dimensions.get("window");
 // const Tab = createBottomTabNavigator();
 
 const HomeScreen = () => {
-  const {data, isPending, error} = useEffectFetch(env.BACKEND_SERVER_URL +":"+ env.PORT);
+  function reactedTo(){
+
+  }
+  
+  // const options = 
+  const {data, isPending, error} = useEffectFetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/recommanded", );
   return (
     <SafeAreaView >
           {/* <Tab.Navigator>
