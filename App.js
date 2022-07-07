@@ -14,6 +14,7 @@ import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import HomeScreen from './src/screens/HomeScreen/HomeScreen';
 import { Text, Button, View, StyleSheet } from "react-native";
+import RecommandationScreen from './src/screens/RecommandationScreen/';
  
 
 import type {Node} from 'react';
@@ -64,6 +65,12 @@ const App: () => Node = () => {
           <Stack.Screen 
             name="Photo" 
             component={PhotoScreen} 
+          />
+
+          <Stack.Screen 
+            name="Recommandation" 
+            component={RecommandationScreen} 
+            options={{ headerShown: false }}
           />
         </Stack.Navigator>
       </NavigationContainer>

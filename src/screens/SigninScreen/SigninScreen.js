@@ -47,7 +47,7 @@ const onSignInPressed=() => {
           if(response.error){
             return Alert.alert("vérifier l'email et le mot de passe: ", response.error);
           } else {
-            return navigation.push("Home");
+            return navigation.push("Recommandation");
           }
         })
       }
