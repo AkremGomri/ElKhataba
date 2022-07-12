@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ImageBackground, TextInput, ImagePickerIOS } from 'react-native'
+import { View, Text, StyleSheet, ImageBackground, TextInput, ImagePickerIOS,AsyncStorage } from 'react-native'
 import React, { useState } from 'react'
 //import ImagePicker from 'react-native-image-picker';
 import * as ImagePicker from "react-native-image-picker"
@@ -8,23 +8,126 @@ import { AppStyles } from '../../AppStyles';
 const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
 const PhotoScreen = ({ navigation }) => {
     const [disable, setDisable] = useState(false);
-    function onPressHandler(name) {
-        setDisable(true);
-        navigation.push(name);
-        setTimeout(() => {
-            setDisable(false);
-        }, 400);
-    }
     const [photo, setPhoto] = useState('');
-    const handleChoosePhoto = () => {
-        const options = {};
-        ImagePicker.launchImageLibrary(options, response => {
-            console.log("response", response);
+    async function onPressHandler(name) {
+        setDisable(true);
+    const data1 = { 
+        Photo:photo,
+      };
+    const getToken=async () =>{
+        try {
+          let userData = await AsyncStorage.getItem("userData");
+          let obj = JSON.parse(userData);
+          console.log("hetha el obj");
+          console.log(obj);
+          return obj;
+        } catch (error) {
+          console.log("Something went wrong", error);
+        }
+      }
+      const obj1=await getToken();
+    const options = {
+        method: "PUT",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + JSON.parse(obj1).token,
+        },
+        body: JSON.stringify(data1),
+      }
+     
+      fetch("http://192.168.1.11:8800/ques/"+JSON.parse(obj1).userId, options)
+      .then((res) => {
+          navigation.push(name);
         })
+      .catch((err) => Alert.alert("problem connecting to the server: " + err))
+    setTimeout(() => {
+        setDisable(false);
+    }, 400);
+    }
+    const handleChoosePhoto = () => {
+            let options = {
+              storageOptions: {
+                skipBackup: true,
+                path: 'images',
+              },
+            };
+            ImagePicker.launchImageLibrary(options, (response) => {
+              console.log('Response = ', response);
+        
+              if (response.didCancel) {
+                console.log('User cancelled image picker');
+              } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+              } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+                alert(response.customButton);
+              } else {
+                const source = { uri: response.uri };
+                console.log('response', JSON.stringify(response));
+                this.setState({
+                  filePath: response,
+                  fileData: response.data,
+                  fileUri: response.uri
+                });
+              }
+            });
+    }
+    const handleTakePhoto =()=>{
+            let options = {
+              storageOptions: {
+                skipBackup: true,
+                path: 'images',
+              },
+            };
+            ImagePicker.launchCamera(options, (response) => {
+              console.log('Response = ', response);
+        
+              if (response.didCancel) {
+                console.log('User cancelled image picker');
+              } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+              } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+                alert(response.customButton);
+              } else {
+                const source = { uri: response.uri };
+                console.log('response', JSON.stringify(response));
+                this.setState({
+                  filePath: response,
+                  fileData: response.data,
+                  fileUri: response.uri
+                });
+              }
+            });
+
     }
 
-
-
+    /* const renderFileData=()=> {
+        if (this.state.fileData) {
+          return <Image source={{ uri: 'data:image/jpeg;base64,' + this.state.fileData }}
+            style={styles.images}
+          />
+        } else {
+          return <Image source={require('./assets/dummy.png')}
+            style={styles.images}
+          />
+        }
+      }
+    
+     const renderFileUri=()=> {
+        if (this.state.fileUri) {
+          return <Image
+            source={{ uri: this.state.fileUri }}
+            style={styles.images}
+          />
+        } else {
+          return <Image
+            source={require('./assets/galeryImages.jpg')}
+            style={styles.images}
+          />
+        }
+      } */
     return (
         <ImageBackground source={ image } resizeMode="cover" style={ styles.image }>
             <View style={ styles.container }>
@@ -36,14 +139,19 @@ const PhotoScreen = ({ navigation }) => {
                 >
                     choisir une photo
                 </Button>
-
+                <Button
+                    containerStyle={ styles.buttonContainer }
+                    onPress={ () => handleTakePhoto() }
+                >
+                    prendre une photo
+                </Button>
 
                 <Button
                     containerStyle={ styles.suivantContainer }
-                    style={ styles.suivantText }>
+                    onPress={() =>onPressHandler("Home")}>
                     <Icon name="forward"
                         size={ 70 }
-                        color="#" />
+                        />
                 </Button>
             </View >
         </ImageBackground>
@@ -109,9 +217,6 @@ const styles = StyleSheet.create({
         color: AppStyles.color.grey,
         borderColor: AppStyles.color.grey,
         borderRadius: AppStyles.borderRadius.main,
-    },
-    suivantText: {
-        color: AppStyles.color.white,
     },
 });
 

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ImageBackground } from 'react-native'
+import { View, Text, StyleSheet, ImageBackground ,AsyncStorage} from 'react-native'
 import React, { useState } from 'react'
 import Button from 'react-native-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -8,16 +8,48 @@ import { AppStyles } from '../../AppStyles';
 const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
 const BirthDateScreen = ({ navigation }) => {
     const [disable, setDisable] = useState(false);
-    function onPressHandler(name) {
+    const [date, setDate] = useState('');
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  
+    async function  onPressHandler(name) {
         setDisable(true);
-        navigation.push(name);
+        const getToken=async () =>{
+            try {
+              let userData = await AsyncStorage.getItem("userData");
+              let obj = JSON.parse(userData);
+              console.log("hetha el obj");
+              console.log(obj);
+              return obj;
+            } catch (error) {
+              console.log("Something went wrong", error);
+            }
+          }
+      
+      
+        const data = { 
+            date_of_birth: date,
+          };
+          const obj1=await getToken();
+        const options = {
+            method: "PUT",
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + JSON.parse(obj1).token,
+            },
+            body: JSON.stringify(data),
+          }
+         
+          fetch("http://192.168.1.11:8800/ques/"+JSON.parse(obj1).userId, options)
+          .then((res) => {
+              navigation.push(name);
+            })
+          .catch((err) => Alert.alert("problem connecting to the server: " + err))
         setTimeout(() => {
             setDisable(false);
         }, 400);
     }
 
-    const [date, setDate] = useState('');
-    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const showDatePicker = () => {
         setDatePickerVisibility(true);
     };
@@ -31,8 +63,6 @@ const BirthDateScreen = ({ navigation }) => {
         setDate(date);
         hideDatePicker();
     };
-
-
     return (
         <ImageBackground source={ image } resizeMode="cover" style={ styles.image }>
             <View style={ styles.container }>
@@ -51,7 +81,6 @@ const BirthDateScreen = ({ navigation }) => {
                 />
                 <Button
                     containerStyle={ styles.suivantContainer }
-                    style={ styles.suivantText }
                     onPress={ () => onPressHandler("Horoscope") }
                 >
                     <Icon name="forward"
@@ -118,9 +147,6 @@ const styles = StyleSheet.create({
         padding: 10,
         marginTop: 30,
         marginLeft: 200,
-    },
-    suivantText: {
-        color: AppStyles.color.white,
     },
 });
 

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ImageBackground } from 'react-native'
+import { View, Text, StyleSheet, ImageBackground ,AsyncStorage} from 'react-native'
 import React, { useState } from 'react'
 import Button from 'react-native-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -7,14 +7,48 @@ import SelectDropdown from 'react-native-select-dropdown'
 const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
 const HoroscopeScreen = ({ navigation }) => {
     const  [disable, setDisable] = useState(false);
-  function onPressHandler(name){
-   setDisable(true);
-   navigation.push(name);
-   setTimeout(()=>{
-       setDisable(false);
-   },400);
-  }
     const horoscopes = ["Bélier", "Taureau", "Gémeaux", "Cancer", "Lion", "Vierge", "Balance", "Scorpion", "Sagittaire", "Capricorne", "Verseau", "Poissons"]
+    const [horoscope, setHoroscope] = useState('');
+  
+   async function onPressHandler(name){
+    setDisable(true);
+    const getToken=async () =>{
+        try {
+          let userData = await AsyncStorage.getItem("userData");
+          let obj = JSON.parse(userData);
+          console.log("hetha el obj");
+          console.log(obj);
+          return obj;
+        } catch (error) {
+          console.log("Something went wrong", error);
+        }
+      }
+  
+  
+    const data = { 
+        horoscope: horoscope,
+      };
+      const obj1=await getToken();
+    const options = {
+        method: "PUT",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + JSON.parse(obj1).token,
+        },
+        body: JSON.stringify(data),
+      }
+     
+      fetch("http://192.168.1.11:8800/ques/"+JSON.parse(obj1).userId, options)
+      .then((res) => {
+          navigation.push(name);
+        })
+      .catch((err) => Alert.alert("problem connecting to the server: " + err))
+    setTimeout(() => {
+        setDisable(false);
+    }, 400);
+  }
+    
     return (
         <ImageBackground source={ image } resizeMode="cover" style={ styles.image }>
             <View style={ styles.container }>
@@ -22,9 +56,11 @@ const HoroscopeScreen = ({ navigation }) => {
                 <Text style={ styles.topTitle } >Inscrivez-vous gratuitement</Text>
                 <Text style={ [styles.title, styles.leftTitle] }>Votre Horoscope</Text>
                 <SelectDropdown
+                value={horoscope}
                     data={ horoscopes }
                     onSelect={ (selectedItem, index) => {
-                        console.log(selectedItem, index)
+                        console.log(selectedItem, index);;
+                        setHoroscope(selectedItem);
                     } }
                     buttonTextAfterSelection={ (selectedItem, index) => {
                         // text represented after item is selected
@@ -39,7 +75,6 @@ const HoroscopeScreen = ({ navigation }) => {
                 />
                 <Button
                     containerStyle={ styles.suivantContainer }
-                    style={ styles.suivantText }
                     onPress={() => onPressHandler("Gender")}
                     >
                     <Icon name="forward"
@@ -100,9 +135,6 @@ const styles = StyleSheet.create({
         padding: 10,
         marginTop: 100,
         marginLeft:200,
-    },
-    suivantText: {
-        color: AppStyles.color.white,
     },
 });
 

@@ -6,18 +6,28 @@ import { View,
   StyleSheet,
   TextInput,
   Alert,
-  FlatList  } from 'react-native';
+  FlatList,
+  AsyncStorage  } from 'react-native';
   import Button from 'react-native-button';
 import { useState, useEffect } from 'react';
 import {AppStyles} from '../../AppStyles';
 // import useFetch from './../../services/useFetch';
+
 const SigninScreen = ({ navigation }) => {
+
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const [response, setResponse] = useState('')
-
+ const  storeToken= async(user)  =>{
+    try {
+       await AsyncStorage.setItem("userData", JSON.stringify(user));
+    } catch (error) {
+      console.log("Something went wrong", error);
+    }
+  }
+   
 const onSignInPressed=() => {
   
   const data = { 
@@ -34,7 +44,7 @@ const onSignInPressed=() => {
     body: JSON.stringify(data),
   }
 
-  fetch("http://192.168.1.17:8080/login", options)
+  fetch("http://192.168.1.11:8800/login", options)
     .then((res) =>  {
       if(res.status === 500){
         Alert.alert("vérifier la connection s'il vous plait: ");
@@ -46,7 +56,9 @@ const onSignInPressed=() => {
           if(response.error){
             return Alert.alert("vérifier l'email et le mot de passe: ", response.error);
           } else {
-            return navigation.push("Home");
+            console.log(data);
+            storeToken(JSON.stringify(data));
+            return navigation.push("BirthDate");
           }
         })
       }
