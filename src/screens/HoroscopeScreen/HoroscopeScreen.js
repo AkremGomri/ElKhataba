@@ -24,7 +24,7 @@ const HoroscopeScreen = ({ navigation }) => {
                 <SelectDropdown
                     data={ horoscopes }
                     onSelect={ (selectedItem, index) => {
-                        console.log(selectedItem, index)
+                        console.warn(selectedItem, index)
                     } }
                     buttonTextAfterSelection={ (selectedItem, index) => {
                         // text represented after item is selected

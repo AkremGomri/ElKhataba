@@ -12,10 +12,12 @@
   "dependencies": {
     "@react-native-community/datetimepicker": "^6.2.0",
     "@react-native-community/masked-view": "^0.1.11",
+    "@react-navigation/bottom-tabs": "^6.3.2",
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/native-stack": "^6.6.2",
     "la": "^0.8.1",
     "moment": "^2.29.3",
+    "nan": "^2.16.0",
     "pod": "^0.9.0",
     "radio-buttons-react-native": "^1.0.4",
     "react": "17.0.2",
@@ -27,11 +29,11 @@
     "react-native-image-picker": "^4.8.4",
     "react-native-modal-datetime-picker": "^13.1.2",
     "react-native-reanimated": "^2.9.0",
+    "react-native-safe-area-context": "^4.3.1",
     "react-native-screens": "^3.14.0",
     "react-native-select-dropdown": "^2.0.3",
     "react-native-vector-icons": "^9.2.0",
     "react-navigation": "^4.4.4",
-    "rsuite": "^5.15.2",
     "suite": "^0.2.0"
   },
   "devDependencies": {

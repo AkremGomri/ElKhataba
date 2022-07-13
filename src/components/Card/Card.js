@@ -12,7 +12,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 const { width, height } = Dimensions.get("window");
 
 
-const Card = ({ source, fullname, gender }) => {
+const Card = ({ source, user, closeClickFunction }) => {
 
   const [ lovePressed, setLovePressed ] = useState(false);
   const [ closePressed, setClosePressed ] = useState(false);
@@ -33,7 +33,8 @@ const Card = ({ source, fullname, gender }) => {
       setClosePressed(!closePressed);
       setLovePressed(false);
     }
-
+    closeClickFunction(user);
+    console.warn("***********************00userId : ", user._id);
   }
 
   var touchCLoseProps = {
@@ -55,7 +56,7 @@ const Card = ({ source, fullname, gender }) => {
               <Icon name = {lovePressed? "heart": "hearto"} size={45} color="red" />
             </TouchableOpacity>
       </View>
-      <Text style={ styles.text }>{ fullname }</Text>
+      <Text style={ styles.text }>{ user.fullname }</Text>
     </View>
   )
 }

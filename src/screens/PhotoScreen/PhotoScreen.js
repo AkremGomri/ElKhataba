@@ -21,7 +21,7 @@ const PhotoScreen = ({ navigation }) => {
     const handleChoosePhoto = () => {
         const options = {};
         ImagePicker.launchImageLibrary(options, response => {
-            console.log("response", response);
+            console.warn("response", response);
         })
     }
 

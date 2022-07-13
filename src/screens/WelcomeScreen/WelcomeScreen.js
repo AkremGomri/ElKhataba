@@ -14,7 +14,7 @@ const WelcomeScreen = ({ navigation }) => {
   }
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>ElKhataba vous souhaite la bienvenue</Text>
+      <Text style={styles.title}>El Khatba vous souhaite la bienvenue</Text>
       <Button
         containerStyle={styles.loginContainer}
         style={styles.loginText}
