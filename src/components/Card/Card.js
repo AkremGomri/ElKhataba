@@ -8,33 +8,45 @@ import Icon from 'react-native-vector-icons/AntDesign';
 // import { Icon } from 'react-native-elements';
 // import Icon from 'react-native-vector-icons/FontAwesome5';
 // import Hoverable from "./Hoverable";
+import { useEffect } from 'react';
 
 const { width, height } = Dimensions.get("window");
 
 
-const Card = ({ source, user, closeClickFunction }) => {
+const Card = (props) => {
+
+  useEffect(() => {
+    if(props.user.allreadyLiked){
+      setLovePressed(!lovePressed);
+    } else if (props.user.allreadyRefused){
+      setClosePressed(!closePressed);
+      
+    }
+  },[])
 
   const [ lovePressed, setLovePressed ] = useState(false);
   const [ closePressed, setClosePressed ] = useState(false);
 
   function heartEventHandler(){
     if ( lovePressed ){
+      props.unlikeClickHandler(props.user);
       setLovePressed(!lovePressed);
     } else {
+      props.likeClickFunction(props.user);
       setLovePressed(!lovePressed);
       setClosePressed(false);
     }
   }
 
-  function closePress() {
+  function closeEventHandler() {
     if ( closePressed ){
       setClosePressed(!closePressed);
+      props.undislikeClickHandler(props.user);
     } else {
+      props.closeClickFunction(props.user);
       setClosePressed(!closePressed);
       setLovePressed(false);
     }
-    closeClickFunction(user);
-    console.warn("***********************00userId : ", user._id);
   }
 
   var touchCLoseProps = {
@@ -47,16 +59,18 @@ const Card = ({ source, user, closeClickFunction }) => {
 
   return (
     <View style={{width, height}}>
-      <Image source={{ uri: source}}  style = {styles.image} />
+      {
+        props.source? <Image source={{ uri: props.source}}  style = {styles.image} /> : <Image source={require("../../../assets/images/user.png")} style = {styles.image}/>
+      }
       <View style={styles.footer}>
-            <TouchableOpacity onPress={() => closePress()} onLongPress={closePress} { ...touchCLoseProps}  underlayColor="black">
+            <TouchableOpacity onPress={() => closeEventHandler()} onLongPress={closeEventHandler} { ...touchCLoseProps}  underlayColor="black">
                 <Icon name="close" size={60} color={closePressed? "rgba(10,10,10,1)": "rgba(10,10,10,0.5)"} style={ styles.icon }/>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => heartEventHandler()} onLongPress={heartEventHandler} {...touchHeartProps}>
               <Icon name = {lovePressed? "heart": "hearto"} size={45} color="red" />
             </TouchableOpacity>
       </View>
-      <Text style={ styles.text }>{ user.fullname }</Text>
+      <Text style={ styles.text }>{ props.user.fullname }</Text>
     </View>
   )
 }
