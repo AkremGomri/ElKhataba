@@ -106,4 +106,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default HoroscopeScreen
+export default HoroscopeScreen;

@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, Text, ScrollView, 
   Dimensions, FlatList, Image, 
-  StyleSheet} from 'react-native';
+  StyleSheet, Alert} from 'react-native';
   // import { Button, Icon } from 'react-native-elements'
 
 import { useState, useEffect } from 'react';
@@ -19,11 +19,70 @@ import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import IconFeather from 'react-native-vector-icons/Feather';
 import IconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import OnConstruction from '../OnConstruction/';
+import Notification from './../Notification/Notification';
 
 const { width, height } = Dimensions.get("window");
 const Tabs = createBottomTabNavigator();
+import { getToken } from '../../services/asyncStorage';
+import Notifications from '../../components/Notifications';
 
 const RecommandationScreen = () => {
+
+  function updateNotif(id, field, value){
+    setNotifs(
+      notifs.map((notif) => {
+        if(notif._id === id)
+          notif[field] = value;
+        return notif;
+      })
+    )
+    console.warn("compeleted");
+  }
+
+  const [notifs, setNotifs] = useState([]);
+  const [ newNotifsNumber, setNewNotifsNumber ] = useState(0);
+
+  useEffect(() => {
+    async function fetchNotifs (){
+      const token = await getToken();
+      let options = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token,
+        }
+      }
+      console.warn("ba3then el notif");
+      fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/getMyNotifs", options )
+        .then((res) => {
+          console.warn("status : " + res.status + " and res: ",res);
+          if(!res.ok){
+            Alert.alert("connection problem");
+            return null;
+          }
+          res.json();
+        })
+        .then( data => {
+          console.warn("data: ",data);
+          if(!data){
+            return null;
+          }
+          setNotifs(data);
+          let x =0;
+          data.forEach((notif, index) => {
+            console.log("lde5el: ",x);
+            if(notif.isNew) {
+              x++;
+            };
+          })
+          setNewNotifsNumber(x)
+          console.warn("lenna: ",x);
+        })
+        console.warn("newNotifs number: ",newNotifsNumber);
+    }
+    fetchNotifs();
+
+
+  },[])
 
   return (
       <Tabs.Navigator initialRouteName="Home" 
@@ -39,15 +98,11 @@ const RecommandationScreen = () => {
         </View>
       )}
       screenOptions={{
+        
         tabBarStyle: {backgroundColor: 'transparent',
         elevation: 0,},
       }}
       >
-
-        <Tabs.Screen name='notifications' component={OnConstruction} options={{ tabBarBadge:3 ,tabBarIcon: ({ color, size }) => (
-          <IconFeather name="bell" color={color} size={36} />
-          ), }}/>
-
         <Tabs.Screen name='Home' backBehavior="firstRoute" component={HomeScreen} 
           options={{
             tabBarButton: () => null,
@@ -55,6 +110,11 @@ const RecommandationScreen = () => {
             tabBarIcon: ({ color, size }) => (
               <IconAntDesign name="home" color={color} size={36} />
               ), }}/>
+
+        <Tabs.Screen name='notifications' children={()=><Notification update={updateNotif} notifs={notifs}/>} options={{ tabBarBadge: newNotifsNumber>0 ? newNotifsNumber: null  ,tabBarIcon: ({ color, size }) => (
+          <IconFeather name="bell" color={color} size={36} />
+          ), }}/>
+
 
         <Tabs.Screen name='Matches' component={OnConstruction} options={{headerShown: false,  tabBarIcon: ({ color, size }) => (
           <IconCommunity name="ring" color={color} size={36} />

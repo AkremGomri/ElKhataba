@@ -121,4 +121,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default GenderScreen
+export default GenderScreen;

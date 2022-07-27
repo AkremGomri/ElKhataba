@@ -1,1 +1,1 @@
-export {default} from './GenderScreen';
+export {default} from './GenderScreen.js';

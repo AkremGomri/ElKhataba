@@ -1,1 +1,1 @@
-export {default} from './HoroscopeScreen';
+export {default} from './HoroscopeScreen.js';

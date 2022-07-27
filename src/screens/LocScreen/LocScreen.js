@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {View, Text, StyleSheet, ImageBackground ,TextInput} from 'react-native'
 import React, { useState } from 'react'
 import Button from 'react-native-button';
@@ -107,4 +108,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default LocScreen
+export default LocScreen;

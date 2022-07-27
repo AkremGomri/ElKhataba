@@ -4,15 +4,15 @@ import "./ignoreWarnings";
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import PhotoScreen from './src/screens/PhotoScreen/PhotoScreen'
-import LocScreen from './src/screens/LocScreen';
-import GenderScreen from './src/screens/GenderScreen';
+import PhotoScreen from './src/screens/PhotoScreen/PhotoScreen';
+import LocScreen from './src/screens/LocScreen/LocScreen';
+import GenderScreen from './src/screens/GenderScreen/index';
 import HoroscopeScreen from './src/screens/HoroscopeScreen';
-import BirthDateScreen from './src/screens/BirthDateScreen';
+import BirthDateScreen from './src/screens/BirthDateScreen/BirthDateScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen'; 
 import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
-import HomeScreen from './src/screens/HomeScreen/HomeScreen';
+import HomeScreen from './src/screens/HomeScreen';
 import { Text, Button, View, StyleSheet } from "react-native";
 import RecommandationScreen from './src/screens/RecommandationScreen/';
  
