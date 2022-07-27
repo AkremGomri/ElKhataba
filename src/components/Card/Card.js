@@ -63,10 +63,10 @@ const Card = (props) => {
         props.source? <Image source={{ uri: props.source}}  style = {styles.image} /> : <Image source={require("../../../assets/images/user.png")} style = {styles.image}/>
       }
       <View style={styles.footer}>
-            <TouchableOpacity onPress={() => closeEventHandler()} onLongPress={closeEventHandler} { ...touchCLoseProps}  underlayColor="black">
+            <TouchableOpacity  onPress={() => closeEventHandler()} { ...touchCLoseProps}  underlayColor="black">
                 <Icon name="close" size={60} color={closePressed? "rgba(10,10,10,1)": "rgba(10,10,10,0.5)"} style={ styles.icon }/>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => heartEventHandler()} onLongPress={heartEventHandler} {...touchHeartProps}>
+            <TouchableOpacity  onPress={() => heartEventHandler()} on {...touchHeartProps}>
               <Icon name = {lovePressed? "heart": "hearto"} size={45} color="red" />
             </TouchableOpacity>
       </View>

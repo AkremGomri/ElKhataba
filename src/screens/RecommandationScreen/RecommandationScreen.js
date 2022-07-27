@@ -51,32 +51,28 @@ const RecommandationScreen = () => {
           'Authorization': 'Bearer ' + token,
         }
       }
-      console.warn("ba3then el notif");
       fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/getMyNotifs", options )
         .then((res) => {
-          console.warn("status : " + res.status + " and res: ",res);
           if(!res.ok){
             Alert.alert("connection problem");
             return null;
           }
-          res.json();
-        })
-        .then( data => {
-          console.warn("data: ",data);
-          if(!data){
-            return null;
-          }
-          setNotifs(data);
-          let x =0;
-          data.forEach((notif, index) => {
-            console.log("lde5el: ",x);
-            if(notif.isNew) {
-              x++;
-            };
+          res.json()
+          .then( data => {
+            if(!data){
+              return null;
+            }
+            setNotifs(data);
+            let x =0;
+            data.forEach((notif, index) => {
+              if(notif.isNew) {
+                x++;
+              };
+            })
+            setNewNotifsNumber(x)
           })
-          setNewNotifsNumber(x)
-          console.warn("lenna: ",x);
-        })
+      })
+
         console.warn("newNotifs number: ",newNotifsNumber);
     }
     fetchNotifs();
@@ -111,7 +107,7 @@ const RecommandationScreen = () => {
               <IconAntDesign name="home" color={color} size={36} />
               ), }}/>
 
-        <Tabs.Screen name='notifications' children={()=><Notification update={updateNotif} notifs={notifs}/>} options={{ tabBarBadge: newNotifsNumber>0 ? newNotifsNumber: null  ,tabBarIcon: ({ color, size }) => (
+        <Tabs.Screen name='notifications' children={()=><Notification nbNotifs={newNotifsNumber} setNbNotifs={setNewNotifsNumber} update={updateNotif} notifs={notifs}/>} options={{ tabBarBadge: newNotifsNumber>0 ? newNotifsNumber: null  ,tabBarIcon: ({ color, size }) => (
           <IconFeather name="bell" color={color} size={36} />
           ), }}/>
 

@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
     padding: 1,
     height: height/10,
-    backgroundColor:  "#ADD8E6",
+    // backgroundColor:  "#ADD8E6",
     flex:1,
     flexDirection:'row',
     alignItems:'center',
@@ -75,9 +75,9 @@ const styles = StyleSheet.create({
   isReadBackground: {
     backgroundColor: "#33E9FF"
   },
-  // isNotReadBackground: {
-  //   backgroundColor: "#33E9FF"
-  // },
+  isNotReadBackground: {
+    backgroundColor: "#ADD8E6"
+  },
   text: {
     color: "white",
     fontSize: 20,

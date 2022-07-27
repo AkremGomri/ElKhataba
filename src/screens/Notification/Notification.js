@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { View, Text, FlatList } from 'react-native'
+import { View, Text, FlatList, Alert } from 'react-native'
 import React from 'react'
 import {  ListItem } from 'react-native-elements';
 import { useEffect } from 'react';
@@ -10,14 +10,12 @@ import { getToken } from '../../services/asyncStorage';
 export default function Notification(props) {
 
     useEffect(() => {
-      for(let notif of props.notifs){
-        if(notif.isNew == true){
-          fetchData(); // only notify backend if there are some new notifications
-          break;
-        }
+      console.warn("nbNotifs: ",props.nbNotifs);
+      if(props.nbNotifs>0){
+        fetchData() // only notify backend if there are some new notifications
       }
 
-      console.warn("item from notifications: ",props.notifs);
+
       async function fetchData (){
         const token = await getToken();
         let options = {
@@ -29,6 +27,13 @@ export default function Notification(props) {
         }
 
         fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/notificationsSeen", options )
+          .then((res) => {
+            if(!res.ok) Alert.alert("connection problem")
+            else res.json()
+              .then((data) => {
+                if(data.success) props.setNbNotifs(0);
+              })
+          });
       }
     }, [])
     
