@@ -2,8 +2,13 @@
 // import at the very top of everything.
 import "./ignoreWarnings";
 import React from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { NavigationContainer } from '@react-navigation/native';
+import { Link } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import SettingScreen from "./src/screens/SettingScreen";
+import EditScreen from './src/screens/EditScreen';
+import UserProfileScreen from "./src/screens/UserProfileScreen";
 import PhotoScreen from './src/screens/PhotoScreen/PhotoScreen'
 import LocScreen from './src/screens/LocScreen';
 import GenderScreen from './src/screens/GenderScreen';
@@ -13,12 +18,13 @@ import WelcomeScreen from './src/screens/WelcomeScreen';
 import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import HomeScreen from './src/screens/HomeScreen/HomeScreen';
-import { Text, Button, View, StyleSheet } from "react-native";
+import { Text, Button, View, StyleSheet ,AsyncStorage} from "react-native";
 import type {Node} from 'react';
 
 const Stack = createNativeStackNavigator();
 
-const App: () => Node = () => {
+const App: () => Node = ({navigation}) => {
+  
   return (
     //<LocScreen /> 
       <NavigationContainer style={styles.root}>
@@ -61,6 +67,18 @@ const App: () => Node = () => {
           <Stack.Screen 
             name="Photo" 
             component={PhotoScreen} 
+          />
+          <Stack.Screen 
+            name="Profile" 
+            component={UserProfileScreen} 
+          />
+            <Stack.Screen 
+            name="Modifier Profil" 
+            component={EditScreen} 
+          />
+          <Stack.Screen 
+            name="Paramètres" 
+            component={SettingScreen} 
           />
         </Stack.Navigator>
       </NavigationContainer>

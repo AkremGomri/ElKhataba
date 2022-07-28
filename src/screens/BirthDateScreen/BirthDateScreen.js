@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet, ImageBackground ,AsyncStorage} from 'react-native'
+import { View, Text, StyleSheet,
+    Alert, ImageBackground ,AsyncStorage} from 'react-native'
 import React, { useState } from 'react'
 import Button from 'react-native-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -40,7 +41,7 @@ const BirthDateScreen = ({ navigation }) => {
             body: JSON.stringify(data),
           }
          
-          fetch("http://192.168.1.11:8800/ques/"+JSON.parse(obj1).userId, options)
+          fetch("http://192.168.1.17:8800/ques/"+JSON.parse(obj1).userId, options)
           .then((res) => {
               navigation.push(name);
             })

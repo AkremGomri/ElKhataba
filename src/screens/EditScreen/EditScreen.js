@@ -1,0 +1,330 @@
+import {
+    View, Text, StyleSheet,
+    ImageBackground, Image,
+    TextInput, SafeAreaView,
+    ScrollView, StatusBar,
+    Alert, AsyncStorage,TouchableOpacity
+} from 'react-native';
+import storage from '@react-native-firebase/storage';
+import RadioButtonRN from 'radio-buttons-react-native';
+import ImageComponent from './ImageComponent';
+import Button from 'react-native-button';
+import React, { useState,useRef} from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import SelectDropdown from 'react-native-select-dropdown';
+//import { Icon } from 'react-native-elements'
+import { AppStyles } from '../../AppStyles';
+import ImagePicker from '../../components/common/ImagePicker';
+
+const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
+const EditScreen = ({ navigation, route,}) => {
+    const user = route.params.user;
+    const sheetRef = useRef(null);
+    const [localFile, setLocalFile] = useState(null);
+    const [updatingImage, setUpdatingImage] = useState(false);
+    const [uploadSucceeded, setUploadSucceeded] = useState(false);
+    const horoscopes = ["Bélier", "Taureau", "Gémeaux", "Cancer", "Lion", "Vierge", "Balance", "Scorpion", "Sagittaire", "Capricorne", "Verseau", "Poisson"]
+    const [bio, setBio] = useState(user.bio);
+    const [date, setDate] = useState(user.date_of_birth);
+    const [horoscope, setHoroscope] = useState(user.horoscope);
+    const [city, setCity] = useState(user.city);
+    const [gender, setGender] = useState(user.gender);
+    const [Photo, setPhoto] = useState(user.Photo);
+   
+    const data = [
+        {
+            label: 'femme'
+        },
+        {
+            label: 'homme'
+        }
+    ];
+
+    const uploadImageToStorage=(file)=> {
+console.log("d5alna lel fct upload");
+console.log(file["path"]);
+        const path=file["path"];
+        let reference = storage().ref(path);
+        console.log(reference);         
+         reference.putFile(path).then( () => {                             
+            console.log('Image uploaded to the bucket!');
+            setUpdatingImage(false);
+            setUploadSucceeded(true);
+        }).catch((e) => {
+            console.log('uploading image error => ', e)
+            setUpdatingImage(false);
+        });
+        
+    }
+    
+    const onFileSelected = (image) => {
+        console.log("c'est l'image choisie" ,image);
+        closeSheet();
+        setLocalFile(image);
+        setPhoto(image["path"]);
+        console.log(Photo);
+        setUpdatingImage(false);
+        setUploadSucceeded(true);
+        
+       /*  uploadImageToStorage(image).then((path)=>{
+            
+        }).catch((err)=>console.log(err));  */     
+      };
+    const closeSheet = () => {
+        if (sheetRef.current) {
+          sheetRef.current.close();
+        }
+      };
+    const openSheet = () => {
+        if (sheetRef.current) {
+          sheetRef.current.open();
+        }
+      };
+      const getToken = async () => {
+        try {
+            let userData = await AsyncStorage.getItem("userData");
+            let obj = JSON.parse(userData);
+            console.log("hetha el obj");
+            console.log(obj);
+            return obj;
+        } catch (error) {
+            console.log("Something went wrong", error);
+        }
+    }
+    const onEdit = async () => {
+       
+        const data = {
+            bio:bio,
+            date_of_birth: date,
+            horoscope: horoscope,
+            city: city,
+            gender: gender,
+            Photo:Photo,
+        };
+        const obj1 = await getToken();
+        const options = {
+            method: "PUT",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + JSON.parse(obj1).token,
+            },
+            body: JSON.stringify(data),
+        }
+
+        fetch("http://192.168.1.17:8800/ques/" + JSON.parse(obj1).userId, options)
+            .then((res) => navigation.push("Profile"))
+            .catch((err) => error)
+    }
+    // Triggers on hitting delete
+const  onDeleteImage=async()=> {
+    
+    const obj1 = await getToken();
+    const options = {
+        method: "PUT",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + JSON.parse(obj1).token,
+        },
+        body: JSON.stringify({Photo:""}),
+    }
+
+    fetch("http://192.168.1.17:8800/ques/" + JSON.parse(obj1).userId, options)
+        .then((res) => navigation.push("Profile"))
+        .catch((err) => error)
+
+  }
+  const renderFile=()=> {
+    if (Photo!="") {
+      return <ImageComponent
+        source={Photo || localFile?.path} 
+      />
+    } else {
+      return <ImageComponent
+        src={require('../../../assets/images/galeryImages.jpg')}
+      />
+    }
+  }
+    return (
+
+        <ImageBackground source={ image } resizeMode="cover" style={ styles.image }>
+            <SafeAreaView style={ styles.container }>
+                <ScrollView style={ styles.scrollView }>
+                    <Text style={ [styles.title, styles.Title] }>{ user.pseudo }</Text>
+                   {/*  {renderFile()} */}
+                     <ImageComponent 
+                     src={user.Photo || localFile?.path} />
+                    <TouchableOpacity
+              onPress={() => {
+                openSheet();
+              }}>
+              <Text style={ [styles.Proftitle] }>
+                {' '}
+                {updatingImage ? 'updating...' : 'changer la photo de Profil'}{' '}
+              </Text>
+            </TouchableOpacity>
+                    <Text style={ [styles.title, styles.leftTitle] }>A propos</Text>
+                    <TextInput
+                        style={ styles.body }
+                        placeholder={bio}
+                        onChangeText={ setBio }
+                        value={ bio }
+                        placeholderTextColor={ AppStyles.color.grey }
+                        underlineColorAndroid="transparent"
+                    />
+                    <Text style={ [styles.title, styles.leftTitle] }>date de naissance</Text>
+                    <TextInput
+                        style={ styles.body }
+                        placeholder={ date }
+                        onChangeText={ setDate }
+                        value={ date }
+                        placeholderTextColor={ AppStyles.color.grey }
+                        underlineColorAndroid="transparent"
+                    />
+                    <Text style={ [styles.title, styles.leftTitle] }>Horoscope</Text>
+                     <SelectDropdown
+                value={horoscope}
+                    data={ horoscopes }
+                    onSelect={ (selectedItem, index) => {
+                        console.log(selectedItem, index);;
+                        setHoroscope(selectedItem);
+                    } }
+                    buttonTextAfterSelection={ (selectedItem, index) => {
+                           return selectedItem
+                    } }
+                    rowTextForSelection={ (item, index) => {
+                        return item
+                    } }
+                />
+                    <Text style={ [styles.title, styles.leftTitle] }>ville</Text>
+                    <TextInput
+                        style={ styles.body }
+                        placeholder={ city }
+                        onChangeText={ setCity }
+                        value={ city }
+                        placeholderTextColor={ AppStyles.color.grey }
+                        underlineColorAndroid="transparent"
+                    />
+                    <Text style={ [styles.title, styles.leftTitle] }>Genre</Text>
+                    
+                    <RadioButtonRN 
+                    data={ data }
+                    value={gender}
+                    initial={1}
+                    selectedBtn={ (e) => {
+                    console.log(e.label);
+                    setGender(e.label);
+                    } }
+                    icon={
+                        <Icon
+                            name="check-circle"
+                            size={ 25 }
+                            color="#2c9dd1"
+                        />
+                    }
+                />
+                    <View style={ styles.mainButtoncontainer }>
+                    <Button
+                        containerStyle={ styles.buttonContainer }
+                        style={ styles.loginText }
+                        onPress={ () => navigation.push("Profile") }>
+                        Annuler
+                    </Button>
+                    <Button
+                        containerStyle={ styles.buttonContainer }
+                        style={ styles.loginText }
+                        onPress={ () => onEdit() }>
+                         Enregistrer
+                    </Button>
+                    </View>
+                    <ImagePicker onFileSelected={onFileSelected} onDeleteImage={onDeleteImage} ref={sheetRef} />
+                </ScrollView>
+            </SafeAreaView>
+        </ImageBackground>
+    )
+};
+
+const styles = StyleSheet.create({
+    mainButtoncontainer: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop:45,
+    },
+    container: {
+        flex: 1,
+        alignItems: "center",
+        paddingTop: StatusBar.currentHeight,
+
+    },
+    scrollView: {
+        marginHorizontal: 20,
+    },
+    image: {
+        flex: 1,
+        justifyContent: "center"
+    },
+    
+    topTitle: {
+        marginTop: 10,
+        marginBottom: 50,
+        fontSize: 30,
+        fontStyle: "italic",
+        fontWeight: 'bold',
+        color: 'black',
+        placement: "top",
+        textAlign: "center",
+
+    },
+    Proftitle: {
+        fontSize: 30,
+        fontWeight: 'bold',
+        color: '#AACDFA',
+        marginTop: 10,
+        marginBottom: 30,
+    },
+    title: {
+        fontSize: 30,
+        fontWeight: 'bold',
+        color: AppStyles.color.tint,
+        marginTop: 10,
+        marginBottom: 30,
+    },
+    leftTitle: {
+        alignSelf: 'stretch',
+        textAlign: 'left',
+        marginLeft: 20,
+    },
+    Title: {
+        alignSelf: 'stretch',
+        textAlign: 'center',
+    },
+    loginText: {
+        color: AppStyles.color.white,
+    },
+    buttonContainer: {
+        width: 120,
+        flex: 1,
+        backgroundColor: AppStyles.color.tint,
+        borderRadius: AppStyles.borderRadius.main,
+        padding: 10,
+        marginLeft:20,
+        marginTop: 10,
+        marginBottom: 20,
+    },
+    placeholder: {
+        color: 'red',
+    },
+    body: {
+        textAlign: 'left',
+        height: 100,
+        paddingLeft: 0,
+        paddingRight: 100,
+        color: AppStyles.color.text,
+    },
+
+});
+
+export default EditScreen

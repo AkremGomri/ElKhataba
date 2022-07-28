@@ -43,27 +43,40 @@ const onSignInPressed=() => {
     },
     body: JSON.stringify(data),
   }
+if ( (!email) || (!password) ) {
+  return alert.Alert("L'un des champs n'est pas saisi.Veuillez trouvez votre compte pour se connecter.")
+}
+else {
 
-  fetch("http://192.168.1.11:8800/login", options)
+  fetch("http://192.168.1.17:8800/login", options)
     .then((res) =>  {
       if(res.status === 500){
-        Alert.alert("vérifier la connection s'il vous plait: ");
+        Alert.alert("alerte saisie","vérifier la connection s'il vous plait: ", [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+          },
+          { text: "OK", onPress: () => console.log("OK Pressed") }
+        ]);
       }  else{
         res.json()
         .then((data) => {
           setResponse(data);
           console.warn("error: " + response.error);
           if(response.error){
-            return Alert.alert("vérifier l'email et le mot de passe: ", response.error);
+            return alert.Alert("vérifier l'email et le mot de passe: ", response.error);
           } else {
             console.log(data);
             storeToken(JSON.stringify(data));
-            return navigation.push("BirthDate");
+            return navigation.push("Profile");
           }
         })
       }
       })
-    .catch((err) => Alert.alert("problem connecting to the server: " + err))
+    .catch((err) => alert.Alert("problem connecting to the server: " + err))
+}
+  
 
 };
 const onPressFacebook=()=>{
