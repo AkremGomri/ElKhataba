@@ -1,33 +1,45 @@
-/* import {
+import {
   View, Text, StyleSheet, ImageBackground, Image,
   ImagePickerIOS, AsyncStorage,TouchableOpacity
 } from 'react-native'
-import React, { useState } from 'react'
-import * as ImagePicker from 'react-native-image-picker';
-import { launchImageLibrary } from 'react-native-image-picker';
+import React, { useState,useRef } from 'react';
+import ImagePicker from '../../components/common/ImagePicker2';
+//import * as ImagePicker from 'react-native-image-picker';
+//import { launchImageLibrary } from 'react-native-image-picker';
 import Button from 'react-native-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { AppStyles } from '../../AppStyles';
+import ImageComponent from '../EditScreen/ImageComponent';
 const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
 const PhotoScreen = ({ navigation }) => {
-
+  const sheetRef = useRef(null);
+  const [localFile, setLocalFile] = useState(null);
+  const [uploadSucceeded, setUploadSucceeded] = useState(false);
   const [disable, setDisable] = useState(false);
-  const [state, setState] = useState(
-    {
-      resourcePath: {},
+  const [Photo, setPhoto] = useState('');
+  
+  const onFileSelected = (image) => {
+    console.log("c'est l'image choisie" ,image);
+    closeSheet();
+    setLocalFile(image);
+    setPhoto(image["path"]);
+    console.log(Photo);
+    setUploadSucceeded(true);    
+  };
+const closeSheet = () => {
+    if (sheetRef.current) {
+      sheetRef.current.close();
     }
-  );
-   const [photo, setPhoto] = useState(
-    {
-      fileData: '',
-      fileUri: '',
+  };
+const openSheet = () => {
+    if (sheetRef.current) {
+      sheetRef.current.open();
     }
-  ); 
-
+  };
   async function onPressHandler(name) {
     setDisable(true);
     const data1 = {
-      Photo: photo.fileUri,
+      Photo: Photo
     };
     const getToken = async () => {
       try {
@@ -51,7 +63,7 @@ const PhotoScreen = ({ navigation }) => {
       body: JSON.stringify(data1),
     }
 
-    fetch("http://192.168.1.17:8800/quesphoto/" + JSON.parse(obj1).userId, options)
+    fetch("http://192.168.1.17:8800/ques/" + JSON.parse(obj1).userId, options)
       .then((res) => {
         console.log("hethi el reponse", res);
         navigation.push(name);
@@ -62,179 +74,34 @@ const PhotoScreen = ({ navigation }) => {
     }, 400);
   }
 
-  const selectFile = () => {
+  
 
-    var options = {
-      title: 'Select Image',
-      customButtons: [
-        { 
-          name: 'customOptionKey', 
-          title: 'Choose file from Custom Option' 
-        },
-      ],
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-
-    };
-
-    ImagePicker.showImagePicker(options, res => {
-      console.log('Response = ', res);
-      if (res.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (res.error) {
-        console.log('ImagePicker Error: ', res.error);
-      } else if (res.customButton) {
-        console.log('User tapped custom button: ', res.customButton);
-        alert(res.customButton);
-      } else {
-        let source = res;
-        this.setState({
-          resourcePath: source,
-        });
-
-      }
-
-    });
-
-  };
-  // Launch Camera
-
-  const cameraLaunch = () => {
-
-    let options = {
-
-      storageOptions: {
-
-        skipBackup: true,
-
-        path: 'images',
-
-      },
-
-    };
-
-    ImagePicker.launchCamera(options, (res) => {
-
-      console.log('Response = ', res);
-      if (res.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (res.error) {
-        console.log('ImagePicker Error: ', res.error);
-      } else if (res.customButton) {
-        console.log('User tapped custom button: ', res.customButton);
-        alert(res.customButton);
-      } else {
-        const source = { uri: res.uri };
-        console.log('response', JSON.stringify(res));
-        setState({
-          filePath: res,
-          fileData: res.data,
-          fileUri: res.uri
-        });
-      }
-
-    });
-
+  const renderFile=()=> {
+    if (Photo!="") {
+      return <ImageComponent
+        src={Photo} 
+      />
+    } else {
+        return  <Image
+          style={styles.detailPhoto}
+          source={require('../../../assets/images/woman.png')}
+        />
+     
+    }
   }
-
-
-
-  const imageGalleryLaunch = () => {
-
-    let options = {
-
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-    };
-
-    ImagePicker.launchImageLibrary(options, (res) => {
-
-      console.log('Response = ', res);
-      if (res.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (res.error) {
-        console.log('ImagePicker Error: ', res.error);
-      } else if (res.customButton) {
-        console.log('User tapped custom button: ', res.customButton);
-        alert(res.customButton);
-      } else {
-        const source = { uri: res.uri };
-        console.log('response', JSON.stringify(res));
-        setState({
-          filePath: res,
-          fileData: res.data,
-          fileUri: res.uri
-        });
-
-      }
-
-    });
-
-  }
-
-
   return (
     <ImageBackground source={ image } resizeMode="cover" style={ styles.image }>
 
       <View style={ styles.container }>
         <Text style={ styles.topTitle } >Inscrivez-vous gratuitement</Text>
         <Text style={ [styles.title, styles.leftTitle] }>Votre Photo</Text>
-        <View style={ styles.ImageSections }>
-          <Image
-
-            source={ {
-              uri: 'data:image/jpeg; ,' + state.resourcePath.data,
-            } }
-            style={ { width: 100, height: 100 } }
-          />
-
-          <Image
-            source={ { uri: state.resourcePath.uri } }
-            style={ { width: 200, height: 200 } }
-          />
- </View>
-          <Text style={ { alignItems: 'center' } }>
-            { state.resourcePath.uri }
-          </Text>
-          <TouchableOpacity onPress={()=> selectFile()} style={styles.button}  >
+       
+        {renderFile()}
+          <TouchableOpacity onPress={()=> openSheet()} style={styles.button}  >
 
               <Text style={styles.buttonText}>Select File</Text>
 
           </TouchableOpacity>
-
- 
-          <TouchableOpacity onPress={ ()=> cameraLaunch() } style={ styles.button }  >
-
-            <Text style={ styles.buttonText }>Launch Camera Directly</Text>
-
-          </TouchableOpacity>
-
-
-
-          <TouchableOpacity onPress={ ()=> imageGalleryLaunch() } style={ styles.button }  >
-
-            <Text style={ styles.buttonText }>Launch Image Gallery Directly</Text>
-
-          </TouchableOpacity>
-       
-         <Button
-          containerStyle={ styles.buttonContainer }
-          onPress={ () => selectFile() }
-         onPress={ () => handleChoosePhoto() } 
-        >
-          choisir une photo
-        </Button> 
-         <Button
-          containerStyle={ styles.buttonContainer }
-          onPress={ () => handleTakePhoto() }
-        >
-          prendre une photo
-        </Button> 
-
         <Button
           containerStyle={ styles.suivantContainer }
           onPress={ () => onPressHandler("Profile") }>
@@ -242,7 +109,9 @@ const PhotoScreen = ({ navigation }) => {
             size={ 70 }
           />
         </Button>
-      </View >
+        <ImagePicker onFileSelected={onFileSelected}  ref={sheetRef} />
+      </View>
+      
     </ImageBackground>
   )
 };
@@ -250,10 +119,7 @@ const PhotoScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#fff',
     alignItems: "center",
-    padding: 30,
   },
   image: {
     flex: 1,
@@ -276,14 +142,18 @@ const styles = StyleSheet.create({
     marginBottom:12    
 
   },
-
+  detailPhoto :{
+    justifyContent: "center",
+    height: 260, width: '90%',
+   resizeMode: 'cover',borderRadius: 100
+},
   buttonText: {
 
     textAlign: 'center',
 
     fontSize: 15,
-
-    color: '#fff'
+    fontWeight: 'bold',
+    color: 'black'
 
   },
   topTitle: {
@@ -295,13 +165,6 @@ const styles = StyleSheet.create({
     color: 'black',
     placement: "top"
 
-  },
-  ImageSections: {
-    display: 'flex',
-    flexDirection: 'row',
-    paddingHorizontal: 8,
-    paddingVertical: 8,
-    justifyContent: 'center'
   },
   images: {
     width: 150,
@@ -325,9 +188,7 @@ const styles = StyleSheet.create({
   loginText: {
     color: AppStyles.color.white,
   },
-  placeholder: {
-    color: 'red',
-  },
+  
   body: {
     fontSize: 20,
     height: 40,
@@ -342,280 +203,11 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginLeft: 200,
   },
-  buttonContainer: {
-    width: AppStyles.textInputWidth.main,
-    marginTop: 30,
-    borderWidth: 1,
-    borderStyle: 'solid',
-    color: AppStyles.color.grey,
-    borderColor: AppStyles.color.grey,
-    borderRadius: AppStyles.borderRadius.main,
-  },
+  button :{
+    marginTop:10,
+   },
+  
 });
 
-export default PhotoScreen */
+export default PhotoScreen
 
-// App.js
-
- 
-
-import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Button, Image } from 'react-native';
-import * as ImagePicker from "react-native-image-picker"
-import { launchImageLibrary } from 'react-native-image-picker';
-
-export default class PhotoScreen extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      resourcePath: {},
-
-    };
-
-  }
-
- 
-
-  selectFile = () => {
-
-
-  };
-
- 
-
-  // Launch Camera
-
-  cameraLaunch = () => {
-
-    let options = {
-
-      storageOptions: {
-
-        skipBackup: true,
-
-        path: 'images',
-
-      },
-
-    };
-
-    ImagePicker.launchCamera(options, (res) => {
-
-      console.log('Response = ', res);
-
- 
-
-      if (res.didCancel) {
-
-        console.log('User cancelled image picker');
-
-      } else if (res.error) {
-
-        console.log('ImagePicker Error: ', res.error);
-
-      } else if (res.customButton) {
-
-        console.log('User tapped custom button: ', res.customButton);
-
-        alert(res.customButton);
-
-      } else {
-
-        const source = { uri: res.uri };
-
-        console.log('response', JSON.stringify(res));
-
-        this.setState({
-
-          filePath: res,
-
-          fileData: res.data,
-
-          fileUri: res.uri
-
-        });
-
-      }
-
-    });
-
-  }
-
- 
-
-  imageGalleryLaunch = () => {
-
-    let options = {
-
-      storageOptions: {
-
-        skipBackup: true,
-
-        path: 'images',
-
-      },
-
-    };
-
- 
-
-    ImagePicker.launchImageLibrary(options, (res) => {
-
-      console.log('Response = ', res);
-
- 
-
-      if (res.didCancel) {
-
-        console.log('User cancelled image picker');
-
-      } else if (res.error) {
-
-        console.log('ImagePicker Error: ', res.error);
-
-      } else if (res.customButton) {
-
-        console.log('User tapped custom button: ', res.customButton);
-
-        alert(res.customButton);
-
-      } else {
-
-        const source = { uri: res.uri };
-
-        console.log('response', JSON.stringify(res));
-
-        this.setState({
-
-          filePath: res,
-
-          fileData: res.data,
-
-          fileUri: res.uri
-
-        });
-
-      }
-
-    });
-
-  }  
-
- 
-
-  render() {
-
-    return (
-
-      <View style={styles.container}>
-
-        <View style={styles.container}>
-
-          <Image
-
-            source={{
-
-              uri: 'data:image/jpeg;base64,' + this.state.resourcePath.data,
-
-            }}
-
-            style={{ width: 100, height: 100 }}
-
-          />
-
-          <Image
-
-            source={{ uri: this.state.resourcePath.uri }}
-
-            style={{ width: 200, height: 200 }}
-
-          />
-
-          <Text style={{ alignItems: 'center' }}>
-
-            {this.state.resourcePath.uri}
-
-          </Text>
-
- 
-
-          <TouchableOpacity onPress={this.selectFile} style={styles.button}  >
-
-              <Text style={styles.buttonText}>Select File</Text>
-
-          </TouchableOpacity>
-
- 
-
-          <TouchableOpacity onPress={this.cameraLaunch} style={styles.button}  >
-
-              <Text style={styles.buttonText}>Launch Camera Directly</Text>
-
-          </TouchableOpacity>
-
- 
-
-          <TouchableOpacity onPress={this.imageGalleryLaunch} style={styles.button}  >
-
-              <Text style={styles.buttonText}>Launch Image Gallery Directly</Text>
-
-          </TouchableOpacity>
-
-        </View>
-
-      </View>
-
-    );
-
-  }
-
-}
-
- 
-
-const styles = StyleSheet.create({
-
-  container: {
-
-    flex: 1,
-
-    padding: 30,
-
-    alignItems: 'center',
-
-    justifyContent: 'center',
-
-    backgroundColor: '#fff'
-
-  },
-
-  button: {
-
-    width: 250,
-
-    height: 60,
-
-    backgroundColor: '#3740ff',
-
-    alignItems: 'center',
-
-    justifyContent: 'center',
-
-    borderRadius: 4,
-
-    marginBottom:12    
-
-  },
-
-  buttonText: {
-
-    textAlign: 'center',
-
-    fontSize: 15,
-
-    color: '#fff'
-
-  }
-
-});

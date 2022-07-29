@@ -36,7 +36,12 @@ const LocScreen = ({ navigation }) => {
      
       fetch("http://192.168.1.17:8800/ques/"+JSON.parse(obj1).userId, options)
       .then((res) => {
+        if (city){
           navigation.push(name);
+      }
+       else {
+             Alert.alert("Il faut saisir votre valeur");
+       } 
         })
       .catch((err) => Alert.alert("problem connecting to the server: " + err))
     setTimeout(() => {

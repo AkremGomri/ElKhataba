@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {Image, Text, View,StyleSheet} from 'react-native';
-import colors from '../../../assets/theme/color';
 
 function ImageComponent({src}) {
   const [isLoading, setIsLoading] = useState(false);

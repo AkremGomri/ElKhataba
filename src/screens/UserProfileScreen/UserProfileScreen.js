@@ -4,6 +4,7 @@ import { View, Text, StyleSheet,
 import React, { useState,useEffect } from 'react'
 import * as ImagePicker from "react-native-image-picker"
 import Icon from 'react-native-vector-icons/FontAwesome';
+import ImageComponent from '../EditScreen/ImageComponent';
 import { AppStyles } from '../../AppStyles';
 const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
 const UserProfileScreen =  ({ navigation }) => {
@@ -89,6 +90,19 @@ const UserProfileScreen =  ({ navigation }) => {
             })
              .catch((err)=>console.log('mamchech logout' ,err))
       }
+      const renderFile=()=> {
+        if (user.Photo!="") {
+          return <ImageComponent
+            src={user.Photo} 
+          />
+        } else {
+            return  <Image
+              style={styles.detailPhoto}
+              source={require('../../../assets/images/woman.png')}
+            />
+         
+        }
+      }
     return (
         <ImageBackground source={ image } resizeMode="cover" style={ styles.image }>
             <View style={ styles.container }>
@@ -100,10 +114,11 @@ const UserProfileScreen =  ({ navigation }) => {
                 }}
                         /> 
                 <Text style={ [styles.title, styles.Title] }>{user.pseudo}</Text>
-                <Image style={ styles.imageProf }
+                {renderFile()}
+                {/* <Image style={ styles.imageProf }
                     source={ { uri: `${user.Photo}`}}
                     style={ { width: 300, height: 300, borderRadius: 100 } }
-                ></Image>
+                ></Image> */}
                 <View style={ styles.container2 } >
                     <View >
                         <Text style={ {
@@ -192,6 +207,11 @@ const styles = StyleSheet.create({
     },
     loginText: {
         color: AppStyles.color.white,
+    },
+    detailPhoto :{
+        justifyContent: "center",
+        height: 300, width: '90%',
+       resizeMode: 'cover',borderRadius: 100
     },
     placeholder: {
         color: 'red',

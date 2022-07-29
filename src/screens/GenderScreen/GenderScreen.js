@@ -1,10 +1,14 @@
-import { View, Text, StyleSheet, ImageBackground,AsyncStorage } from 'react-native'
+import { View, Text, StyleSheet,
+    SafeAreaView,
+    ScrollView,
+     ImageBackground,
+     AsyncStorage } from 'react-native'
 import React, { useState } from 'react'
 import Button from 'react-native-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import RadioButtonRN from 'radio-buttons-react-native';
 import { AppStyles } from '../../AppStyles';
-import SelectDropdown from 'react-native-select-dropdown'
+import SelectDropdown from 'react-native-select-dropdown';
 const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
 const GenderScreen = ({ navigation }) => {
     const  [disable, setDisable] = useState(false);
@@ -40,7 +44,13 @@ const [searchGender, setSearchGender] = useState('');
      
       fetch("http://192.168.1.17:8800/ques/"+JSON.parse(obj1).userId, options)
       .then((res) => {
-          navigation.push(name);
+        if (gender && searchGender){
+            navigation.push(name);
+        }
+         else {
+               Alert.alert("Il faut saisir votre valeur");
+         } 
+        
         })
       .catch((err) => Alert.alert("problem connecting to the server: " + err))
     setTimeout(() => {
@@ -57,9 +67,10 @@ const [searchGender, setSearchGender] = useState('');
     ];
     return (
         <ImageBackground source={ image } resizeMode="cover" style={ styles.image }>
-            <View style={ styles.container }>
-
-                <Text style={ styles.topTitle } >Inscrivez-vous gratuitement</Text>
+           <SafeAreaView style={ styles.container }>
+           <ScrollView   style={ styles.scrollView }>
+            
+           <Text style={ styles.topTitle } >Inscrivez-vous gratuitement</Text>
                 <Text style={ [styles.title, styles.leftTitle] }>Vous êtes</Text>
                 <RadioButtonRN 
                     data={ data }
@@ -100,7 +111,9 @@ const [searchGender, setSearchGender] = useState('');
                         size={ 70 }
                         color="#" />
                 </Button>
-            </View >
+
+           </ScrollView>
+           </SafeAreaView>
         </ImageBackground>
     )
 };
@@ -141,6 +154,9 @@ const styles = StyleSheet.create({
     },
     placeholder: {
         color: 'red',
+    },
+    scrollView: {
+        marginHorizontal: 20,
     },
     body: {
         height: 42,

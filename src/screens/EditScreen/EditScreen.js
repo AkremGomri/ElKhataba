@@ -5,7 +5,7 @@ import {
     ScrollView, StatusBar,
     Alert, AsyncStorage,TouchableOpacity
 } from 'react-native';
-import storage from '@react-native-firebase/storage';
+//import storage from '@react-native-firebase/storage';
 import RadioButtonRN from 'radio-buttons-react-native';
 import ImageComponent from './ImageComponent';
 import Button from 'react-native-button';
@@ -21,7 +21,6 @@ const EditScreen = ({ navigation, route,}) => {
     const user = route.params.user;
     const sheetRef = useRef(null);
     const [localFile, setLocalFile] = useState(null);
-    const [updatingImage, setUpdatingImage] = useState(false);
     const [uploadSucceeded, setUploadSucceeded] = useState(false);
     const horoscopes = ["Bélier", "Taureau", "Gémeaux", "Cancer", "Lion", "Vierge", "Balance", "Scorpion", "Sagittaire", "Capricorne", "Verseau", "Poisson"]
     const [bio, setBio] = useState(user.bio);
@@ -39,36 +38,14 @@ const EditScreen = ({ navigation, route,}) => {
             label: 'homme'
         }
     ];
-
-    const uploadImageToStorage=(file)=> {
-console.log("d5alna lel fct upload");
-console.log(file["path"]);
-        const path=file["path"];
-        let reference = storage().ref(path);
-        console.log(reference);         
-         reference.putFile(path).then( () => {                             
-            console.log('Image uploaded to the bucket!');
-            setUpdatingImage(false);
-            setUploadSucceeded(true);
-        }).catch((e) => {
-            console.log('uploading image error => ', e)
-            setUpdatingImage(false);
-        });
-        
-    }
-    
+   
     const onFileSelected = (image) => {
         console.log("c'est l'image choisie" ,image);
         closeSheet();
         setLocalFile(image);
         setPhoto(image["path"]);
         console.log(Photo);
-        setUpdatingImage(false);
-        setUploadSucceeded(true);
-        
-       /*  uploadImageToStorage(image).then((path)=>{
-            
-        }).catch((err)=>console.log(err));  */     
+        setUploadSucceeded(true);    
       };
     const closeSheet = () => {
         if (sheetRef.current) {
@@ -138,12 +115,14 @@ const  onDeleteImage=async()=> {
   const renderFile=()=> {
     if (Photo!="") {
       return <ImageComponent
-        source={Photo || localFile?.path} 
+        src={Photo || localFile?.path} 
       />
     } else {
-      return <ImageComponent
-        src={require('../../../assets/images/galeryImages.jpg')}
-      />
+        return  <Image
+          style={styles.detailPhoto}
+          source={require('../../../assets/images/woman.png')}
+        />
+     
     }
   }
     return (
@@ -152,16 +131,14 @@ const  onDeleteImage=async()=> {
             <SafeAreaView style={ styles.container }>
                 <ScrollView style={ styles.scrollView }>
                     <Text style={ [styles.title, styles.Title] }>{ user.pseudo }</Text>
-                   {/*  {renderFile()} */}
-                     <ImageComponent 
-                     src={user.Photo || localFile?.path} />
+                    {renderFile()}
                     <TouchableOpacity
               onPress={() => {
                 openSheet();
               }}>
               <Text style={ [styles.Proftitle] }>
                 {' '}
-                {updatingImage ? 'updating...' : 'changer la photo de Profil'}{' '}
+                {'changer la photo de Profil'}{' '}
               </Text>
             </TouchableOpacity>
                     <Text style={ [styles.title, styles.leftTitle] }>A propos</Text>
@@ -277,6 +254,11 @@ const styles = StyleSheet.create({
         placement: "top",
         textAlign: "center",
 
+    },
+    detailPhoto :{
+        justifyContent: "center",
+        height: 300, width: '90%',
+       resizeMode: 'cover',borderRadius: 100
     },
     Proftitle: {
         fontSize: 30,

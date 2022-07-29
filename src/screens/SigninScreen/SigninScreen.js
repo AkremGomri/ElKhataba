@@ -69,7 +69,7 @@ else {
           } else {
             console.log(data);
             storeToken(JSON.stringify(data));
-            return navigation.push("Profile");
+            return navigation.push("BirthDate");
           }
         })
       }
