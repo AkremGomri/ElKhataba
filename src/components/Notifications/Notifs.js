@@ -103,7 +103,7 @@ export default function Notifs(props) {
         {isOpenCard &&
           <View style={styles.twoBtns}>
             <TouchableOpacity onPress={() => closeEventHandler()} { ...touchCLoseProps}  underlayColor="black">
-                <Button title="decline" color="#03b6fc" />
+              <Button title="decline" color="#03b6fc" />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => heartEventHandler()}  {...touchHeartProps}>
               <Button title="love back" color="#f194ff" />

@@ -2,20 +2,19 @@
 // import at the very top of everything.
 import "./ignoreWarnings";
 import React from 'react';
+import { Text, Button, View, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import PhotoScreen from './src/screens/PhotoScreen/PhotoScreen';
-import LocScreen from './src/screens/LocScreen/LocScreen';
-import GenderScreen from './src/screens/GenderScreen/index';
-import HoroscopeScreen from './src/screens/HoroscopeScreen';
+import LocScreen from './src/screens/LocScreen';
+import GenderScreen from './src/screens/GenderScreen/GenderScreen';
+import HoroscopeScreen from './src/screens/HoroscopeScreen/HoroscopeScreen';
 import BirthDateScreen from './src/screens/BirthDateScreen/BirthDateScreen';
-import WelcomeScreen from './src/screens/WelcomeScreen'; 
+import WelcomeScreen from './src/screens/WelcomeScreen/WelcomeScreen';
 import SigninScreen from './src/screens/SigninScreen';
-import SignupScreen from './src/screens/SignupScreen';
+import SignupScreen from './src/screens/SignupScreen/SignupScreen';
 import HomeScreen from './src/screens/HomeScreen';
-import { Text, Button, View, StyleSheet } from "react-native";
-import RecommandationScreen from './src/screens/RecommandationScreen/';
- 
+import RecommandationScreen from './src/screens/RecommandationScreen';
 
 import type {Node} from 'react';
 

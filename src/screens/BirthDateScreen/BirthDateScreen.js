@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { View, Text, StyleSheet, ImageBackground } from 'react-native'
 import React, { useState } from 'react'
 import Button from 'react-native-button';

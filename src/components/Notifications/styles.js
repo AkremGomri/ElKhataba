@@ -7,7 +7,7 @@ const { width, height } = Dimensions.get('window');
 export default StyleSheet.create({
     closedNotifCard: {
       marginTop: 4,
-      padding: 1,
+      padding: 5,
     //   height: height/12,
       width: width,
     },
@@ -85,7 +85,8 @@ export default StyleSheet.create({
         flexDirection:'row',
         marginLeft: width / 5,
         justifyContent: 'space-around',
-        width: width / 1.5
+        width: width / 1.5,
+        marginBottom: 3,
     //   flex: 1,
     //   flexDirection:'row',
     //   alignItems:'center',
@@ -98,8 +99,10 @@ export default StyleSheet.create({
     btn: {
         marginTop: 5,
         marginBottom: 2.5,
-        borderRadius: 10,
-        width: width/4,
+        borderRadius: 8,
+        width: width / 4,
+        overflow: 'hidden',
+
     },
 
     declineBtn: {
