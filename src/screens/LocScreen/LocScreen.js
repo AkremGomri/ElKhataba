@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import {View, Text, StyleSheet, ImageBackground ,TextInput,AsyncStorage} from 'react-native'
-=======
 /* eslint-disable prettier/prettier */
-import {View, Text, StyleSheet, ImageBackground ,TextInput} from 'react-native'
->>>>>>> dev
+import {View, Text, StyleSheet, ImageBackground ,TextInput,AsyncStorage, Alert} from 'react-native'
 import React, { useState } from 'react'
 import Button from 'react-native-button';
 import Icon from 'react-native-vector-icons/FontAwesome';

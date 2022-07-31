@@ -5,6 +5,8 @@ import React ,{useState} from 'react'
 import Icon from 'react-native-fontawesome';
 import Button from 'react-native-button';
 import { AppStyles } from '../../AppStyles';
+import env from '../../../env'
+
 const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
 const SettingScreen = ({ navigation }) => {
   const [oldPassword, setOldPassword] = useState('');
@@ -38,7 +40,7 @@ const options = {
   },
   body: JSON.stringify(data),
 }
-fetch("http://192.168.1.17:8800/password-reset/"+ JSON.parse(obj1).userId, options)
+fetch(env.BACKEND_SERVER_URL + "/password-reset/"+ JSON.parse(obj1).userId, options)
   .then((res) => navigation.push("Profile"))
   .catch((err) => err)
 }
@@ -164,4 +166,4 @@ const styles = StyleSheet.create({
   },
 
 });
-export default SettingScreen
+export default SettingScreen;

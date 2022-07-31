@@ -35,12 +35,11 @@
     "react-native-modal-datetime-picker": "^13.1.2",
     "react-native-raw-bottom-sheet": "^2.2.0",
     "react-native-reanimated": "^2.9.0",
-    "react-native-safe-area-context": "^4.3.1",
+    "react-native-safe-area-context": "^3.1.9",
     "react-native-screens": "^3.14.0",
     "react-native-select-dropdown": "^2.0.3",
     "react-native-vector-icons": "^9.2.0",
-    "react-navigation": "^4.4.4",
-    "suite": "^0.2.0"
+    "react-navigation": "^4.4.4"
   },
   "devDependencies": {
     "@babel/core": "7.18.6",

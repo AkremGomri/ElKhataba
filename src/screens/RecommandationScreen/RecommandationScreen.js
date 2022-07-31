@@ -25,6 +25,7 @@ const { width, height } = Dimensions.get("window");
 const Tabs = createBottomTabNavigator();
 import { getToken } from '../../services/asyncStorage';
 import Notifications from '../../components/Notifications';
+import UserProfileScreen from './../UserProfileScreen/UserProfileScreen';
 
 const RecommandationScreen = () => {
 
@@ -94,7 +95,6 @@ const RecommandationScreen = () => {
         </View>
       )}
       screenOptions={{
-        
         tabBarStyle: {backgroundColor: 'transparent',
         elevation: 0,},
       }}
@@ -120,12 +120,10 @@ const RecommandationScreen = () => {
               <IconFeather name="message-square" color={color} size={36} />
               ), }}/>
 
-        <Tabs.Screen name='profile' component={OnConstruction} options={{headerShown: false,  tabBarIcon: ({ color, size }) => (
+        <Tabs.Screen name='profile' component={UserProfileScreen} options={{headerShown: false,  tabBarIcon: ({ color, size }) => (
               <IconCommunity name="account-circle" color={color} size={36} />
               ), }}/>
 
-              
-              
         </Tabs.Navigator>
   )
 }

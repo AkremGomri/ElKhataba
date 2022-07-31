@@ -1,14 +1,12 @@
-<<<<<<< HEAD
-import { View, Text, StyleSheet, ImageBackground ,AsyncStorage} from 'react-native'
-=======
 /* eslint-disable prettier/prettier */
-import { View, Text, StyleSheet, ImageBackground } from 'react-native'
->>>>>>> dev
-import React, { useState } from 'react'
+import { View, Text, StyleSheet, ImageBackground ,AsyncStorage, Alert} from 'react-native';
+import React, { useState } from 'react';
 import Button from 'react-native-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { AppStyles } from '../../AppStyles';
-import SelectDropdown from 'react-native-select-dropdown'
+import SelectDropdown from 'react-native-select-dropdown';
+import env from '../../../env';
+
 const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
 const HoroscopeScreen = ({ navigation }) => {
     const  [disable, setDisable] = useState(false);
@@ -28,12 +26,11 @@ const HoroscopeScreen = ({ navigation }) => {
           console.log("Something went wrong", error);
         }
       }
-  
-  
-    const data = { 
+
+    const data = {
         horoscope: horoscope,
       };
-      const obj1=await getToken();
+      const obj1 = await getToken();
     const options = {
         method: "PUT",
         headers: {
@@ -43,8 +40,8 @@ const HoroscopeScreen = ({ navigation }) => {
         },
         body: JSON.stringify(data),
       }
-     
-      fetch("http://192.168.1.17:8800/ques/"+JSON.parse(obj1).userId, options)
+
+      fetch(env.BACKEND_SERVER_URL + "/ques/"+JSON.parse(obj1).userId, options)
       .then((res) => {
         if (horoscope){
             navigation.push(name);
@@ -69,12 +66,8 @@ const HoroscopeScreen = ({ navigation }) => {
                 value={horoscope}
                     data={ horoscopes }
                     onSelect={ (selectedItem, index) => {
-<<<<<<< HEAD
                         console.log(selectedItem, index);;
                         setHoroscope(selectedItem);
-=======
-                        console.warn(selectedItem, index)
->>>>>>> dev
                     } }
                     buttonTextAfterSelection={ (selectedItem, index) => {
                         // text represented after item is selected
