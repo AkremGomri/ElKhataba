@@ -66,7 +66,7 @@ const Card = (props) => {
             <TouchableOpacity  onPress={() => closeEventHandler()} { ...touchCLoseProps}  underlayColor="black">
                 <Icon name="close" size={60} color={closePressed? "rgba(10,10,10,1)": "rgba(10,10,10,0.5)"} style={ styles.icon }/>
             </TouchableOpacity>
-            <TouchableOpacity  onPress={() => heartEventHandler()} on {...touchHeartProps}>
+            <TouchableOpacity  onPress={() => heartEventHandler()}  {...touchHeartProps}>
               <Icon name = {lovePressed? "heart": "hearto"} size={45} color="red" />
             </TouchableOpacity>
       </View>

@@ -1,4 +1,4 @@
-BACKEND_SERVER_URL = "http://192.168.43.213";
+BACKEND_SERVER_URL = 'http://192.168.43.27';
 PORT = 8800;
 
-export default { BACKEND_SERVER_URL, PORT };
+export default {BACKEND_SERVER_URL, PORT};
