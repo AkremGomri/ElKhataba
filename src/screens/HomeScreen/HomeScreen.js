@@ -1,53 +1,117 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import { View, Text, ScrollView, Dimensions, FlatList, Image, StyleSheet} from 'react-native';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { View, Text, ScrollView, 
+  Dimensions, FlatList, Image, 
+  StyleSheet, Alert, } from 'react-native';
+import { Button, Icon } from 'react-native-elements';
+import { getToken } from '../../services/asyncStorage';
+import { useState, useEffect } from 'react';
+import useEffectFetch from '../../services/useEffectFetch';
+import env from '../../../env';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Card from '../../components/Card/Card';
+import EmptyCard from '../../components/Card/EmptyCard';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
 
 const { width, height } = Dimensions.get("window");
-const HomeScreen = () => {
-  // const [data, setData] = useState([]);
-  // useEffect(() => {
-  //   setData([`https://www.shutterstock.com/image-photo/word-link-serious-businessman-hands-on-180015809`, `https://www.shutterstock.com/image-vector/smartphone-speech-bubble-social-media-icons-249041452`])
-  // }, [])
+// const Tab = createBottomTabNavigator();
+var options = {};
 
-  const data = [`https://www.shutterstock.com/image-photo/word-link-serious-businessman-hands-on-180015809`, `https://www.shutterstock.com/image-vector/smartphone-speech-bubble-social-media-icons-249041452`]
+const HomeScreen = () => {
+  const [ usersList, setUsersList] = useState([]);
+  function reactedTo(){
+  }
+
+ 
+  // const {data, isPending, error, setData} = useEffectFetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/recommanded", options );
+
+  useEffect(() => {
+    async function fetchData (){
+      const token = await getToken();
+      options = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token,
+        }
+      }
+
+      fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/recommanded", options )
+        .then((res) => {
+          console.warn("status : ",res.status);
+          res.json()
+            .then((data) => {
+              setUsersList(data);
+            })
+        })
+    }
+    fetchData();
+  }, [])
+  
+
+
+  async function removeItem(user) {
+    options = { 
+      ...options,
+      method: 'POST',
+    }
+    setUsersList(usersList.filter((item, index) => {
+      return item._id != user._id;
+    }));
+    const res = await fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/declineSuggestion/"+user._id, options );
+    console.warn("user._id: ", user._id);
+    console.warn("removeItem's data 2: ", usersList);
+  }
+
+  async function likeUser(user) {
+    options = { 
+      ...options,
+      method: 'POST',
+    }
+    const res = await fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/like/"+user._id, options );
+  }
+
+  async function unlikeClickHandler(user) {
+    options = { 
+      ...options,
+      method: 'POST',
+    }
+    const res = await fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/unlike/"+user._id, options );
+  }
+
+  async function undislikeClickHandler(user) {
+    options = { 
+      ...options,
+      method: 'POST',
+    }
+    const res = await fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/undislike/"+user._id, options );
+  }
+
   return (
-    <View>
-      <Text>akrem</Text>
-        <ScrollView snapToInterval={width} decelerationRate="fast" horizontal>
+    <SafeAreaView >
+          {/* <Tab.Navigator>
+      <Tab.Screen name="Home" component={HomeScreen} />
+    </Tab.Navigator> */}
+
+        <ScrollView snapToInterval={width} decelerationRate="fast" horizontal >
           <FlatList
-            data={data}
+          snapToInterval={width}
+           horizontal
+            data={usersList}
             renderItem={
-              ({item}) =><Image style={styles.container} source={{ item }} />
+            ({ item }) => <Card source= { item.Photo } user = {item} closeClickFunction = {removeItem} likeClickFunction = {likeUser} unlikeClickHandler = {unlikeClickHandler} undislikeClickHandler={undislikeClickHandler}/>
             }
-            keyExtractor={item => item}
+            ListEmptyComponent = {EmptyCard}
+            initialNumToRender
+            keyExtractor={item => item._id}
+            onEndReachedThreshold={0.5}
           />
-        </ScrollView>
-    </View>
+          {/* style = {{ width, height:height/2 }}  */}
+        </ScrollView> 
+    </SafeAreaView> 
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "black",
-  },
-  pictures: {
-    // width: width * data.length,
-    height,
-    flexDirection: "row",
-  },
-  picture: {
-    width,
-    height,
-    overflow: "hidden",
-  },
-  image: {
-    ...StyleSheet.absoluteFillObject,
-    width: undefined,
-    height: undefined,
-  },
-});
+
 
 export default HomeScreen;

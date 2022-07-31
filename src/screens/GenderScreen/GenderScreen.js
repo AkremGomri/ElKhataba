@@ -1,8 +1,13 @@
+<<<<<<< HEAD
 import { View, Text, StyleSheet,
     SafeAreaView,
     ScrollView,
      ImageBackground,
      AsyncStorage } from 'react-native'
+=======
+/* eslint-disable prettier/prettier */
+import { View, Text, StyleSheet, ImageBackground } from 'react-native'
+>>>>>>> dev
 import React, { useState } from 'react'
 import Button from 'react-native-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -173,4 +178,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default GenderScreen
+export default GenderScreen;

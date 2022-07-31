@@ -1,17 +1,19 @@
+/* eslint-disable quotes */
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import { View,
-   Text, 
-  Image, 
+   Text,
+  Image,
   StyleSheet,
   TextInput,
   Alert,
   FlatList,
-  AsyncStorage  } from 'react-native';
-  import Button from 'react-native-button';
+  } from 'react-native';
+import AsyncStorage from "../../services/asyncStorage";
+import Button from 'react-native-button';
 import { useState, useEffect } from 'react';
 import {AppStyles} from '../../AppStyles';
-// import useFetch from './../../services/useFetch';
+import env from '../../../env';
 
 const SigninScreen = ({ navigation }) => {
 
@@ -19,18 +21,20 @@ const SigninScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const [response, setResponse] = useState('')
- const  storeToken= async(user)  =>{
-    try {
-       await AsyncStorage.setItem("userData", JSON.stringify(user));
-    } catch (error) {
-      console.log("Something went wrong", error);
-    }
-  }
+//   const [response, setResponse] = useState('')
+//  const  storeToken= async(user)  =>{
+//     try {
+//        await AsyncStorage.setItem("userData", JSON.stringify(user));
+//     } catch (error) {
+//       console.log("Something went wrong", error);
+//     }
+//   }
    
-const onSignInPressed=() => {
-  
-  const data = { 
+const [response, setResponse] = useState('');
+
+const onSignInPressed= async () => {
+
+const data = { 
       email: email,
       password: password,
     };
@@ -48,7 +52,7 @@ if ( (!email) || (!password) ) {
 }
 else {
 
-  fetch("http://192.168.1.17:8800/login", options)
+  fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/login", options)
     .then((res) =>  {
       if(res.status === 500){
         Alert.alert("alerte saisie","vérifier la connection s'il vous plait: ", [
@@ -67,9 +71,15 @@ else {
           if(response.error){
             return alert.Alert("vérifier l'email et le mot de passe: ", response.error);
           } else {
-            console.log(data);
-            storeToken(JSON.stringify(data));
-            return navigation.push("BirthDate");
+            /* safa */
+            // console.log(data);
+            // storeToken(JSON.stringify(data));
+            // return navigation.push("BirthDate");
+            /* safa */
+            console.warn("data: ",data);
+            AsyncStorage.storeToken(data.token);
+            AsyncStorage.storeData("userId" ,data.userId);
+            return navigation.push("Recommandation");
           }
         })
       }

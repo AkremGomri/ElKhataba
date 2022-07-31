@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { useEffect, useState } from "react"
 
 const useEffectFetch = (url, options) => {
@@ -6,6 +7,7 @@ const useEffectFetch = (url, options) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        console.warn("useEffect: ",options);
         setTimeout(() => {
             fetch(url, options)
                 .then(res => {
@@ -26,7 +28,7 @@ const useEffectFetch = (url, options) => {
         }, 400);
     }, [url]);
 
-    return { data, isPending, error }
+    return { data, isPending, error, setData }
 }
 
 export default useEffectFetch;

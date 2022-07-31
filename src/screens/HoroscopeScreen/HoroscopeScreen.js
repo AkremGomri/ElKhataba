@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 import { View, Text, StyleSheet, ImageBackground ,AsyncStorage} from 'react-native'
+=======
+/* eslint-disable prettier/prettier */
+import { View, Text, StyleSheet, ImageBackground } from 'react-native'
+>>>>>>> dev
 import React, { useState } from 'react'
 import Button from 'react-native-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -64,8 +69,12 @@ const HoroscopeScreen = ({ navigation }) => {
                 value={horoscope}
                     data={ horoscopes }
                     onSelect={ (selectedItem, index) => {
+<<<<<<< HEAD
                         console.log(selectedItem, index);;
                         setHoroscope(selectedItem);
+=======
+                        console.warn(selectedItem, index)
+>>>>>>> dev
                     } }
                     buttonTextAfterSelection={ (selectedItem, index) => {
                         // text represented after item is selected
@@ -143,4 +152,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default HoroscopeScreen
+export default HoroscopeScreen;

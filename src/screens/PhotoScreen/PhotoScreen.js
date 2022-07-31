@@ -1,11 +1,14 @@
+/* eslint-disable prettier/prettier */
 import {
   View, Text, StyleSheet, ImageBackground, Image,
-  ImagePickerIOS, AsyncStorage,TouchableOpacity
+  ImagePickerIOS, AsyncStorage,TouchableOpacity,
+  Alert
 } from 'react-native'
 import React, { useState,useRef } from 'react';
 import ImagePicker from '../../components/common/ImagePicker2';
 //import * as ImagePicker from 'react-native-image-picker';
 //import { launchImageLibrary } from 'react-native-image-picker';
+import env from '../../../env';
 import Button from 'react-native-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { AppStyles } from '../../AppStyles';
@@ -63,7 +66,7 @@ const openSheet = () => {
       body: JSON.stringify(data1),
     }
 
-    fetch("http://192.168.1.17:8800/ques/" + JSON.parse(obj1).userId, options)
+    fetch(env.BACKEND_SERVER_URL + "/ques/" + JSON.parse(obj1).userId, options)
       .then((res) => {
         console.log("hethi el reponse", res);
         navigation.push(name);
@@ -139,7 +142,9 @@ const styles = StyleSheet.create({
 
     borderRadius: 4,
 
-    marginBottom:12    
+    marginBottom:12,
+    
+    marginTop: 10,
 
   },
   detailPhoto :{
@@ -203,10 +208,6 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginLeft: 200,
   },
-  button :{
-    marginTop:10,
-   },
-  
 });
 
 export default PhotoScreen

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Text, StyleSheet, ImageBackground,TextInput,
   View,SafeAreaView,Alert,AsyncStorage} from 'react-native'
 import React ,{useState} from 'react'
@@ -48,10 +49,9 @@ fetch("http://192.168.1.17:8800/password-reset/"+ JSON.parse(obj1).userId, optio
         
             <Text style={ [styles.title, styles.Title] }>Changer le mot de passe</Text>
             <TextInput
-                style={ styles.body }
+                style={[ styles.body, styles.default ]}
                type='password'
-               secureTextEntry={true} 
-               style={styles.default} 
+               secureTextEntry={true}
                placeholder='saisir votre ancien mot de passe'
                 onChangeText={ setOldPassword }
                 value={ oldPassword }
@@ -59,10 +59,9 @@ fetch("http://192.168.1.17:8800/password-reset/"+ JSON.parse(obj1).userId, optio
                 underlineColorAndroid="transparent"
             />
             <TextInput
-                style={ styles.body }
+               style={[ styles.body, styles.default ]}
                type='password'
-               secureTextEntry={true} 
-               style={styles.default} 
+               secureTextEntry={true}
                placeholder='saisir votre nouveau mot de passe'
                 onChangeText={ setNewPassword }
                 value={ newPassword }
@@ -70,10 +69,9 @@ fetch("http://192.168.1.17:8800/password-reset/"+ JSON.parse(obj1).userId, optio
                 underlineColorAndroid="transparent"
             />
             <TextInput
-                style={ styles.body }
+                style={[ styles.body, styles.default ]}
                type='password'
                secureTextEntry={true} 
-               style={styles.default} 
                placeholder='réentrez votre nouveau mot de passe'
                 onChangeText={ setConfirmPassword }
                 value={ confirmPassword }

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
     View, Text, StyleSheet,
     ImageBackground, Image,
