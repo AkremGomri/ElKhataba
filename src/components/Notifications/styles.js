@@ -8,13 +8,12 @@ export default StyleSheet.create({
     closedNotifCard: {
       marginTop: 4,
       padding: 1,
-      height: height/12,
+    //   height: height/12,
       width: width,
     },
 
     openedNotifCard: {
-    marginTop: 4,
-
+        marginTop: 4,
       // height: height/5,
     },
 
@@ -27,21 +26,35 @@ export default StyleSheet.create({
     },
 
     text: {
-      color: 'white',
-      fontSize: 20,
-      textAlign: 'center',
-      width: width / 1.8,
-      alignSelf: 'center',
-      alignItems: 'flex-end',
-      
-    //   position: 'absolute', right: 0
-      // flexShrink: 1,
-      // textOverflow: "ellipses",
-      // wordWrap: "breakWord"
-    },
+        color: 'white',
+        fontSize: 20,
+        textAlign: 'center',
+        width: width / 1.8,
+        alignSelf: 'center',
+        alignItems: 'flex-end',
+        
+      //   position: 'absolute', right: 0
+        // flexShrink: 1,
+        // textOverflow: "ellipses",
+        // wordWrap: "breakWord"
+      },
+
+      text_closed: {
+        color: 'white',
+        fontSize: 20,
+        textAlign: 'center',
+        alignSelf: 'center',
+        alignItems: 'flex-end',
+        marginLeft: 20
+        
+      //   position: 'absolute', right: 0
+        // flexShrink: 1,
+        // textOverflow: "ellipses",
+        // wordWrap: "breakWord"
+      },
 
     textAndImageContainer:{
-        flex:1,
+        flex: 1,
         flexDirection:'row',
 
     },
@@ -53,7 +66,7 @@ export default StyleSheet.create({
         overflow: 'hidden',
         marginTop: height / 100,
         marginBottom: height / 100,
-        marginLeft: 12
+        marginLeft: 12,
 
       },
 
@@ -62,7 +75,7 @@ export default StyleSheet.create({
         height: width / 8,
         borderRadius: width / 16,
         overflow: 'hidden',
-        marginLeft: 12
+        marginLeft: 12,
 
     },
 
@@ -80,7 +93,7 @@ export default StyleSheet.create({
         marginTop: 5,
         marginBottom: 2.5,
         borderRadius: 10,
-        width: width/4
+        width: width/4,
     },
 
     declineBtn: {
@@ -89,5 +102,5 @@ export default StyleSheet.create({
 
     acceptBtn:{
     //   backgroundColor: '#000000'
-    }
+    },
   });

@@ -91,10 +91,10 @@ export default function Notifs(props) {
       <TouchableOpacity onPress={onPressHandler} >
         <View style={styles.textAndImageContainer}>
         <Image source={{ uri: 'https://makeawebsitehub.com/wp-content/uploads/2019/03/google-url-shortener-alternatives.png'}}  style = {isOpenCard ? styles.image_open : styles.image_closed} />
-        <Text numberOfLines={3} ellipsizeMode="tail" style={styles.text}>
-          { 
-            ((props.notif.message).length > 30 && !isOpenCard ) ?
-            (((props.notif.message).substring(0, 30-3)) + '...') :
+        <Text numberOfLines={3} ellipsizeMode="tail" style={(isOpenCard) ? styles.text : styles.text_closed }>
+          {
+            ((props.notif.message).length > 35 && !isOpenCard ) ?
+            (((props.notif.message).substring(0, 35-3)) + '...') :
             props.notif.message
           }
           </Text>
