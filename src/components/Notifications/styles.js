@@ -32,6 +32,7 @@ export default StyleSheet.create({
         width: width / 1.8,
         alignSelf: 'center',
         alignItems: 'flex-end',
+        marginLeft: 20,
         
       //   position: 'absolute', right: 0
         // flexShrink: 1,
@@ -80,6 +81,11 @@ export default StyleSheet.create({
     },
 
     twoBtns: {
+        flex: 1,
+        flexDirection:'row',
+        marginLeft: width / 5,
+        justifyContent: 'space-around',
+        width: width / 1.5
     //   flex: 1,
     //   flexDirection:'row',
     //   alignItems:'center',

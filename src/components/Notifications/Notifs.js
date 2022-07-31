@@ -98,6 +98,8 @@ export default function Notifs(props) {
             props.notif.message
           }
           </Text>
+        </View>
+        </TouchableOpacity  >
         {isOpenCard &&
           <View style={styles.twoBtns}>
             <TouchableOpacity onPress={() => closeEventHandler()} { ...touchCLoseProps}  underlayColor="black">
@@ -108,8 +110,6 @@ export default function Notifs(props) {
             </TouchableOpacity>
           </View>
         }
-        </View>
-        </TouchableOpacity  >
     </View>
   )
 }
