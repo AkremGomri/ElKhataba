@@ -48,6 +48,17 @@ export const getToken = async () => {
     }
   }
   
+ /*  const getToken=async () =>{
+    try {
+      let userData = await AsyncStorage.getItem("userData");
+      let obj = JSON.parse(userData);
+      console.log("hetha el obj");
+      console.log(obj);
+      return obj;
+    } catch (error) {
+      console.log("Something went wrong", error);
+    }
+  } */
   
   export default {
         getToken,

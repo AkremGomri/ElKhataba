@@ -6,27 +6,18 @@ import * as ImagePicker from "react-native-image-picker"
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ImageComponent from '../EditScreen/ImageComponent';
 import { AppStyles } from '../../AppStyles';
+import { getToken ,getData} from '../../services/asyncStorage';
+import env from '../../../env';
 const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
 const UserProfileScreen =  ({ navigation }) => {
     const ICON_FONT = "tinderclone";
     const [disable, setDisable] = useState(false);
     const [user, setUser] = useState('');
     useEffect(() => {
-        getUsers();
+        getUser();
       }, []);
-    const getToken=async () =>{
-        try {
-          let userData = await AsyncStorage.getItem("userData");
-          let obj = JSON.parse(userData);
-          console.log("hetha el obj");
-          console.log(obj);
-          return obj;
-        } catch (error) {
-          console.log("Something went wrong", error);
-        }
-      }
-      async function getUsers() {
-        const obj1=await getToken();
+   
+      async function getUser() {
       const options = {
         method: "GET",
         headers: {
@@ -34,13 +25,12 @@ const UserProfileScreen =  ({ navigation }) => {
           'Content-Type': 'application/json',
         },
       }
-      // console.log(JSON.parse(obj1).userId);
-      fetch("http://192.168.1.17:8800/"+JSON.parse(obj1).userId, options)
+      const userId= (await getData("userId")).value;
+      fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+'/'+userId, options)
           .then(response =>response.json())
              .then(data =>{
-                //console.log("this is the user pseudo",data.pseudo); 
                 setUser(data);
-                //console.log(user);
+                console.log(user);
                  
     })
           .catch((err) => Alert.alert("problem connecting to the server: " + err))
@@ -62,27 +52,17 @@ const UserProfileScreen =  ({ navigation }) => {
         }, 400);
     }
     const doUserLogOut = async function () {
-        const getToken = async () => {
-          try {
-              let userData = await AsyncStorage.getItem("userData");
-              let obj = JSON.parse(userData);
-              console.log("hetha el obj");
-              console.log(obj);
-              return obj;
-          } catch (error) {
-              console.log("Something went wrong", error);
-          }
-      }
-      const obj1 = await getToken();
+       
+      const token = await getToken();
         const options = {
           method: "POST",
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + JSON.parse(obj1).token,
+            'Authorization': 'Bearer ' + token,
           },
         }
-        fetch("http://192.168.1.17:8800/logout", options)
+        fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/logout", options)
             .then((res) =>{
               console.log(res.status);
               console.log('successfully loged out');

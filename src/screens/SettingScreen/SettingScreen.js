@@ -5,7 +5,8 @@ import React ,{useState} from 'react'
 import Icon from 'react-native-fontawesome';
 import Button from 'react-native-button';
 import { AppStyles } from '../../AppStyles';
-import env from '../../../env'
+import { getToken ,getData} from '../../services/asyncStorage';
+import env from '../../../env';
 
 const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
 const SettingScreen = ({ navigation }) => {
@@ -13,34 +14,24 @@ const SettingScreen = ({ navigation }) => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const onEdit =async () => {
-    const getToken = async () => {
-      try {
-          let userData = await AsyncStorage.getItem("userData");
-          let obj = JSON.parse(userData);
-          console.log("hetha el obj");
-          console.log(obj);
-          return obj;
-      } catch (error) {
-          console.log("Something went wrong", error);
-      }
-  }
+   
   const data = { 
     old_password: oldPassword,
     new_password:newPassword ,
     confirm_password:confirmPassword,
 };
-const obj1 = await getToken();
-console.log(obj1);
+const token = await getToken();
+const userId= (await getData("userId")).value;
 const options = {
   method: "PUT",
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer ' + JSON.parse(obj1)['token'],
+    'Authorization': 'Bearer ' +token,
   },
   body: JSON.stringify(data),
 }
-fetch(env.BACKEND_SERVER_URL + "/password-reset/"+ JSON.parse(obj1).userId, options)
+fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+ "/password-reset/"+ userId, options)
   .then((res) => navigation.push("Profile"))
   .catch((err) => err)
 }

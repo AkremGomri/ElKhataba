@@ -37,7 +37,7 @@ function ImageComponent({src}) {
     imageContainer: {height: 300, width: '100%'},
     detailPhoto: {
         justifyContent: "center",
-      height: 300, width: '90%',
+      height: 350, width: '90%',
      resizeMode: 'cover',borderRadius: 100},
 
   

@@ -16,6 +16,8 @@ import SelectDropdown from 'react-native-select-dropdown';
 //import { Icon } from 'react-native-elements'
 import { AppStyles } from '../../AppStyles';
 import ImagePicker from '../../components/common/ImagePicker';
+import { getToken ,getData} from '../../services/asyncStorage';
+import env from '../../../env';
 
 const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
 const EditScreen = ({ navigation, route,}) => {
@@ -58,17 +60,7 @@ const EditScreen = ({ navigation, route,}) => {
           sheetRef.current.open();
         }
       };
-      const getToken = async () => {
-        try {
-            let userData = await AsyncStorage.getItem("userData");
-            let obj = JSON.parse(userData);
-            console.log("hetha el obj");
-            console.log(obj);
-            return obj;
-        } catch (error) {
-            console.log("Something went wrong", error);
-        }
-    }
+   
     const onEdit = async () => {
        
         const data = {
@@ -79,36 +71,36 @@ const EditScreen = ({ navigation, route,}) => {
             gender: gender,
             Photo:Photo,
         };
-        const obj1 = await getToken();
+        const token = await getToken();
         const options = {
             method: "PUT",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + JSON.parse(obj1).token,
+                'Authorization': 'Bearer ' + token,
             },
             body: JSON.stringify(data),
         }
-
-        fetch("http://192.168.1.17:8800/ques/" + JSON.parse(obj1).userId, options)
+        const userId= (await getData("userId")).value;
+        fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+'/ques/' +userId, options)
             .then((res) => navigation.push("Profile"))
             .catch((err) => error)
     }
     // Triggers on hitting delete
 const  onDeleteImage=async()=> {
-    
-    const obj1 = await getToken();
+    const token = await getToken();
+    const userId= (await getData("userId")).value;
     const options = {
         method: "PUT",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + JSON.parse(obj1).token,
+            'Authorization': 'Bearer ' +token,
         },
         body: JSON.stringify({Photo:""}),
     }
 
-    fetch("http://192.168.1.17:8800/ques/" + JSON.parse(obj1).userId, options)
+    fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+'/ques/' +userId, options)
         .then((res) => navigation.push("Profile"))
         .catch((err) => error)
 
