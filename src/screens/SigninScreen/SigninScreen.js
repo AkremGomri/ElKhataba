@@ -1,25 +1,100 @@
+/* eslint-disable quotes */
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import { View,
-   Text, 
-  Image, 
+   Text,
+  Image,
   StyleSheet,
-  TextInput } from 'react-native';
-  import Button from 'react-native-button';
-import { useState } from 'react';
+  TextInput,
+  Alert,
+  FlatList,
+  } from 'react-native';
+import AsyncStorage from "../../services/asyncStorage";
+import Button from 'react-native-button';
+import { useState, useEffect } from 'react';
 import {AppStyles} from '../../AppStyles';
-const SigninScreen = () => {
+import env from '../../../env';
+
+const SigninScreen = ({ navigation }) => {
+
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-const onSignInPressed=() => {
-  console.warn('Sign in');
+
+//   const [response, setResponse] = useState('')
+//  const  storeToken= async(user)  =>{
+//     try {
+//        await AsyncStorage.setItem("userData", JSON.stringify(user));
+//     } catch (error) {
+//       console.log("Something went wrong", error);
+//     }
+//   }
+   
+const [response, setResponse] = useState('');
+
+const onSignInPressed= async () => {
+
+const data = { 
+      email: email,
+      password: password,
+    };
+    
+  const options = {
+    method: "POST",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data),
+  }
+if ( (!email) || (!password) ) {
+  return alert.Alert("L'un des champs n'est pas saisi.Veuillez trouvez votre compte pour se connecter.")
+}
+else {
+
+  fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/login", options)
+    .then((res) =>  {
+      if(res.status === 500){
+        Alert.alert("alerte saisie","vérifier la connection s'il vous plait: ", [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+          },
+          { text: "OK", onPress: () => console.log("OK Pressed") }
+        ]);
+      }  else{
+        res.json()
+        .then((data) => {
+          setResponse(data);
+          console.warn("error: " + response.error);
+          if(response.error){
+            return alert.Alert("vérifier l'email et le mot de passe: ", response.error);
+          } else {
+            /* safa */
+            // console.log(data);
+            // storeToken(JSON.stringify(data));
+            // return navigation.push("BirthDate");
+            /* safa */
+            console.warn("data: ",data);
+            AsyncStorage.storeToken(data.token);
+            AsyncStorage.storeData("userId" ,data.userId);
+            return navigation.push("Recommandation");
+          }
+        })
+      }
+      })
+    .catch((err) => alert.Alert("problem connecting to the server: " + err))
+}
+  
+
 };
 const onPressFacebook=()=>{
   console.warn('login with fb');
 }
   return (
     <View style={styles.container}>
-    <Text style={[styles.title, styles.leftTitle]}>Sign In</Text>
+    <Text style={[styles.title, styles.leftTitle]}>Connectez-vous ici</Text>
     <View style={styles.InputContainer}>
       <TextInput
         style={styles.body}
@@ -47,13 +122,21 @@ const onPressFacebook=()=>{
       onPress={() => onSignInPressed()}>
       Se connecter
     </Button>
-    <Text style={styles.or}>OR</Text>
+    <Text style={styles.or}>OU</Text>
     <Button
       containerStyle={styles.facebookContainer}
       style={styles.facebookText}
       onPress={() => onPressFacebook()}>
       Se connecter via FaceBook.
     </Button>
+    
+    {/* <FlatList
+        data={data}
+        renderItem={({ item, index, separators }) => <Text item={item} > {item.email} </Text>}
+        keyExtractor={item => item._id}
+      /> */}
+    { response.message && <Text>{response.message}</Text> }
+    { response.error && <Text>erreur</Text> }
     
   </View>
   )
@@ -125,14 +208,6 @@ const styles = StyleSheet.create({
   facebookText: {
     color: AppStyles.color.white,
   },
-  googleContainer: {
-    width: 192,
-    height: 48,
-    marginTop: 30,
-  },
-  googleText: {
-    color: AppStyles.color.white,
-  },
 });
 
-export default SigninScreen
+export default SigninScreen;

@@ -1,22 +1,35 @@
+/* eslint-disable prettier/prettier */
 import { Text, View, StyleSheet } from 'react-native'
 import React, {useEffect, useState} from 'react';
 import Button from 'react-native-button';
 import {AppStyles} from '../../AppStyles';
 
-const WelcomeScreen = () => {
+const WelcomeScreen = ({ navigation }) => {
+  const  [disable, setDisable] = useState(false);
+  function onPressHandler(name){
+   setDisable(true);
+   navigation.push(name);
+   setTimeout(()=>{
+       setDisable(false);
+   },400);
+  }
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Bienvenu dans votre nouvelle application</Text>
+      <Text style={styles.title}>El Khatba vous souhaite la bienvenue</Text>
       <Button
         containerStyle={styles.loginContainer}
         style={styles.loginText}
-        /* onPress={() => navigation.navigate('Login')} */>
+        disabled={disable} 
+        onPress={() => onPressHandler("SignIn")}
+      >
         Se connecter
       </Button>
       <Button
         containerStyle={styles.signupContainer}
         style={styles.signupText}
-        /* onPress={() => navigation.navigate('Signup')} */>
+        disabled={disable} 
+        onPress={() => onPressHandler("SignUp")}
+      >
         Créer un compte
       </Button>
     </View>
@@ -71,4 +84,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WelcomeScreen
+export default WelcomeScreen;

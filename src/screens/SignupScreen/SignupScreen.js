@@ -1,21 +1,50 @@
-import { StyleSheet, Text, TextInput, View } from 'react-native'
+/* eslint-disable prettier/prettier */
+import { StyleSheet, Text, TextInput, View, Alert } from 'react-native'
 import React ,{useState} from 'react'
 import {AppStyles} from '../../AppStyles';
 import Button from 'react-native-button';
+import env from '../../../env';
 
-const SignupScreen = () => {
+const SignupScreen = ({ navigation }) => {
 
-    const [fullname, setFullname] = useState('');
+  const [fullname, setFullname] = useState('');
   const [pseudo, setPseudo] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [response, setResponse] = useState('');
 
   const onRegister = () => {
-    console.warn('register');
+    const data = { 
+      fullname: fullname,
+      email: email,
+      pseudo: pseudo,
+      password: password,
+    };
+
+    const options = {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data),
+    }
+  
+    fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/signup", options)
+      .then((res) =>  res.json())
+      .then((data) => {
+        setResponse(data);
+        if(response.error){
+          Alert.alert("vous n'êtes pas enregistré: " )
+        } else {
+          navigation.push("SignIn");
+        }
+      })
+      .catch((err) => Alert.alert("problem connecting to the server: " + err))
   }
   return (
     <View style={styles.container}>
-    <Text style={[styles.title, styles.leftTitle]}>Créer un nouveau compte</Text>
+    <Text style={[styles.title, styles.leftTitle]}>Créer votre nouveau compte</Text>
     <View style={styles.InputContainer}>
       <TextInput
         style={styles.body}
@@ -63,6 +92,10 @@ const SignupScreen = () => {
       onPress={() => onRegister()}>
       Créer un compte
     </Button>
+
+    { response.message && <Text>{response.message}</Text> }
+    { response.error && <Text>erreur</Text> }
+    
   </View>
   )
 }
