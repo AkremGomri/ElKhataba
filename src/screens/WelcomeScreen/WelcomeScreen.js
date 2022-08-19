@@ -2,8 +2,7 @@
 import { Text, View, StyleSheet } from 'react-native'
 import React, {useEffect, useState} from 'react';
 import Button from 'react-native-button';
-import {AppStyles} from '../../AppStyles';
-
+import { AppStyles } from '../../styles/generalStyles/AppStyles';
 const WelcomeScreen = ({ navigation }) => {
   const  [disable, setDisable] = useState(false);
   function onPressHandler(name){

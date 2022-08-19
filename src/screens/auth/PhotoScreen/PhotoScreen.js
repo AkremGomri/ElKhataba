@@ -5,14 +5,14 @@ import {
   Alert
 } from 'react-native'
 import React, { useState,useRef } from 'react';
-import ImagePicker from '../../components/common/ImagePicker2';
+import ImagePicker from '../../../components/common/ImagePicker2';
 //import * as ImagePicker from 'react-native-image-picker';
 //import { launchImageLibrary } from 'react-native-image-picker';
-import env from '../../../env';
+import env from '../../../../env';
 import Button from 'react-native-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { AppStyles } from '../../AppStyles';
-import ImageComponent from '../EditScreen/ImageComponent';
+import { AppStyles } from '../../../styles/generalStyles/AppStyles';
+import ImageComponent from '../../../components/image/ImageComponent';
 const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
 const PhotoScreen = ({ navigation }) => {
   const sheetRef = useRef(null);
@@ -87,7 +87,7 @@ const openSheet = () => {
     } else {
         return  <Image
           style={styles.detailPhoto}
-          source={require('../../../assets/images/woman.png')}
+          source={require('../../../../assets/images/woman.png')}
         />
      
     }

@@ -5,7 +5,7 @@ import {  ListItem } from 'react-native-elements';
 import { useEffect } from 'react';
 import Notifs from './../../components/Notifications';
 import env from '../../../env';
-import { getToken } from '../../services/asyncStorage';
+import { getToken } from '../../services/auth/asyncStorage';
 
 export default function Notification(props) {
 

@@ -6,7 +6,7 @@ import Button from 'react-native-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 //import DatePicker from '@react-native-community/datetimepicker';
-import { AppStyles } from '../../AppStyles';
+import { AppStyles } from '../../../styles/generalStyles/AppStyles';
 const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
 const BirthDateScreen = ({ navigation }) => {
     const [disable, setDisable] = useState(false);

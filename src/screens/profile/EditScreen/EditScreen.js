@@ -8,16 +8,16 @@ import {
 } from 'react-native';
 //import storage from '@react-native-firebase/storage';
 import RadioButtonRN from 'radio-buttons-react-native';
-import ImageComponent from './ImageComponent';
+import ImageComponent from '../../../components/image/ImageComponent';
 import Button from 'react-native-button';
 import React, { useState,useRef} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import SelectDropdown from 'react-native-select-dropdown';
 //import { Icon } from 'react-native-elements'
-import { AppStyles } from '../../AppStyles';
-import ImagePicker from '../../components/common/ImagePicker';
-import { getToken ,getData} from '../../services/asyncStorage';
-import env from '../../../env';
+import { AppStyles } from '../../../styles/generalStyles/AppStyles';
+import ImagePicker from '../../../components/common/ImagePicker';
+import { getToken ,getData} from '../../../services/auth/asyncStorage';
+import env from '../../../../env';
 
 const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
 const EditScreen = ({ navigation, route,}) => {
@@ -113,7 +113,7 @@ const  onDeleteImage=async()=> {
     } else {
         return  <Image
           style={styles.detailPhoto}
-          source={require('../../../assets/images/woman.png')}
+          source={require('../../../../assets/images/woman.png')}
         />
      
     }

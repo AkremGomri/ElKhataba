@@ -13,7 +13,7 @@ import Card from '../../components/Card/Card';
 import { createBottomTabNavigator, BottomTabBar } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from './../HomeScreen/';
-import SigninScreen from './../SigninScreen/SigninScreen';
+import SigninScreen from './../../screens/auth/SigninScreen/SigninScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import IconFeather from 'react-native-vector-icons/Feather';
@@ -23,9 +23,9 @@ import Notification from './../Notification/Notification';
 
 const { width, height } = Dimensions.get("window");
 const Tabs = createBottomTabNavigator();
-import { getToken } from '../../services/asyncStorage';
+import { getToken } from '../../services/auth/asyncStorage';
 import Notifications from '../../components/Notifications';
-import UserProfileScreen from './../UserProfileScreen/UserProfileScreen';
+import UserProfileScreen from './../../screens/profile/UserProfileScreen';
 
 const RecommandationScreen = () => {
 

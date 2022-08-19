@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
 import { StyleSheet, Text, TextInput, View, Alert } from 'react-native'
 import React ,{useState} from 'react'
-import {AppStyles} from '../../AppStyles';
+import { AppStyles } from '../../../styles/generalStyles/AppStyles';
 import Button from 'react-native-button';
-import env from '../../../env';
+import env from '../../../../env';
 
 const SignupScreen = ({ navigation }) => {
 

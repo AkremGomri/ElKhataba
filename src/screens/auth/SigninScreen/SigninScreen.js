@@ -9,11 +9,11 @@ import { View,
   Alert,
   FlatList,
   } from 'react-native';
-import AsyncStorage from "../../services/asyncStorage";
+import AsyncStorage from '../../../services/auth/asyncStorage';
 import Button from 'react-native-button';
 import { useState, useEffect } from 'react';
-import {AppStyles} from '../../AppStyles';
-import env from '../../../env';
+import { AppStyles } from '../../../styles/generalStyles/AppStyles';
+import env from '../../../../env';
 
 const SigninScreen = ({ navigation }) => {
 

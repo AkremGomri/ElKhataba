@@ -1,5 +1,5 @@
 import { Platform, StyleSheet, Dimensions } from "react-native";
-import { Configuration } from "./Configuration";
+import { Configuration } from "../Configuration";
 
 const { width, height } = Dimensions.get("window");
 const SCREEN_WIDTH = width < height ? width : height;
@@ -55,10 +55,10 @@ export const AppIcon = {
     height: 25
   },
   images: {
-    home: require("../assets/icons/home.png"),
-    defaultUser: require("../assets/icons/default_user.jpg"),
-    logout: require("../assets/icons/shutdown.png"),
-    menu: require("../assets/icons/menu.png")
+    home: require("../../../assets/icons/home.png"),
+    defaultUser: require("../../../assets/icons/default_user.jpg"),
+    logout: require("../../../assets/icons/shutdown.png"),
+    menu: require("../../../assets/icons/menu.png")
   }
 };
 

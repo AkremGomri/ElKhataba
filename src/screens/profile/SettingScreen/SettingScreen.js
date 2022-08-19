@@ -4,9 +4,9 @@ import { Text, StyleSheet, ImageBackground,TextInput,
 import React ,{useState} from 'react'
 import Icon from 'react-native-fontawesome';
 import Button from 'react-native-button';
-import { AppStyles } from '../../AppStyles';
-import { getToken ,getData} from '../../services/asyncStorage';
-import env from '../../../env';
+import { AppStyles } from '../../../styles/generalStyles/AppStyles';
+import { getToken ,getData} from '../../../services/auth/asyncStorage';
+import env from '../../../../env';
 
 const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
 const SettingScreen = ({ navigation }) => {

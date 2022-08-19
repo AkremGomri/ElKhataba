@@ -4,10 +4,10 @@ import { View, Text, StyleSheet,
 import React, { useState,useEffect } from 'react'
 import * as ImagePicker from "react-native-image-picker"
 import Icon from 'react-native-vector-icons/FontAwesome';
-import ImageComponent from '../EditScreen/ImageComponent';
-import { AppStyles } from '../../AppStyles';
-import { getToken ,getData} from '../../services/asyncStorage';
-import env from '../../../env';
+import ImageComponent from '../../../components/image/ImageComponent';
+import { AppStyles } from '../../../styles/generalStyles/AppStyles';
+import { getToken ,getData} from '../../../services/auth/asyncStorage';
+import env from '../../../../env';
 const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
 const UserProfileScreen =  ({ navigation }) => {
     const ICON_FONT = "tinderclone";
@@ -78,7 +78,8 @@ const UserProfileScreen =  ({ navigation }) => {
         } else {
             return  <Image
               style={styles.detailPhoto}
-              source={require('../../../assets/images/woman.png')}
+              source={require('../../../../assets/images/woman.png')}
+              
             />
          
         }
