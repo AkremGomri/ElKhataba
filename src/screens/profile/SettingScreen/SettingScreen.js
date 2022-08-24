@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Text, StyleSheet, ImageBackground,TextInput,
+import { Text, ImageBackground,TextInput,
   View,SafeAreaView,Alert,AsyncStorage} from 'react-native'
 import React ,{useState} from 'react'
 import Icon from 'react-native-fontawesome';
@@ -7,6 +7,7 @@ import Button from 'react-native-button';
 import { AppStyles } from '../../../styles/generalStyles/AppStyles';
 import { getToken ,getData} from '../../../services/auth/asyncStorage';
 import env from '../../../../env';
+import styles from '../styles'
 
 const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
 const SettingScreen = ({ navigation }) => {
@@ -90,71 +91,5 @@ fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+ "/password-reset/"+ userId, options
   )
 }
 
-const styles = StyleSheet.create({
-  mainButtoncontainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop:45,
-},
-  container: {
-      flex: 1,
-      alignItems: "center",
 
-  },
-  scrollView: {
-      marginHorizontal: 20,
-    },
-  image: {
-      flex: 1,
-      justifyContent: "center"
-  },
-  topTitle: {
-      marginTop: 10,
-      marginBottom: 50,
-      fontSize: 30,
-      fontStyle: "italic",
-      fontWeight: 'bold',
-      color: 'black',
-      placement: "top",
-      textAlign: "center",
-  },
-  title: {
-      fontSize: 30,
-      fontWeight: 'bold',
-      color: AppStyles.color.tint,
-      marginTop: 20,
-      marginBottom: 30,
-  },
-  leftTitle: {
-      alignSelf: 'stretch',
-      textAlign: 'left',
-      marginLeft: 20,
-  },
-  Title: {
-      alignSelf: 'stretch',
-      textAlign: 'center',
-  },
-  loginText: {
-      color: AppStyles.color.white,
-  },
-  buttonContainer: {
-    width: 120,
-    flex: 1,
-    backgroundColor: AppStyles.color.tint,
-    borderRadius: AppStyles.borderRadius.main,
-    padding: 10,
-    marginLeft:20,
-    marginTop: 10,
-    marginBottom: 20,
-},
-  placeholder: {
-      color: 'red',
-  },
-  default: {
-    marginBottom:40,
-  },
-
-});
 export default SettingScreen;

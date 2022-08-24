@@ -6,6 +6,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { AppStyles } from '../../../styles/generalStyles/AppStyles';
 import SelectDropdown from 'react-native-select-dropdown';
 import env from '../../../../env';
+import { getToken ,getData} from '../../../services/auth/asyncStorage';
+import styles from '../styles';
 
 const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
 const HoroscopeScreen = ({ navigation }) => {
@@ -15,33 +17,22 @@ const HoroscopeScreen = ({ navigation }) => {
   
    async function onPressHandler(name){
     setDisable(true);
-    const getToken=async () =>{
-        try {
-          let userData = await AsyncStorage.getItem("userData");
-          let obj = JSON.parse(userData);
-          console.log("hetha el obj");
-          console.log(obj);
-          return obj;
-        } catch (error) {
-          console.log("Something went wrong", error);
-        }
-      }
 
     const data = {
         horoscope: horoscope,
       };
-      const obj1 = await getToken();
+      const token = await getToken();
     const options = {
         method: "PUT",
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + JSON.parse(obj1).token,
+          'Authorization': 'Bearer ' + token,
         },
         body: JSON.stringify(data),
       }
-
-      fetch(env.BACKEND_SERVER_URL + "/ques/"+JSON.parse(obj1).userId, options)
+      const userId= (await getData("userId")).value;
+      fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/ques/"+userId, options)
       .then((res) => {
         if (horoscope){
             navigation.push(name);
@@ -92,57 +83,5 @@ const HoroscopeScreen = ({ navigation }) => {
         </ImageBackground>
     )
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "center",
-    },
-    image: {
-        flex: 1,
-        justifyContent: "center"
-    },
-    topTitle: {
-        marginTop: 10,
-        marginBottom: 50,
-        fontSize: 30,
-        fontStyle: "italic",
-        fontWeight: 'bold',
-        color: 'black',
-        placement: "top",
-
-    },
-    title: {
-        fontSize: 30,
-        fontWeight: 'bold',
-        color: AppStyles.color.tint,
-        marginTop: 100,
-        marginBottom: 50,
-    },
-    leftTitle: {
-        alignSelf: 'stretch',
-        textAlign: 'left',
-        marginLeft: 20,
-    },
-    loginText: {
-        color: AppStyles.color.white,
-    },
-    placeholder: {
-        color: 'red',
-    },
-    body: {
-        height: 42,
-        paddingLeft: 20,
-        paddingRight: 20,
-        color: AppStyles.color.text,
-    },
-    suivantContainer: {
-        width: 100,
-        borderRadius: AppStyles.borderRadius.main,
-        padding: 10,
-        marginTop: 100,
-        marginLeft:200,
-    },
-});
 
 export default HoroscopeScreen;

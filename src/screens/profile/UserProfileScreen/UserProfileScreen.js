@@ -1,13 +1,14 @@
-import { View, Text, StyleSheet,
+import { View, Text, 
      ImageBackground, 
      Alert,Image,AsyncStorage  } from 'react-native'
 import React, { useState,useEffect } from 'react'
 import * as ImagePicker from "react-native-image-picker"
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ImageComponent from '../../../components/image/ImageComponent';
-import { AppStyles } from '../../../styles/generalStyles/AppStyles';
 import { getToken ,getData} from '../../../services/auth/asyncStorage';
 import env from '../../../../env';
+import styles from '../styles'
+
 const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
 const UserProfileScreen =  ({ navigation }) => {
     const ICON_FONT = "tinderclone";
@@ -155,70 +156,5 @@ const UserProfileScreen =  ({ navigation }) => {
     )
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "center",
-    },
-    container2: {
-        paddingTop: 75,
-        marginHorizontal: 10,
-        flexDirection: "row",
-        justifyContent: "space-between",
-         alignItems: "center"
-    },
-    image: {
-        flex: 1,
-        justifyContent: "center"
-    },
-    imageProf: {
-        flex: 1,
-        justifyContent: "center",
-    },
-    title: {
-        fontSize: 30,
-        fontWeight: 'bold',
-        color: 'black',
-        marginTop: 20,
-        marginBottom: 30,
-    },
-    Title: {
-        alignSelf: 'stretch',
-        textAlign: 'center',
-    },
-    loginText: {
-        color: AppStyles.color.white,
-    },
-    detailPhoto :{
-        justifyContent: "center",
-        height: 300, width: '90%',
-       resizeMode: 'cover',borderRadius: 100
-    },
-    placeholder: {
-        color: 'red',
-    },
-    body: {
-        height: 42,
-        paddingLeft: 20,
-        paddingRight: 20,
-        color: AppStyles.color.text,
-    },
-    buttonContainer: {
-        width: 100,
-        borderRadius: AppStyles.borderRadius.main,
-        padding: 10,
-        marginTop: 50,
-        marginLeft: 200,
-        alignItems: 'center'
-    },
-    buttonText: {
-        fontSize: 15,
-        fontWeight: 'bold',
-        marginTop: 10,
-        marginBottom: 100,
-        marginRight: -50,
-        color: 'grey',
-    },
-});
 
 export default UserProfileScreen

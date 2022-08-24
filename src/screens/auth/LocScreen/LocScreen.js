@@ -4,6 +4,10 @@ import React, { useState } from 'react'
 import Button from 'react-native-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { AppStyles } from '../../../styles/generalStyles/AppStyles';
+import env from '../../../../env';
+import { getToken ,getData} from '../../../services/auth/asyncStorage';
+import styles from '../styles';
+
 const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
 const LocScreen = ({ navigation }) => {
     const [city, setCity] = useState('');
@@ -13,29 +17,19 @@ const LocScreen = ({ navigation }) => {
     const data = { 
         city: city,
       };
-    const getToken=async () =>{
-        try {
-          let userData = await AsyncStorage.getItem("userData");
-          let obj = JSON.parse(userData);
-          console.log("hetha el obj");
-          console.log(obj);
-          return obj;
-        } catch (error) {
-          console.log("Something went wrong", error);
-        }
-      }
-      const obj1=await getToken();
+  
+      const token=await getToken();
     const options = {
         method: "PUT",
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + JSON.parse(obj1).token,
+          'Authorization': 'Bearer ' + token,
         },
         body: JSON.stringify(data),
       }
-     
-      fetch("http://192.168.1.17:8800/ques/"+JSON.parse(obj1).userId, options)
+      const userId= (await getData("userId")).value;
+      fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/ques/"+userId, options)
       .then((res) => {
         if (city){
           navigation.push(name);
@@ -76,65 +70,5 @@ const LocScreen = ({ navigation }) => {
     )
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "center",
-    },
-    image: {
-        flex: 1,
-        justifyContent: "center"
-    },
-    topTitle: {
-        marginTop: 10,
-        marginBottom: 50,
-        fontSize: 30,
-        fontStyle: "italic",
-        fontWeight: 'bold',
-        color: 'black',
-        placement: "top"
-
-    },
-    title: {
-        fontSize: 30,
-        fontWeight: 'bold',
-        color: AppStyles.color.tint,
-        marginTop: 100,
-        marginBottom: 50,
-    },
-    leftTitle: {
-        alignSelf: 'stretch',
-        textAlign: 'left',
-        marginLeft: 20,
-    },
-    loginText: {
-        color: AppStyles.color.white,
-    },
-    placeholder: {
-        color: 'red',
-    },
-    body: {
-        fontSize:20,
-        height: 40,
-        paddingLeft: 20,
-        paddingRight: 20,
-        color: AppStyles.color.text,
-    },
-    InputContainer: {
-        width: AppStyles.textInputWidth.main,
-        marginTop: 30,
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: AppStyles.color.grey,
-        borderRadius: AppStyles.borderRadius.main,
-      },
-      suivantContainer: {
-        width: 100,
-        borderRadius: AppStyles.borderRadius.main,
-        padding: 10,
-        marginTop: 30,
-        marginLeft: 200,
-    },
-});
 
 export default LocScreen;
