@@ -8,13 +8,19 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       marginBottom: 150,
     },
+    image: {
+      flex: 1,
+      justifyContent: "center",
+      width: '100%', height: '100%'
+
+  },
     logo: {
       width: 200,
       height: 200,
     },
     title: {
       fontSize: AppStyles.fontSize.title,
-      fontWeight: 'bold',
+      fontFamily: AppStyles.fontFamily.fontFam,
       color: AppStyles.color.tint,
       marginTop: 20,
       textAlign: 'center',
@@ -31,6 +37,7 @@ const styles = StyleSheet.create({
     },
     loginText: {
       color: AppStyles.color.white,
+      fontFamily: AppStyles.fontFamily.fontFam,
     },
     signupContainer: {
       width: AppStyles.buttonWidth.main,
@@ -43,6 +50,7 @@ const styles = StyleSheet.create({
     },
     signupText: {
       color: AppStyles.color.tint,
+      fontFamily: AppStyles.fontFamily.fontFam,
     },
     spinner: {
       marginTop: 200,

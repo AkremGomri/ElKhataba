@@ -7,8 +7,8 @@ import { AppStyles } from '../../../styles/generalStyles/AppStyles';
 import env from '../../../../env';
 import { getToken ,getData} from '../../../services/auth/asyncStorage';
 import styles from '../styles';
+import { image } from '../../../../assets/images';
 
-const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
 const LocScreen = ({ navigation }) => {
     const [city, setCity] = useState('');
     const  [disable, setDisable] = useState(false);

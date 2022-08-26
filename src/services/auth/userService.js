@@ -1,6 +1,8 @@
 
 import { getData} from './asyncStorage';
 import env from '../../../env';
+import {  Alert
+} from 'react-native'
 
 export const getUser = async () => {
     const options = {
@@ -15,7 +17,7 @@ export const getUser = async () => {
         .then(response => response.json())
         .then(data => {
             console.log(data);
-            return data;
+            return   JSON.stringify(data);
 
 
         })

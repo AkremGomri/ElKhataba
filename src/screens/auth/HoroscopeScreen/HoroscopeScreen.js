@@ -8,8 +8,8 @@ import SelectDropdown from 'react-native-select-dropdown';
 import env from '../../../../env';
 import { getToken ,getData} from '../../../services/auth/asyncStorage';
 import styles from '../styles';
+import { image } from '../../../../assets/images';
 
-const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
 const HoroscopeScreen = ({ navigation }) => {
     const  [disable, setDisable] = useState(false);
     const horoscopes = ["Bélier", "Taureau", "Gémeaux", "Cancer", "Lion", "Vierge", "Balance", "Scorpion", "Sagittaire", "Capricorne", "Verseau", "Poissons"]
@@ -53,7 +53,7 @@ const HoroscopeScreen = ({ navigation }) => {
 
                 <Text style={ styles.topTitle } >Inscrivez-vous gratuitement</Text>
                 <Text style={ [styles.title, styles.leftTitle] }>Votre Horoscope</Text>
-                <SelectDropdown
+            <SelectDropdown 
                 value={horoscope}
                     data={ horoscopes }
                     onSelect={ (selectedItem, index) => {
@@ -71,6 +71,8 @@ const HoroscopeScreen = ({ navigation }) => {
                         return item
                     } }
                 />
+      
+                
                 <Button
                     containerStyle={ styles.suivantContainer }
                     onPress={() => onPressHandler("Gender")}

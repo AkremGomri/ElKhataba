@@ -13,8 +13,7 @@ import SelectDropdown from 'react-native-select-dropdown';
 import { getToken ,getData} from '../../../services/auth/asyncStorage';
 import env from '../../../../env';
 import styles from '../styles';
-
-const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
+import { image } from '../../../../assets/images';
 const GenderScreen = ({ navigation }) => {
     const  [disable, setDisable] = useState(false);
     const [gender, setGender] = useState('');

@@ -12,8 +12,9 @@ const styles = StyleSheet.create({
       marginBottom: 10,
     },
     title: {
+      fontFamily: AppStyles.fontFamily.fontFam,
       fontSize: AppStyles.fontSize.title,
-      fontWeight: 'bold',
+      //fontWeight: 'bold',
       color: AppStyles.color.tint,
       marginTop: 20,
       marginBottom: 50,
@@ -39,6 +40,7 @@ const styles = StyleSheet.create({
     },
     loginText: {
       color: AppStyles.color.white,
+      fontFamily: AppStyles.fontFamily.fontFam,
     },
     placeholder: {
       color: 'red',
@@ -54,43 +56,44 @@ const styles = StyleSheet.create({
      
     body: {
         fontSize:20,
-        height: 40,
-        paddingLeft: 20,
-        paddingRight: 20,
+        height: 50,
+        paddingLeft: 10,
+        paddingRight: 10,
         color: AppStyles.color.text,
+        fontFamily: AppStyles.fontFamily.fontFam,
     },
     facebookContainer: {
-      width: 192,
-      backgroundColor: AppStyles.color.facebook,
-      borderRadius: AppStyles.borderRadius.main,
-      padding: 10,
-      marginTop: 30,
+      width: '15%',
+      height :'8%',
     },
-    facebookText: {
-      color: AppStyles.color.white,
-    },
+/*  
+    googleContainer: {
+      width: '20%',
+      height :'10%',
+      float:'right',
+     
+    }, */
     image: {
         flex: 1,
         justifyContent: "center",
-        backgroundSize: "cover",
+        width: '100%', height: '100%'
 
     },
     topTitle: {
         marginTop: 10,
         marginBottom: 50,
         fontSize: 30,
-        fontStyle: "italic",
-        fontWeight: 'bold',
-        color: 'black',
-        placement: "top"
+        color: AppStyles.color.title,
+        placement: "top",
+        fontFamily: AppStyles.fontFamily.fontFam,
 
     },
       suivantContainer: {
-        width: 100,
+        width:90,
         borderRadius: AppStyles.borderRadius.main,
-        padding: 10,
-        marginTop: 30,
-        marginLeft: 200,
+        padding:0,
+        marginTop: 10,
+        marginLeft: 300,
     },
     datePickerStyle: {
         width: 230,
@@ -109,13 +112,25 @@ const styles = StyleSheet.create({
       buttonText: {
     
         textAlign: 'center',
-    
         fontSize: 15,
-        fontWeight: 'bold',
-        color: 'black'
+        color: 'black',
+        fontFamily: AppStyles.fontFamily.fontFam,
     
       },
-      
+      signupContainer: {
+        width: AppStyles.buttonWidth.main,
+        backgroundColor: AppStyles.color.white,
+        borderRadius: AppStyles.borderRadius.main,
+        padding: 8,
+        borderWidth: 1,
+        borderColor: AppStyles.color.tint,
+        marginTop: 15,
+      },
+      signupText: {
+        color: AppStyles.color.tint,
+        fontFamily: AppStyles.fontFamily.fontFam,
+        textAlign:'center'
+      },
       images: {
         width: 150,
         height: 150,
@@ -142,6 +157,26 @@ const styles = StyleSheet.create({
     
     marginTop: 10,
 
+  },
+  buttonStyle: {
+    width: '100%',
+    padding: 20,
+    marginTop: 5,
+    height: 40,
+    paddingLeft: 10,
+    paddingRight: 10,
+    color: '#666666',
+    borderBottomColor: '#fff',
+    borderWidth: 1,
+    backgroundColor: '#fff',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.18,
+    shadowRadius: 2.62,
+    elevation: 4,
   },
   });
   export default styles;

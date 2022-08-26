@@ -1,42 +1,65 @@
 /* eslint-disable prettier/prettier */
 import {
   View, Text, StyleSheet, ImageBackground, Image,
-  ImagePickerIOS, AsyncStorage,TouchableOpacity,
+  ImagePickerIOS, AsyncStorage, TouchableOpacity,
   Alert
 } from 'react-native'
-import React, { useState,useRef } from 'react';
+import React, { useState, useRef ,useEffect} from 'react';
 import ImagePicker from '../../../components/common/ImagePicker2';
 //import * as ImagePicker from 'react-native-image-picker';
 //import { launchImageLibrary } from 'react-native-image-picker';
 import env from '../../../../env';
-import { getToken ,getData} from '../../../services/auth/asyncStorage';
+import { getToken, getData } from '../../../services/auth/asyncStorage';
 import Button from 'react-native-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ImageComponent from '../../../components/image/ImageComponent';
 import styles from '../styles';
+import { image ,DefaultMan,DefaultWoman} from '../../../../assets/images';
 
-const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
 const PhotoScreen = ({ navigation }) => {
   const sheetRef = useRef(null);
   const [localFile, setLocalFile] = useState(null);
   const [uploadSucceeded, setUploadSucceeded] = useState(false);
   const [disable, setDisable] = useState(false);
   const [Photo, setPhoto] = useState('');
-  
+  const [user, setUser] = useState('');
+  useEffect(() => {
+      getUser();
+    }, []);
+ 
+    async function getUser() {
+    const options = {
+      method: "GET",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    }
+    const userId= (await getData("userId")).value;
+    fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+'/'+userId, options)
+        .then(response =>response.json())
+           .then(data =>{
+              setUser(data);
+              console.log(user);
+               
+  })
+        .catch((err) => Alert.alert("problem connecting to the server: " + err))
+
+    }
   const onFileSelected = (image) => {
-    console.log("c'est l'image choisie" ,image);
+    console.log("c'est l'image choisie", image);
     closeSheet();
     setLocalFile(image);
     setPhoto(image["path"]);
     console.log(Photo);
-    setUploadSucceeded(true);    
+    setUploadSucceeded(true);
   };
-const closeSheet = () => {
+  const closeSheet = () => {
     if (sheetRef.current) {
       sheetRef.current.close();
     }
   };
-const openSheet = () => {
+  const openSheet = () => {
     if (sheetRef.current) {
       sheetRef.current.open();
     }
@@ -46,7 +69,7 @@ const openSheet = () => {
     const data1 = {
       Photo: Photo
     };
-    
+
     const token = await getToken();
     const options = {
       method: "PUT",
@@ -57,8 +80,8 @@ const openSheet = () => {
       },
       body: JSON.stringify(data1),
     }
-    const userId= (await getData("userId")).value;
-    fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/ques/" + userId, options)
+    const userId = (await getData("userId")).value;
+    fetch(env.BACKEND_SERVER_URL + ":" + env.PORT + "/ques/" + userId, options)
       .then((res) => {
         console.log("hethi el reponse", res);
         navigation.push(name);
@@ -69,44 +92,42 @@ const openSheet = () => {
     }, 400);
   }
 
-  
 
-  const renderFile=()=> {
-    if (Photo!="") {
+
+  const renderFile = () => {
+    if (Photo != "") {
       return <ImageComponent
-        src={Photo} 
+        src={Photo}
       />
     } else {
-        return  <Image
-          style={styles.detailPhoto}
-          source={require('../../../../assets/images/woman.png')}
-        />
-     
+      return  ((user.gender==="femme" ) ? <Image source={DefaultWoman} style={styles.detailPhoto}/> :
+      <Image source={DefaultMan} style={styles.detailPhoto}/>    
+       )
+
     }
   }
   return (
-    <ImageBackground source={ image } resizeMode="cover" style={ styles.image }>
+    <ImageBackground source={image} resizeMode="cover" style={styles.image}>
 
-      <View style={ styles.container }>
-        <Text style={ styles.topTitle } >Inscrivez-vous gratuitement</Text>
-        <Text style={ [styles.title, styles.leftTitle] }>Votre Photo</Text>
-       
+      <View style={styles.container}>
+        <Text style={styles.topTitle} >Inscrivez-vous gratuitement</Text>
+        <Text style={[styles.title, styles.leftTitle]}>Votre Photo</Text>
+
         {renderFile()}
-          <TouchableOpacity onPress={()=> openSheet()} style={styles.button}  >
+        <TouchableOpacity onPress={() => openSheet()} style={[styles.signupContainer, { marginTop: 50 }]}  >
 
-              <Text style={styles.buttonText}>Select File</Text>
-
-          </TouchableOpacity>
+          <Text style={styles.signupText} >Select File</Text>
+        </TouchableOpacity>
         <Button
-          containerStyle={ styles.suivantContainer }
-          onPress={ () => onPressHandler("Recommandation") }>
+          containerStyle={styles.suivantContainer}
+          onPress={() => onPressHandler("Recommandation")}>
           <Icon name="forward"
-            size={ 70 }
+            size={70}
           />
         </Button>
-        <ImagePicker onFileSelected={onFileSelected}  ref={sheetRef} />
+        <ImagePicker onFileSelected={onFileSelected} ref={sheetRef} />
       </View>
-      
+
     </ImageBackground>
   )
 };

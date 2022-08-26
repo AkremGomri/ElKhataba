@@ -7,6 +7,7 @@ import {
     Alert, AsyncStorage,TouchableOpacity
 } from 'react-native';
 //import storage from '@react-native-firebase/storage';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import RadioButtonRN from 'radio-buttons-react-native';
 import ImageComponent from '../../../components/image/ImageComponent';
 import Button from 'react-native-button';
@@ -19,12 +20,13 @@ import ImagePicker from '../../../components/common/ImagePicker';
 import { getToken ,getData} from '../../../services/auth/asyncStorage';
 import env from '../../../../env';
 import styles from '../styles'
+import { image } from '../../../../assets/images';
 
-const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
 const EditScreen = ({ navigation, route,}) => {
     const user = route.params.user;
     const sheetRef = useRef(null);
     const [localFile, setLocalFile] = useState(null);
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [uploadSucceeded, setUploadSucceeded] = useState(false);
     const horoscopes = ["Bélier", "Taureau", "Gémeaux", "Cancer", "Lion", "Vierge", "Balance", "Scorpion", "Sagittaire", "Capricorne", "Verseau", "Poisson"]
     const [bio, setBio] = useState(user.bio);
@@ -119,6 +121,20 @@ const  onDeleteImage=async()=> {
      
     }
   }
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+};
+
+const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+};
+
+const handleConfirm = (date) => {
+    console.warn("A date has been picked: ", date);
+    setDate(date);
+    hideDatePicker();
+};
+
     return (
 
         <ImageBackground source={ image } resizeMode="cover" style={ styles.image }>
@@ -145,14 +161,25 @@ const  onDeleteImage=async()=> {
                         underlineColorAndroid="transparent"
                     />
                     <Text style={ [styles.title, styles.leftTitle] }>date de naissance</Text>
-                    <TextInput
-                        style={ styles.body }
+                   {/*  <TextInput
+                        
                         placeholder={ date }
                         onChangeText={ setDate }
                         value={ date }
                         placeholderTextColor={ AppStyles.color.grey }
                         underlineColorAndroid="transparent"
-                    />
+                    /> */}
+                   
+                      <Button containerStyle={styles.signupContainer}
+        style={styles.signupText} onPress={ showDatePicker } >
+                        choisir une date
+                    </Button>
+                    <DateTimePickerModal
+                        isVisible={ isDatePickerVisible }
+                        mode="date"
+                        onConfirm={ handleConfirm }
+                        onCancel={ hideDatePicker }
+                    /> 
                     <Text style={ [styles.title, styles.leftTitle] }>Horoscope</Text>
                      <SelectDropdown
                 value={horoscope}
@@ -182,7 +209,6 @@ const  onDeleteImage=async()=> {
                     <RadioButtonRN 
                     data={ data }
                     value={gender}
-                    initial={1}
                     selectedBtn={ (e) => {
                     console.log(e.label);
                     setGender(e.label);

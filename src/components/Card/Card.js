@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { View, Dimensions, StyleSheet,
         Image, TouchableHighlight,TouchableOpacity,
         Alert, Text  } from 'react-native';
-
+import {DefaultMan,DefaultWoman} from '../../../assets/images/index';;
 import Icon from 'react-native-vector-icons/AntDesign';
 // import { Icon } from 'react-native-elements';
 // import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -60,7 +60,9 @@ const Card = (props) => {
   return (
     <View style={{width, height}}>
       {
-        props.source? <Image source={{ uri: props.source}}  style = {styles.image} /> : <Image source={require("../../../assets/images/user.png")} style = {styles.image}/>
+        props.source? <Image source={{ uri: props.source}}  style = {styles.image} /> : 
+       (props.user.gender ==="femme" ) ? <Image source={DefaultWoman} style = {styles.image}/> :
+       <Image source={DefaultMan} style = {styles.image}/>
       }
       <View style={styles.footer}>
             <TouchableOpacity  onPress={() => closeEventHandler()} { ...touchCLoseProps}  underlayColor="black">

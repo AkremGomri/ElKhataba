@@ -4,12 +4,13 @@ import { Configuration } from "../Configuration";
 const { width, height } = Dimensions.get("window");
 const SCREEN_WIDTH = width < height ? width : height;
 const numColumns = 2;
-
+//const font=require("../../../assets/fonts/Pacifico-Regular.ttf");
 export const AppStyles = {
   color: {
     main: "#5ea23a",
     text: "#696969",
-    title: "#464646",
+    title: "#515151",
+    icon:"#AACDFA",
     subtitle: "#545454",
     categoryTitle: "#161616",
     tint: "#F0A711",
@@ -19,7 +20,8 @@ export const AppStyles = {
     location: "#a9a9a9",
     white: "white",
     facebook: "#4267b2",
-    grey: "grey",
+    google:"#EA4335",
+    grey: 	"#515151",
     greenBlue: "#00aea8",
     placeholder: "#a0a0a0",
     background: "#f2f2f2",
@@ -30,6 +32,9 @@ export const AppStyles = {
     content: 20,
     normal: 16
   },
+  fontFamily : {
+  fontFam :"Pacifico-Regular",
+  }, 
   buttonWidth: {
     main: "70%"
   },

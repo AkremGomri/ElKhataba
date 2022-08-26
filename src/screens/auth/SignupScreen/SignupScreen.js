@@ -1,11 +1,11 @@
 /* eslint-disable prettier/prettier */
-import { StyleSheet, Text, TextInput, View, Alert } from 'react-native'
+import {  ImageBackground, Text, TextInput, View, Alert } from 'react-native'
 import React ,{useState} from 'react'
 import { AppStyles } from '../../../styles/generalStyles/AppStyles';
 import Button from 'react-native-button';
 import env from '../../../../env';
 import styles from '../styles';
-
+import { image } from '../../../../assets/images';
 
 const SignupScreen = ({ navigation }) => {
 
@@ -45,7 +45,8 @@ const SignupScreen = ({ navigation }) => {
       .catch((err) => Alert.alert("problem connecting to the server: " + err))
   }
   return (
-    <View style={styles.container}>
+    <ImageBackground source={ image } resizeMode="cover" style={ styles.image }>
+      <View style={styles.container}>
     <Text style={[styles.title, styles.leftTitle]}>Créer votre nouveau compte</Text>
     <View style={styles.InputContainer}>
       <TextInput
@@ -89,8 +90,8 @@ const SignupScreen = ({ navigation }) => {
       />
     </View>
     <Button
-      containerStyle={[styles.facebookContainer, {marginTop: 50}]}
-      style={styles.facebookText}
+      containerStyle={[styles.signupContainer, {marginTop: 50}]}
+        style={styles.signupText}
       onPress={() => onRegister()}>
       Créer un compte
     </Button>
@@ -99,6 +100,8 @@ const SignupScreen = ({ navigation }) => {
     { response.error && <Text>erreur</Text> }
     
   </View>
+    </ImageBackground>
+    
   )
 }
 export default SignupScreen

@@ -2,7 +2,7 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import { View,
-   Text,
+   Text,TouchableOpacity,
   Image,
   TextInput,
   Alert,ImageBackground,
@@ -14,7 +14,7 @@ import { useState, useEffect } from 'react';
 import { AppStyles } from '../../../styles/generalStyles/AppStyles';
 import env from '../../../../env';
 import styles from '../styles';
-import { image } from '../../../../assets/images/index';
+import { image, logoFb } from '../../../../assets/images/index';
 
 const SigninScreen = ({ navigation }) => {
 
@@ -125,12 +125,15 @@ const onPressFacebook=()=>{
       Se connecter
     </Button>
     <Text style={styles.or}>OU</Text>
-    <Button
+    
+          <Image  onPress={()=>onPressFacebook()} source={logoFb} style={styles.facebookContainer} />
+       
+   {/*  <Button
       containerStyle={styles.facebookContainer}
       style={styles.facebookText}
       onPress={() => onPressFacebook()}>
       Se connecter via FaceBook.
-    </Button>
+    </Button> */}
     
     {/* <FlatList
         data={data}

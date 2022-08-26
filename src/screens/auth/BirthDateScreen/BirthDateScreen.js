@@ -15,8 +15,32 @@ const BirthDateScreen = ({ navigation }) => {
     const [disable, setDisable] = useState(false);
     const [date, setDate] = useState('');
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-    
     const [user, setUser] = useState('');
+    useEffect(() => {
+        getUser();
+        user.date_of_birth ? navigation.push('Horoscope') : null;
+      }, []);
+   
+      async function getUser() {
+      const options = {
+        method: "GET",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }
+      const userId= (await getData("userId")).value;
+      fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+'/'+userId, options)
+          .then(response =>response.json())
+             .then(data =>{
+                setUser(data);
+                console.log(user);
+                 
+    })
+          .catch((err) => Alert.alert("problem connecting to the server: " + err))
+
+      }
+      
     /* useEffect(() => {
         
         const effect=async()=> {
@@ -82,7 +106,8 @@ const BirthDateScreen = ({ navigation }) => {
                     <Text style={ styles.topTitle } >Inscrivez-vous gratuitement</Text>
                     <Text style={ [styles.title, styles.leftTitle] }>Votre Date de naissance</Text>
     
-                    <Button onPress={ showDatePicker } >
+                    <Button containerStyle={[styles.signupContainer, {marginTop: 50}]}
+        style={styles.signupText} onPress={ showDatePicker } >
                         choisir une date
                     </Button>
                     <DateTimePickerModal

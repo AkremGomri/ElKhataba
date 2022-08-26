@@ -1,8 +1,9 @@
 /* eslint-disable prettier/prettier */
-import { Text, View } from 'react-native'
+import { Text, View,ImageBackground } from 'react-native'
 import React, {useEffect, useState} from 'react';
 import Button from 'react-native-button';
 import styles from './styles';
+import { image } from '../../../assets/images/index';
 
 const WelcomeScreen = ({ navigation }) => {
   const  [disable, setDisable] = useState(false);
@@ -14,7 +15,8 @@ const WelcomeScreen = ({ navigation }) => {
    },400);
   }
   return (
-    <View style={styles.container}>
+    <ImageBackground source={ image } resizeMode="cover" style={ styles.image }>
+ <View style={styles.container}>
       <Text style={styles.title}>El Khatba vous souhaite la bienvenue</Text>
       <Button
         containerStyle={styles.loginContainer}
@@ -33,6 +35,7 @@ const WelcomeScreen = ({ navigation }) => {
         Créer un compte
       </Button>
     </View>
+    </ImageBackground>
   );
 }
 

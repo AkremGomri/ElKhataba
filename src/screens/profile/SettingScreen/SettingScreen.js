@@ -8,8 +8,7 @@ import { AppStyles } from '../../../styles/generalStyles/AppStyles';
 import { getToken ,getData} from '../../../services/auth/asyncStorage';
 import env from '../../../../env';
 import styles from '../styles'
-
-const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
+import { image } from '../../../../assets/images';
 const SettingScreen = ({ navigation }) => {
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');

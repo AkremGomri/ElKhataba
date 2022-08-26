@@ -8,10 +8,11 @@ import ImageComponent from '../../../components/image/ImageComponent';
 import { getToken ,getData} from '../../../services/auth/asyncStorage';
 import env from '../../../../env';
 import styles from '../styles'
+import { image,DefaultMan,DefaultWoman } from '../../../../assets/images';
+import { AppStyles } from '../../../styles/generalStyles/AppStyles';
 
-const image = { uri: "https://img.freepik.com/vecteurs-libre/abstrait-blanc-dans-style-papier-3d_23-2148390818.jpg?w=2000" };
 const UserProfileScreen =  ({ navigation }) => {
-    const ICON_FONT = "tinderclone";
+   
     const [disable, setDisable] = useState(false);
     const [user, setUser] = useState('');
     useEffect(() => {
@@ -77,12 +78,11 @@ const UserProfileScreen =  ({ navigation }) => {
             src={user.Photo} 
           />
         } else {
-            return  <Image
-              style={styles.detailPhoto}
-              source={require('../../../../assets/images/woman.png')}
-              
-            />
-         
+            return  ((user.gender==="femme" ) ? <Image source={DefaultWoman} style={styles.detailPhoto}/> :
+            <Image source={DefaultMan} style={styles.detailPhoto}/>    
+             )
+            
+          
         }
       }
     return (
@@ -103,48 +103,23 @@ const UserProfileScreen =  ({ navigation }) => {
                 ></Image> */}
                 <View style={ styles.container2 } >
                     <View >
-                        <Text style={ {
-                            paddingLeft: 10
-                        } }>modifier</Text>
+                        <Text style={ styles.iconText}>modifier</Text>
                         <Icon name='edit'
-                            style={ {
-                                fontFamily: ICON_FONT,
-                                fontSize: 60,
-                                paddingLeft: 10,
-                                paddingRight: 40,
-                                color: "#ff6768"
-                            } }
+                            style={styles.iconModif}
                             onPress={ () => onPressHandler("Modifier Profil") }
                         />
                     </View>
                     <View>
-                        <Text style={ {
-                            paddingLeft: 20
-                        } }>paramètres</Text>
+                        <Text style={ styles.iconText}>paramètres</Text>
                         <Icon name='gear'
-                            style={ {
-                                fontFamily: ICON_FONT,
-                                fontSize: 60,
-                                paddingLeft: 40,
-                                paddingRight: 40,
-                                color: "#ff6768",
-                                transform: [{ rotate: "90deg" }]
-                            } }
+                            style={  styles.iconParam}
                             onPress={ () => onPressHandler("Paramètres") }
                         />
                     </View>
                     <View>
-                        <Text style={ {
-                            paddingLeft: 20
-                        } }>ajouter media</Text>
+                        <Text style={styles.iconText }>ajouter media</Text>
                         <Icon name='camera'
-                            style={ {
-                                fontFamily: ICON_FONT,
-                                paddingLeft: 40,
-                                paddingRight:10,
-                                color: "#ff6768",
-                                fontSize: 60
-                            } }
+                            style={styles.iconMedia }
                             onPress={ () => handleChoosePhoto()}
                         />
 
