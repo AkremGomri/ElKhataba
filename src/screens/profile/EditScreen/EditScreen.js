@@ -20,7 +20,7 @@ import ImagePicker from '../../../components/common/ImagePicker';
 import { getToken ,getData} from '../../../services/auth/asyncStorage';
 import env from '../../../../env';
 import styles from '../styles'
-import { image } from '../../../../assets/images';
+import { image,DefaultMan,DefaultWoman } from '../../../../assets/images';
 
 const EditScreen = ({ navigation, route,}) => {
     const user = route.params.user;
@@ -114,10 +114,9 @@ const  onDeleteImage=async()=> {
         src={Photo || localFile?.path} 
       />
     } else {
-        return  <Image
-          style={styles.detailPhoto}
-          source={require('../../../../assets/images/woman.png')}
-        />
+        return  ((user.gender==="femme" ) ? <Image source={DefaultWoman} style={styles.detailPhoto}/> :
+        <Image source={DefaultMan} style={styles.detailPhoto}/>    
+         )
      
     }
   }

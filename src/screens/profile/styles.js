@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     },
     iconText:{
             paddingLeft: 20,
-            color:AppStyles.color.grey,
+            color:'white',
             fontFamily: AppStyles.fontFamily.fontFam,
     },
     container: {
@@ -82,7 +82,8 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 30,
         fontFamily: AppStyles.fontFamily.fontFam,
-        color: AppStyles.color.tint,
+        color:'white',
+        // AppStyles.color.tint,
         marginTop: 10,
         marginBottom: 30,
     },

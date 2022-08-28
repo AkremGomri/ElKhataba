@@ -89,7 +89,7 @@ const UserProfileScreen =  ({ navigation }) => {
         <ImageBackground source={ image } resizeMode="cover" style={ styles.image }>
             <View style={ styles.container }>
             <Icon name='power-off'
-                style={{fontSize:30, alignSelf: 'flex-end',
+                style={{fontSize:20, alignSelf: 'flex-end',
                 marginTop:0}}
                 onPress={() => {
                   doUserLogOut();
