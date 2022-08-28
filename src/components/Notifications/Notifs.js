@@ -5,7 +5,7 @@ import { View, Text,
   TouchableHighlight, TouchableOpacity   } from 'react-native'
 import React from 'react'
 import { useEffect, useState } from 'react';
-import { getToken } from '../../services/asyncStorage';
+import { getToken } from '../../services/auth/asyncStorage';
 import styles from './styles'
 // import Icon from 'react-native-vector-icons/AntDesign';
 

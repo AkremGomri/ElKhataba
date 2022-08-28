@@ -4,7 +4,7 @@ import { View, Text, ScrollView,
   Dimensions, FlatList, Image, 
   StyleSheet, Alert, } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
-import { getToken } from '../../services/asyncStorage';
+import { getToken } from '../../services/auth/asyncStorage';
 import { useState, useEffect } from 'react';
 import useEffectFetch from '../../services/useEffectFetch';
 import env from '../../../env';
