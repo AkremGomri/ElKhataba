@@ -71,7 +71,7 @@ export default function Notifs(props) {
         }
       }
 
-      fetch(env.BACKEND_SERVER_URL +':'+ env.PORT+'/notificationsRead/' + props.notif._id, options )
+      fetch(env.BACKEND_SERVER_URL +'/notificationsRead/' + props.notif._id, options )
         .then(res => res.json())
         .then(data => {
           console.warn('dataaaa: ',data)

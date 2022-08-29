@@ -31,7 +31,7 @@ const options = {
   },
   body: JSON.stringify(data),
 }
-fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+ "/password-reset/"+ userId, options)
+fetch(env.BACKEND_SERVER_URL + "/password-reset/"+ userId, options)
   .then((res) => navigation.push("Profile"))
   .catch((err) => err)
 }

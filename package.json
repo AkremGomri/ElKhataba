@@ -1,5 +1,5 @@
 {
-  "name": "ElKhataba_front",
+  "name": "ElKhatba",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -39,7 +39,8 @@
     "react-native-screens": "^3.14.0",
     "react-native-select-dropdown": "^2.0.3",
     "react-native-vector-icons": "^9.2.0",
-    "react-navigation": "^4.4.4"
+    "react-navigation": "^4.4.4",
+    "socket.io-client": "^4.5.1"
   },
   "devDependencies": {
     "@babel/core": "7.18.6",

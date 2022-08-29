@@ -32,7 +32,7 @@ const HoroscopeScreen = ({ navigation }) => {
         body: JSON.stringify(data),
       }
       const userId= (await getData("userId")).value;
-      fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/ques/"+userId, options)
+      fetch(env.BACKEND_SERVER_URL +"/ques/"+userId, options)
       .then((res) => {
         if (horoscope){
             navigation.push(name);

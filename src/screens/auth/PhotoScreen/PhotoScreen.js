@@ -36,7 +36,7 @@ const PhotoScreen = ({ navigation }) => {
       },
     }
     const userId= (await getData("userId")).value;
-    fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+'/'+userId, options)
+    fetch(env.BACKEND_SERVER_URL +'/'+userId, options)
         .then(response =>response.json())
            .then(data =>{
               setUser(data);

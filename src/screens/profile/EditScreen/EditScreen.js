@@ -85,7 +85,7 @@ const EditScreen = ({ navigation, route,}) => {
             body: JSON.stringify(data),
         }
         const userId= (await getData("userId")).value;
-        fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+'/ques/' +userId, options)
+        fetch(env.BACKEND_SERVER_URL +'/ques/' +userId, options)
             .then((res) => navigation.push("Profile"))
             .catch((err) => error)
     }
@@ -103,7 +103,7 @@ const  onDeleteImage=async()=> {
         body: JSON.stringify({Photo:""}),
     }
 
-    fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+'/ques/' +userId, options)
+    fetch(env.BACKEND_SERVER_URL +'/ques/' +userId, options)
         .then((res) => navigation.push("Profile"))
         .catch((err) => error)
 
