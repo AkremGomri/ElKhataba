@@ -30,7 +30,7 @@ const BirthDateScreen = ({ navigation }) => {
         },
       }
       const userId= (await getData("userId")).value;
-      fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+'/'+userId, options)
+      fetch(env.BACKEND_SERVER_URL +'/'+userId, options)
           .then(response =>response.json())
              .then(data =>{
                 setUser(data);
@@ -70,7 +70,7 @@ const BirthDateScreen = ({ navigation }) => {
             body: JSON.stringify(data),
           }
           const userId= (await getData("userId")).value;
-          fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/ques/"+userId, options)
+          fetch(env.BACKEND_SERVER_URL +"/ques/"+userId, options)
           .then((res) => {
             if (date){
                 navigation.push(name);

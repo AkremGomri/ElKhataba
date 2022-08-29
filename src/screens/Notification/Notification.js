@@ -26,7 +26,7 @@ export default function Notification(props) {
           }
         }
 
-        fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/notificationsSeen", options )
+        fetch(env.BACKEND_SERVER_URL +"/notificationsSeen", options )
           .then((res) => {
             if(!res.ok) Alert.alert("connection problem")
             else res.json()

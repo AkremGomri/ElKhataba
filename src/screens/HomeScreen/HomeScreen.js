@@ -24,7 +24,7 @@ const HomeScreen = () => {
   }
 
  
-  // const {data, isPending, error, setData} = useEffectFetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/recommanded", options );
+  // const {data, isPending, error, setData} = useEffectFetch(env.BACKEND_SERVER_URL +"/recommanded", options );
 
   useEffect(() => {
     async function fetchData (){
@@ -36,7 +36,7 @@ const HomeScreen = () => {
         }
       }
 
-      fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/recommanded", options )
+      fetch(env.BACKEND_SERVER_URL +"/recommanded", options )
         .then((res) => {
           console.warn("status : ",res.status);
           res.json()
@@ -58,7 +58,7 @@ const HomeScreen = () => {
     setUsersList(usersList.filter((item, index) => {
       return item._id != user._id;
     }));
-    const res = await fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/declineSuggestion/"+user._id, options );
+    const res = await fetch(env.BACKEND_SERVER_URL +"/declineSuggestion/"+user._id, options );
     console.warn("user._id: ", user._id);
     console.warn("removeItem's data 2: ", usersList);
   }
@@ -68,7 +68,7 @@ const HomeScreen = () => {
       ...options,
       method: 'POST',
     }
-    const res = await fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/like/"+user._id, options );
+    const res = await fetch(env.BACKEND_SERVER_URL +"/like/"+user._id, options );
   }
 
   async function unlikeClickHandler(user) {
@@ -76,7 +76,7 @@ const HomeScreen = () => {
       ...options,
       method: 'POST',
     }
-    const res = await fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/unlike/"+user._id, options );
+    const res = await fetch(env.BACKEND_SERVER_URL +"/unlike/"+user._id, options );
   }
 
   async function undislikeClickHandler(user) {
@@ -84,7 +84,7 @@ const HomeScreen = () => {
       ...options,
       method: 'POST',
     }
-    const res = await fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/undislike/"+user._id, options );
+    const res = await fetch(env.BACKEND_SERVER_URL +"/undislike/"+user._id, options );
   }
 
   return (

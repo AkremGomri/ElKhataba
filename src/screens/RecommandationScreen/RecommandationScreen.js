@@ -52,7 +52,7 @@ const RecommandationScreen = () => {
           'Authorization': 'Bearer ' + token,
         }
       }
-      fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/getMyNotifs", options )
+      fetch(env.BACKEND_SERVER_URL +"/getMyNotifs", options )
         .then((res) => {
           if(!res.ok){
             Alert.alert("connection problem");

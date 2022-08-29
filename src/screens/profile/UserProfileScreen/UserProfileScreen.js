@@ -28,7 +28,7 @@ const UserProfileScreen =  ({ navigation }) => {
         },
       }
       const userId= (await getData("userId")).value;
-      fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+'/'+userId, options)
+      fetch(env.BACKEND_SERVER_URL +'/'+userId, options)
           .then(response =>response.json())
              .then(data =>{
                 setUser(data);
@@ -64,7 +64,7 @@ const UserProfileScreen =  ({ navigation }) => {
             'Authorization': 'Bearer ' + token,
           },
         }
-        fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/logout", options)
+        fetch(env.BACKEND_SERVER_URL +"/logout", options)
             .then((res) =>{
               console.log(res.status);
               console.log('successfully loged out');
