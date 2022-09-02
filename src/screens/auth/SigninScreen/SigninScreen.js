@@ -53,7 +53,7 @@ if ( (!email) || (!password) ) {
 }
 else {
 
-  fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/login", options)
+  fetch(env.BACKEND_SERVER_URL +"/login", options)
     .then((res) =>  {
       if(res.status === 500){
         Alert.alert("alerte saisie","vérifier la connection s'il vous plait: ", [

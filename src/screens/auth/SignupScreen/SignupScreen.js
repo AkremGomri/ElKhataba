@@ -32,7 +32,7 @@ const SignupScreen = ({ navigation }) => {
       body: JSON.stringify(data),
     }
   
-    fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/signup", options)
+    fetch(env.BACKEND_SERVER_URL +"/signup", options)
       .then((res) =>  res.json())
       .then((data) => {
         setResponse(data);

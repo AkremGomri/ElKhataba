@@ -36,7 +36,7 @@ const [searchGender, setSearchGender] = useState('');
         body: JSON.stringify(data1),
       }
       const userId= (await getData("userId")).value;
-      fetch(env.BACKEND_SERVER_URL +":"+ env.PORT+"/ques/"+userId, options)
+      fetch(env.BACKEND_SERVER_URL +"/ques/"+userId, options)
       .then((res) => {
         if (gender && searchGender){
             navigation.push(name);
