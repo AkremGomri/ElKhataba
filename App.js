@@ -2,11 +2,10 @@
 // import at the very top of everything.
 import './ignoreWarnings';
 import React from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import {Text, Button, View, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {Link} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {Link} from 'react-router-dom';
 import SettingScreen from './src/screens/profile/SettingScreen';
 import EditScreen from './src/screens/profile/EditScreen';
 import UserProfileScreen from './src/screens/profile/UserProfileScreen';
@@ -19,18 +18,18 @@ import WelcomeScreen from './src/screens/WelcomeScreen/WelcomeScreen';
 import SigninScreen from './src/screens/auth/SigninScreen';
 import SignupScreen from './src/screens/auth/SignupScreen';
 import HomeScreen from './src/screens/HomeScreen/HomeScreen';
-// import { Text, Button, View, StyleSheet ,AsyncStorage} from "react-native";
 import RecommandationScreen from './src/screens/RecommandationScreen';
+import Chat from './src/screens/Chat/Chat';
+import Discussion from './src/screens/Chat/Discussion';
 import {options} from './options';
-import { AppStyles } from './src/styles/generalStyles/AppStyles';
 
 import type {Node} from 'react';
 
 const Stack = createNativeStackNavigator();
 
 const App: () => Node = ({navigation}) => {
+
   return (
-    //<LocScreen />
     <NavigationContainer style={styles.root}>
       <Stack.Navigator initialRouteName="WelcomeScreen">
         <Stack.Screen
@@ -69,6 +68,8 @@ const App: () => Node = ({navigation}) => {
           component={RecommandationScreen}
           options={{headerShown: false}}
         />
+        <Stack.Screen name="Chat"component={Chat} options={options} />
+        <Stack.Screen name="Discussion"component={Discussion} options={options} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -49,12 +49,13 @@ const data = {
     body: JSON.stringify(data),
   }
 if ( (!email) || (!password) ) {
-  return alert.Alert("L'un des champs n'est pas saisi.Veuillez trouvez votre compte pour se connecter.")
+  return Alert.alert("L'un des champs n'est pas saisi.Veuillez trouvez votre compte pour se connecter.")
 }
 else {
 
-  fetch(env.BACKEND_SERVER_URL +"/login", options)
+  fetch(env.BACKEND_SERVER_URL+"/login", options)
     .then((res) =>  {
+     
       if(res.status === 500){
         Alert.alert("alerte saisie","vérifier la connection s'il vous plait: ", [
           {
@@ -70,7 +71,7 @@ else {
           setResponse(data);
           console.warn("error: " + response.error);
           if(response.error){
-            return alert.Alert("vérifier l'email et le mot de passe: ", response.error);
+            return Alert.alert("vérifier l'email et le mot de passe: ", response.error);
           } else {
             /* safa */
             // console.log(data);
@@ -80,12 +81,12 @@ else {
             console.warn("data: ",data);
             AsyncStorage.storeToken(data.token);
             AsyncStorage.storeData("userId" ,data.userId);
-            return navigation.push("BirthDate");
+            return navigation.push("Recommandation");
           }
         })
       }
       })
-    .catch((err) => alert.Alert("problem connecting to the server: " + err))
+    .catch((err) => Alert.alert("problem connecting to the server: " + err))
 }
   
 
@@ -135,11 +136,6 @@ const onPressFacebook=()=>{
       Se connecter via FaceBook.
     </Button> */}
     
-    {/* <FlatList
-        data={data}
-        renderItem={({ item, index, separators }) => <Text item={item} > {item.email} </Text>}
-        keyExtractor={item => item._id}
-      /> */}
     { response.message && <Text>{response.message}</Text> }
     { response.error && <Text>erreur</Text> }
     

@@ -1,10 +1,14 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import { Text } from 'react-native';
+import { Text ,FlatList} from 'react-native';
 
 const OnConstruction = () => {
   return (
-    <Text>OnConstruction</Text>
+    <FlatList
+        data={props.notifs}
+        renderItem={({ item }) => ( <Notifs update={props.update} notif={item} /> )}
+        keyExtractor={notif => notif._id}
+        />
   )
 }
 

@@ -2,7 +2,7 @@
 import {
   View, Text, StyleSheet, ImageBackground, Image,
   ImagePickerIOS, AsyncStorage, TouchableOpacity,
-  Alert
+  Alert,ScrollView
 } from 'react-native'
 import React, { useState, useRef ,useEffect} from 'react';
 import ImagePicker from '../../../components/common/ImagePicker2';
@@ -108,8 +108,8 @@ const PhotoScreen = ({ navigation }) => {
   }
   return (
     <ImageBackground source={image} resizeMode="cover" style={styles.image}>
-
-      <View style={styles.container}>
+<ScrollView>
+<View style={styles.container}>
         <Text style={styles.topTitle} >Inscrivez-vous gratuitement</Text>
         <Text style={[styles.title, styles.leftTitle]}>Votre Photo</Text>
 
@@ -128,6 +128,8 @@ const PhotoScreen = ({ navigation }) => {
         <ImagePicker onFileSelected={onFileSelected} ref={sheetRef} />
       </View>
 
+</ScrollView>
+      
     </ImageBackground>
   )
 };

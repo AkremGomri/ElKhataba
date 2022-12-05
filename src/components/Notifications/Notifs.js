@@ -71,7 +71,7 @@ export default function Notifs(props) {
         }
       }
 
-      fetch(env.BACKEND_SERVER_URL +':'+ env.PORT+'/notificationsRead/' + props.notif._id, options )
+      fetch(env.BACKEND_SERVER_URL +'/notificationsRead/' + props.notif._id, options )
         .then(res => res.json())
         .then(data => {
           console.warn('dataaaa: ',data)
@@ -90,7 +90,7 @@ export default function Notifs(props) {
     <View style={[viewStyle ,(props.notif.isRead)? styles.isReadBackground: styles.isNotReadBackground,  ]}>
       <TouchableOpacity onPress={onPressHandler} >
         <View style={styles.textAndImageContainer}>
-        <Image source={{ uri: 'https://makeawebsitehub.com/wp-content/uploads/2019/03/google-url-shortener-alternatives.png'}}  style = {isOpenCard ? styles.image_open : styles.image_closed} />
+        <Image source={{ uri: props.notif.senderPhoto}}  style = {isOpenCard ? styles.image_open : styles.image_closed} />
         <Text numberOfLines={3} ellipsizeMode="tail" style={(isOpenCard) ? styles.text : styles.text_closed }>
           {
             ((props.notif.message).length > 35 && !isOpenCard ) ?

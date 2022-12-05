@@ -26,6 +26,7 @@ const Tabs = createBottomTabNavigator();
 import { getToken } from '../../services/auth/asyncStorage';
 import Notifications from '../../components/Notifications';
 import UserProfileScreen from './../../screens/profile/UserProfileScreen';
+import Chat from '../Chat/Chat';
 
 const RecommandationScreen = () => {
 
@@ -66,7 +67,7 @@ const RecommandationScreen = () => {
             setNotifs(data);
             let x =0;
             data.forEach((notif, index) => {
-              if(notif.isNew) {
+              if(notif.isnew) {
                 x++;
               };
             })
@@ -116,7 +117,7 @@ const RecommandationScreen = () => {
           <IconCommunity name="ring" color={color} size={36} />
           ), }}/>
 
-        <Tabs.Screen name='messages' component={OnConstruction} options={{headerShown: false,  tabBarIcon: ({ color, size }) => (
+        <Tabs.Screen name='messages' component={Chat} options={{headerShown: false,  tabBarIcon: ({ color, size }) => (
               <IconFeather name="message-square" color={color} size={36} />
               ), }}/>
 
