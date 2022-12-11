@@ -89,12 +89,13 @@ const HomeScreen = () => {
   }
 
   return (
-    <SafeAreaView >
+
+<SafeAreaView >
           {/* <Tab.Navigator>
       <Tab.Screen name="Home" component={HomeScreen} />
     </Tab.Navigator> */}
-
-        <ScrollView snapToInterval={width} decelerationRate="fast" horizontal >
+{/* 
+        <ScrollView snapToInterval={width} decelerationRate="fast" horizontal > */}
           <FlatList
           snapToInterval={width}
            horizontal
@@ -108,7 +109,7 @@ const HomeScreen = () => {
             onEndReachedThreshold={0.5}
           />
           {/* style = {{ width, height:height/2 }}  */}
-        </ScrollView> 
+   {/*      </ScrollView>  */}
     </SafeAreaView> 
   )
 }

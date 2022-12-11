@@ -1,6 +1,7 @@
 /* eslint-disable quotes */
 /* eslint-disable prettier/prettier */
 import React from 'react';
+import { useContext } from 'react';
 import { View,
    Text,TouchableOpacity,
   Image,
@@ -8,6 +9,7 @@ import { View,
   Alert,ImageBackground,
   FlatList,
   } from 'react-native';
+import io from "socket.io-client"
 import AsyncStorage from '../../../services/auth/asyncStorage';
 import Button from 'react-native-button';
 import { useState, useEffect } from 'react';
@@ -15,10 +17,12 @@ import { AppStyles } from '../../../styles/generalStyles/AppStyles';
 import env from '../../../../env';
 import styles from '../styles';
 import { image, logoFb } from '../../../../assets/images/index';
+import socket from '../../../services/socket/socket';
+import { Context } from '../../../services/context/Context';
 
 const SigninScreen = ({ navigation }) => {
 
-  
+  const [context, setContext] = useContext(Context);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -69,7 +73,6 @@ else {
         res.json()
         .then((data) => {
           setResponse(data);
-          console.warn("error: " + response.error);
           if(response.error){
             return Alert.alert("vérifier l'email et le mot de passe: ", response.error);
           } else {
@@ -81,6 +84,12 @@ else {
             console.warn("data: ",data);
             AsyncStorage.storeToken(data.token);
             AsyncStorage.storeData("userId" ,data.userId);
+            so = socket.run(env.BACKEND_SERVER_URL, data.token);
+            setContext(so);
+            socket.listen(so);
+            // const socket = io.connect(env.BACKEND_SERVER_URL, {
+            //   query: {token: data.token}
+            // })
             return navigation.push("Recommandation");
           }
         })

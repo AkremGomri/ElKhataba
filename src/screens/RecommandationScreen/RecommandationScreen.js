@@ -29,6 +29,7 @@ import Notifications from '../../components/Notifications';
 import UserProfileScreen from './../../screens/profile/UserProfileScreen';
 import MatchesScreen from './../../screens/Matches/MatchesScreen'
 import Chat from '../Chat/Chat';
+import Discussion from '../Chat/Discussion'
 
 const RecommandationScreen = () => {
 
