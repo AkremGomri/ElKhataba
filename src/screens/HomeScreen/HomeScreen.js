@@ -41,6 +41,7 @@ const HomeScreen = () => {
           console.warn("status : ",res.status);
           res.json()
             .then((data) => {
+              console.log(data);
               setUsersList(data);
             })
         })

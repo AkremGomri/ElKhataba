@@ -28,18 +28,19 @@ const Chat = (props) => {
   async function fetchData() {
     const token = await getToken();
     options = {
+      method:"POST",
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + token,
       },
       signal: ac.signal
     }
-    fetch(env.BACKEND_SERVER_URL + "/recommanded", options)
+    fetch(env.BACKEND_SERVER_URL + "/getMyMatches", options)
       .then((res) => {
         console.warn("status : ", res.status);
         res.json()
           .then((responseJson) => {
-            setUsersList(responseJson);
+            setUsersList(responseJson.data.Matches);
             console.log("utilisateursss", usersList);
           })
       })

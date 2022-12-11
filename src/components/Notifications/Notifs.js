@@ -16,16 +16,24 @@ export default function Notifs(props) {
 
   const [ lovePressed, setLovePressed ] = useState(false);
   const [ closePressed, setClosePressed ] = useState(false);
-
-  function heartEventHandler(){
-    if ( lovePressed ){
-      // props.unlikeClickHandler(props.user);
-      setLovePressed(!lovePressed);
-    } else {
-      // props.likeClickFunction(props.user);
-      setLovePressed(!lovePressed);
-      setClosePressed(false);
+  async function fetchDataLike(n){
+    const token = await getToken();
+    options = {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+      }
     }
+
+    const res=await fetch(env.BACKEND_SERVER_URL +"/like/", options )
+      console.log("the resp of the love back:",await res.json());
+  }
+  function heartEventHandler(n){
+   console.log("love pressed:",lovePressed);
+   fetchDataLike(n);
+   setLovePressed(true);
+   setClosePressed(false);
   }
 
   function closeEventHandler() {
@@ -105,8 +113,8 @@ export default function Notifs(props) {
             <TouchableOpacity onPress={() => closeEventHandler()} { ...touchCLoseProps}  underlayColor="black">
               <Button title="decline" color="#03b6fc" />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => heartEventHandler()}  {...touchHeartProps}>
-              <Button title="love back" color="#f194ff" />
+            <TouchableOpacity   {...touchHeartProps}>
+              <Button onPress={() => heartEventHandler(props.notif)} title="love back" color="#f194ff" />
             </TouchableOpacity>
           </View>
         }

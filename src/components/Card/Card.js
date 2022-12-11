@@ -72,7 +72,7 @@ const Card = (props) => {
               <Icon name = {lovePressed? "heart": "hearto"} size={45} color="red" />
             </TouchableOpacity>
       </View>
-      <Text style={ styles.text }>{ props.user.fullname }</Text>
+      <Text style={ styles.text }>{ props.user.pseudo || props.user.fullname }</Text>
     </View>
   )
 }
@@ -145,7 +145,8 @@ const styles = StyleSheet.create({
       width: width,
       textAlign: 'center', // <-- the magic
       fontWeight: 'bold',
-      fontSize: 40
+      fontSize: 40,
+      color:"white"
     }
   });
 
