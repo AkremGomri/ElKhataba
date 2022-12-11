@@ -33,12 +33,12 @@ function ImageComponent({src}) {
 }
  const styles= StyleSheet.create({
     
-    loading: {paddingLeft: '35%', paddingTop: '5%'},
-    imageContainer: {height: 300, width: '100%'},
+    loading: {paddingLeft: '35%', paddingTop: '40%'},
+    imageContainer: {height: 300, width: '80%',justifyContent: "center"},
     detailPhoto: {
         justifyContent: "center",
-      height: 350, width: '90%',
-     resizeMode: 'cover',borderRadius: 100},
+      height: 340, width: '90%',
+     resizeMode: 'cover',borderRadius: 50},
 
   
 

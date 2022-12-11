@@ -20,12 +20,14 @@ import IconFeather from 'react-native-vector-icons/Feather';
 import IconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import OnConstruction from '../OnConstruction/';
 import Notification from './../Notification/Notification';
-
+import {Icon, withBadge } from '@rneui/themed';
+const BadgedIcon = withBadge(15)(Icon);
 const { width, height } = Dimensions.get("window");
 const Tabs = createBottomTabNavigator();
 import { getToken } from '../../services/auth/asyncStorage';
 import Notifications from '../../components/Notifications';
 import UserProfileScreen from './../../screens/profile/UserProfileScreen';
+import MatchesScreen from './../../screens/Matches/MatchesScreen'
 import Chat from '../Chat/Chat';
 
 const RecommandationScreen = () => {
@@ -100,25 +102,28 @@ const RecommandationScreen = () => {
         elevation: 0,},
       }}
       >
-        <Tabs.Screen name='Home' backBehavior="firstRoute" component={HomeScreen} 
-          options={{
-            tabBarButton: () => null,
-            tabBarVisible: false,  
-            tabBarIcon: ({ color, size }) => (
-              <IconAntDesign name="home" color={color} size={36} />
-              ), }}/>
+        
 
         <Tabs.Screen name='notifications' children={()=><Notification nbNotifs={newNotifsNumber} setNbNotifs={setNewNotifsNumber} update={updateNotif} notifs={notifs}/>} options={{ tabBarBadge: newNotifsNumber>0 ? newNotifsNumber: null  ,tabBarIcon: ({ color, size }) => (
           <IconFeather name="bell" color={color} size={36} />
           ), }}/>
 
 
-        <Tabs.Screen name='Matches' component={OnConstruction} options={{headerShown: false,  tabBarIcon: ({ color, size }) => (
+        <Tabs.Screen name='Matches' component={MatchesScreen} options={{headerShown: false,  tabBarIcon: ({ color, size }) => (
           <IconCommunity name="ring" color={color} size={36} />
           ), }}/>
 
+<Tabs.Screen name='Home' backBehavior="firstRoute" component={HomeScreen} 
+          options={{
+            // tabBarButton: () => null,
+            // tabBarVisible: true,  
+            tabBarIcon: ({ color, size }) => (
+             <IconAntDesign name="home" color={color} size={36} />
+              ), }}/>
+
         <Tabs.Screen name='messages' component={Chat} options={{headerShown: false,  tabBarIcon: ({ color, size }) => (
-              <IconFeather name="message-square" color={color} size={36} />
+            //  <IconFeather name="message-square" color={color} size={36} />
+              <BadgedIcon type="ionicon" name="ios-chatbubbles" color={color} />
               ), }}/>
 
         <Tabs.Screen name='profile' component={UserProfileScreen} options={{headerShown: false,  tabBarIcon: ({ color, size }) => (

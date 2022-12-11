@@ -2,9 +2,10 @@ import { View, Text, FlatList, TouchableOpacity, Image, Stack, Alert, ScrollView
 import React, { useState, useEffect } from 'react';
 import { getToken } from '../../services/auth/asyncStorage';
 import { ListItem, SearchBar } from "react-native-elements";
-import { Avatar } from '@rneui/themed';
+import { Badge, Icon, withBadge } from '@rneui/themed';
 import styles from './styles'
 import env from '../../../env';
+
 
 Array.prototype.chunk = function (n) {
   if (!this.length) {
@@ -12,6 +13,7 @@ Array.prototype.chunk = function (n) {
   }
   return [this.slice(0, n)].concat(this.slice(n).chunk(n));
 };
+
 const Chat = (props) => {
   const [search, setSearch] = useState('')
   const [filteredDataSource, setFilteredDataSource] = useState(null)
@@ -85,16 +87,25 @@ const Chat = (props) => {
         }} */
         >
         <View style={styles.container}>
-
+        
           <FlatList data={usersList}
           horizontal
             renderItem={
               ({ item }) => (<View style={styles.View1}>
-                <Image
+                  <Image
+                rounded
                   style={{ width: 60, height: 60 ,margin:5,  borderRadius: 400/ 2}}
                   source={item.Photo ? {uri: item.Photo}: (item.gender == "homme") ? require("../../../assets/images/man.png") : require("../../../assets/images/woman.png")
                      
                   }></Image>
+          <Badge
+            status="error"
+            containerStyle={{ position: 'absolute', top:1, left: 60 }}
+          />
+          {/*  <Badge
+            status="success"
+            containerStyle={{ position: 'absolute', top:1, left: 60 }}
+          /> */}
                   <Text  style={styles.Text} item={item} > {item.pseudo}</Text>
               </View>
               )} />

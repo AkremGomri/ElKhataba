@@ -19,6 +19,7 @@ import SigninScreen from './src/screens/auth/SigninScreen';
 import SignupScreen from './src/screens/auth/SignupScreen';
 import HomeScreen from './src/screens/HomeScreen/HomeScreen';
 import RecommandationScreen from './src/screens/RecommandationScreen';
+import MatchesScreen from './src/screens/Matches/MatchesScreen';
 import Chat from './src/screens/Chat/Chat';
 import Discussion from './src/screens/Chat/Discussion';
 import {options} from './options';
@@ -70,6 +71,8 @@ const App: () => Node = ({navigation}) => {
         />
         <Stack.Screen name="Chat"component={Chat} options={options} />
         <Stack.Screen name="Discussion"component={Discussion} options={options} />
+        <Stack.Screen name="Matches"component={MatchesScreen} options={options} />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );

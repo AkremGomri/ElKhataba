@@ -82,7 +82,6 @@ const UserProfileScreen =  ({ navigation }) => {
             <Image source={DefaultMan} style={styles.detailPhoto}/>    
              )
             
-          
         }
       }
     return (
