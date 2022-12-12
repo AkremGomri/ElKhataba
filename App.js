@@ -25,6 +25,8 @@ import Chat from './src/screens/Chat/Chat';
 import Discussion from './src/screens/Chat/Discussion';
 import {options} from './options';
 import {Context} from './src/services/context/Context';
+import { Provider } from 'react-redux';
+import { store } from './src/services/redux/store';
 import type {Node} from 'react';
 
 const Stack = createNativeStackNavigator();
@@ -33,52 +35,54 @@ const App: () => Node = ({navigation}) => {
 
   const [context, setContext] = useState(null);
   return (
-    <Context.Provider value={[context, setContext]}>
-      <NavigationContainer style={styles.root}>
-        <Stack.Navigator initialRouteName="WelcomeScreen">
-          <Stack.Screen
-            name="WelcomeScreen"
-            component={WelcomeScreen}
-            options={options}
-            
-          />
-          <Stack.Screen
-            name="SignIn"
-            component={SigninScreen}
-            options={options}
-          />
-          <Stack.Screen name="SignUp" component={SignupScreen} 
-          options={options}/>
+    // <Provider store={store}>
+      <Context.Provider value={[context, setContext]}>
+        <NavigationContainer style={styles.root}>
+          <Stack.Navigator initialRouteName="WelcomeScreen">
+            <Stack.Screen
+              name="WelcomeScreen"
+              component={WelcomeScreen}
+              options={options}
+              
+            />
+            <Stack.Screen
+              name="SignIn"
+              component={SigninScreen}
+              options={options}
+            />
+            <Stack.Screen name="SignUp" component={SignupScreen} 
+            options={options}/>
 
-          <Stack.Screen
-            name="Home"
-            component={HomeScreen}
-            options={{
-              title: 'Home', 
-              headerLeft: props => undefined,
-              headerBackVisible: false,
-            }}
-          />
-          <Stack.Screen name="BirthDate" component={BirthDateScreen} options={options}/>
-          <Stack.Screen name="Horoscope" component={HoroscopeScreen}  options={options}/>
-          <Stack.Screen name="Gender" component={GenderScreen} options={options} />
-          <Stack.Screen name="Location" component={LocScreen} options={options} />
-          <Stack.Screen name="Photo" component={PhotoScreen} options={options} />
-          <Stack.Screen name="Profile" component={UserProfileScreen} options={options} />
-          <Stack.Screen name="Modifier Profil" component={EditScreen} options={options} />
-          <Stack.Screen name="Paramètres" component={SettingScreen} options={options} />
-          <Stack.Screen
-            name="Recommandation"
-            component={RecommandationScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen name="Chat"component={Chat} options={options} />
-          <Stack.Screen name="Discussion"component={Discussion} options={options} />
-          <Stack.Screen name="Matches"component={MatchesScreen} options={options} />
-          
-        </Stack.Navigator>
-      </NavigationContainer>
-    </Context.Provider>
+            <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{
+                title: 'Home', 
+                headerLeft: props => undefined,
+                headerBackVisible: false,
+              }}
+            />
+            <Stack.Screen name="BirthDate" component={BirthDateScreen} options={options}/>
+            <Stack.Screen name="Horoscope" component={HoroscopeScreen}  options={options}/>
+            <Stack.Screen name="Gender" component={GenderScreen} options={options} />
+            <Stack.Screen name="Location" component={LocScreen} options={options} />
+            <Stack.Screen name="Photo" component={PhotoScreen} options={options} />
+            <Stack.Screen name="Profile" component={UserProfileScreen} options={options} />
+            <Stack.Screen name="Modifier Profil" component={EditScreen} options={options} />
+            <Stack.Screen name="Paramètres" component={SettingScreen} options={options} />
+            <Stack.Screen
+              name="Recommandation"
+              component={RecommandationScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen name="Chat"component={Chat} options={options} />
+            <Stack.Screen name="Discussion"component={Discussion} options={options} />
+            <Stack.Screen name="Matches"component={MatchesScreen} options={options} />
+            
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Context.Provider>
+    // </Provider>
   );
 };
 

@@ -72,7 +72,7 @@ const Chat = (props) => {
   }
 };
   return (
-    <ScrollView keyboardShouldPersistTaps='always' >
+   // <ScrollView keyboardShouldPersistTaps='always' >
     <View>
       <Text style={styles.titre}>Discussion</Text>
       <SearchBar
@@ -153,7 +153,7 @@ data={filteredDataSource!==null?filteredDataSource:usersList}
 </TouchableOpacity> 
 
     </View>
-    </ScrollView>
+  //  </ScrollView>
     )
 }
 

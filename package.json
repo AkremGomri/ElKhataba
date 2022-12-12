@@ -51,6 +51,8 @@
     "react-native-vector-icons": "^9.2.0",
     "react-native-video": "^5.2.1",
     "react-navigation": "^4.4.4",
+    "react-redux": "^8.0.5",
+    "redux": "^4.2.0",
     "socket.io-client": "^4.5.4"
   },
   "devDependencies": {

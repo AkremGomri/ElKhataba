@@ -1,11 +1,20 @@
 import io from "socket.io-client"
-import {getData} from '../../services/auth/asyncStorage'
+import {getData, getToken} from '../../services/auth/asyncStorage'
+import env from "../../../env"
+
+var MessageList = []
 
 const run = (backend, token) => io.connect(backend, {         
     query: {token: token}
 })
+
+// const s = io.connect(env.BACKEND_SERVER_URL, {         
+//     query: {token: getToken()}
+// })
   
 const listen = (socket) => {
+    
+
     socket.emit('test', "this is a test");
     socket.on('connect', (s) => {
         // console.log("connected: " + socket.connected);
@@ -41,10 +50,12 @@ const listen = (socket) => {
     //     console.log("data : ",data);
     // });
 
-    socket.on("private message", (data, senderId) => {
-        console.log("dataaaaaaaa : ",data);
-        console.log("from : ",senderId);
-    });
+    // socket.on("private message", (data, senderId, roomId, date) => {
+    //     console.log("dataaaaaaaa : ",data);
+    //     console.log("from : ",senderId);
+    //     console.log("roomId : ",roomId);
+    //     MessageList.push({senderId, msg: data, roomId, date });
+    // });
 
     socket.on("room entred", (res) => {
         console.log("x set to ", res.data);
@@ -62,8 +73,12 @@ const listen = (socket) => {
     })
 }
 
-const sendMessage = (message, destinationId) => {
-    socket.emit("private message",{msg: message, userId: destinationId});
+const sendMessage = (socket, message, destinationId) => {
+    // console.log("sendMessage: socketId: ",socket.userId);
+    // roomId = [ destinationId, socket.userId].sort().join("");
+    // console.log("sendMessage: room: ",roomId);
+    
+    socket.emit("private message",{msg: message, userId: destinationId, date: new Date() });
 }
 
 const disconnect = () =>{
@@ -74,4 +89,10 @@ const startDiscussion = (socket, destinationId) => {
     socket.emit('join private room', destinationId);
 }
 
-export default {run, listen, sendMessage, disconnect, startDiscussion};
+const getMessageList = (roomId) => {
+    console.log("not here : ",MessageList);
+    const result = MessageList.filter((elem) => elem.roomId == roomId)
+    return result;
+}
+
+export default {run, listen, sendMessage, disconnect, startDiscussion, getMessageList};

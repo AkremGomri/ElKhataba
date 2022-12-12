@@ -1,9 +1,20 @@
 import { View, Text,StyleSheet,Image } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 //import { Ionicons } from "@expo/vector-icons";
 import IconFeather from 'react-native-vector-icons/Feather';
-export default function MessageComponent({ item, user,photo }) {
-    const status = item.user !== user;
+export default function MessageComponent({ message, user,photo }) {
+    const status = message.senderId !== user;
+
+    useEffect(() => {
+        console.log("message: ",message);
+        console.log("message msg ",message.msg);
+        console.log("message userId: ",message.senderId);
+
+        console.log(user);
+       // console.log(photo);
+    
+    }, [])
+    
 
     return (
         <View>
@@ -28,10 +39,10 @@ export default function MessageComponent({ item, user,photo }) {
                                 : [styles.mmessage, { backgroundColor: "rgb(194, 243, 194)" }]
                         }
                     >
-                        <Text>{item.text}</Text>
+                        <Text>{message.msg}</Text>
                     </View>
                 </View>
-                <Text style={{ marginLeft: 40 }}>{item.time}</Text>
+                <Text style={{ marginLeft: 40 }}>{message.date}</Text>
             </View>
         </View>
     );

@@ -1,37 +1,73 @@
-import React , { useLayoutEffect, useState }from 'react'
+import React , { useLayoutEffect, useState, useContext ,useEffect, useRef }from 'react'
 import 'react-native-gesture-handler';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, TextInput, Pressable} from 'react-native'
 import { getData } from '../../services/auth/asyncStorage';
 import MessageComponent from "../../components/Message/MessageComponent";
+import socket from '../../services/socket/socket';
+import { Context } from '../../services/context/Context';
+import { acc } from 'react-native-reanimated';
 
 const Discussion= ({ route, navigation }) =>{
-  const [chatMessages, setChatMessages] = useState([
-    {
-        id: "1",
-        text: "Hello guys, welcome!",
-        time: "07:50",
-        user: "Tomer",
-    },
-    {
-        id: "2",
-        text: "Hi Tomer, thank you! 😇",
-        time: "08:50",
-        user: "David",
-    },
-]);
+  
+  const [context, setContext] = useContext(Context);
+//   const messageList = useRef();
+  const [chatMessages, setChatMessages] = useState([]);
 const [message, setMessage] = useState("");
 const [user, setUser] = useState("");
-
-//👇🏻 Access the chatroom's name and id
 const { name, id ,Photo} = route.params;
 
+
+const [roomId, setRoomId] = useState()
+// const ac = new AbortController();
+useEffect(() => {
+  async function fn () {
+
+    let userId = await getData("userId");
+    userId = userId.value;
+    setRoomId([ id, userId].sort().join("") );
+  }
+  fn()
+}, [])
+
+const fn2 = (data, senderId, roomId, date) => {
+    console.log("3) fn2::chatMessages: ",chatMessages);
+    console.log("3.5) data: ",data);
+    const list = chatMessages.push({senderId, msg: data, roomId, date });
+    console.log("4) fn2::list: ",list);
+    // messageList.current.textContent = list;
+    setChatMessages(chatMessages);
+    // console.log("wallah la fhemt chy: ",chatMessages);
+}
+
+const ac=new AbortController();
+useEffect(() => {
+    Promise.all([
+        context.on("private message", fn2),
+    ])
+
+    return () => {
+        // before the component is destroyed
+        // unbind all event handlers used in this component
+        socket.off("private message", fn2);
+      };
+// return () => {
+//     // before the component is destroyed
+//     // unbind all event handlers used in this component
+//     socket.off("private message", fn2);
+//   };
+//   const MessageList = socket.getMessageList(roomId);
+//   setChatMessages(MessageList);
+}, [context, chatMessages])
+
+//👇🏻 Access the chatroom's name and id
+
 //👇🏻 This function gets the username saved on AsyncStorage
-const getUsername = async () => {
+const getUserId = async () => {
     try {
         //const value = Json.parse(getData());
         //console.log("value: ",value);
-        if (name !== null) {
-            setUser(name);
+        if (id !== null) {
+            setUser(id);
         }
     } catch (e) {
         console.error("Error while loading username!");
@@ -41,7 +77,7 @@ const getUsername = async () => {
 //👇🏻 Sets the header title to the name chatroom's name
 useLayoutEffect(() => {
     navigation.setOptions({ title: name });
-    getUsername()
+    getUserId()
 }, []);
 
 /*👇🏻 
@@ -59,11 +95,23 @@ const handleNewMessage = () => {
             ? `0${new Date().getMinutes()}`
             : `${new Date().getMinutes()}`;
 
-    console.log({
+    console.log("1) ",{
         message,
         user,
         timestamp: { hour, mins },
     });
+
+    if(message){
+        // console.log("sending...");
+      socket.sendMessage(context, message, user);
+    }
+   
+  //  setTimeout(() => {
+      // const MessageList = socket.getMessageList(roomId);
+      console.log("2) my messageLIst: ",chatMessages);
+      //setChatMessages(MessageList);
+  //  }, 200)
+
 };
   return (
     
@@ -74,16 +122,15 @@ const handleNewMessage = () => {
             { paddingVertical: 15, paddingHorizontal: 10 },
         ]}
     >
-        {chatMessages[0] ? (
+        {chatMessages[0] && (
             <FlatList
                 data={chatMessages}
                 renderItem={({ item }) => (
-                    <MessageComponent item={item} user={user} photo={Photo} />
+                    // (item.senderId == user)?
+                    <MessageComponent message={item} user={user} photo={Photo} />
                 )}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item) => item.date}
             />
-        ) : (
-            ""
         )}
     </View>
 
@@ -97,7 +144,8 @@ const handleNewMessage = () => {
             onPress={handleNewMessage}
         >
             <View>
-                <Text style={{ color: "#f2f0f1", fontSize: 20 }}>SEND</Text>
+                <Text 
+                style={{ color: "#f2f0f1", fontSize: 20 }}>SEND</Text>
             </View>
         </Pressable>
     </View>
