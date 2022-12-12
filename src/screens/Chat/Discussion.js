@@ -52,7 +52,7 @@ useEffect(() => {
 //   };
 //   const MessageList = socket.getMessageList(roomId);
 //   setChatMessages(MessageList);
-}, [context, chatMessages])
+}, [context])
 
 //👇🏻 Access the chatroom's name and id
 
@@ -124,7 +124,7 @@ const handleNewMessage = () => {
                     // (item.senderId == user)?
                     <MessageComponent message={item} user={user} photo={Photo} />
                 )}
-                keyExtractor={(item) => item.date}
+                keyExtractor={(item, index) => `${item.date} - ${index}`}
             />
         )}
     </View>

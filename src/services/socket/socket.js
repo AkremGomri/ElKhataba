@@ -90,7 +90,7 @@ const startDiscussion = (socket, destinationId) => {
 }
 
 const getMessageList = (roomId) => {
-    console.log("not here : ",MessageList);
+    console.log(MessageList);
     const result = MessageList.filter((elem) => elem.roomId == roomId)
     return result;
 }
