@@ -1,4 +1,4 @@
-import React , { useLayoutEffect, useState, useContext ,useEffect, useRef }from 'react'
+import React , { useLayoutEffect, useState, useContext ,useEffect, useRef, useCallback }from 'react'
 import 'react-native-gesture-handler';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, TextInput, Pressable} from 'react-native'
 import { getData } from '../../services/auth/asyncStorage';
@@ -29,27 +29,22 @@ useEffect(() => {
   fn()
 }, [])
 
-const fn2 = (data, senderId, roomId, date) => {
+const fn2 = useCallback(  (data, senderId, roomId, date) => {
     console.log("3) fn2::chatMessages: ",chatMessages);
     console.log("3.5) data: ",data);
     const list = chatMessages.push({senderId, msg: data, roomId, date });
     console.log("4) fn2::list: ",list);
     // messageList.current.textContent = list;
-    setChatMessages(chatMessages);
+    setChatMessages([...chatMessages]);
     // console.log("wallah la fhemt chy: ",chatMessages);
-}
+}, []);
 
-const ac=new AbortController();
+//const ac=new AbortController();
 useEffect(() => {
     Promise.all([
         context.on("private message", fn2),
     ])
 
-    return () => {
-        // before the component is destroyed
-        // unbind all event handlers used in this component
-        socket.off("private message", fn2);
-      };
 // return () => {
 //     // before the component is destroyed
 //     // unbind all event handlers used in this component
