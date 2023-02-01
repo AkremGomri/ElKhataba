@@ -19,13 +19,13 @@ import styles from '../styles';
 import { image, logoFb } from '../../../../assets/images/index';
 import socket from '../../../services/socket/socket';
 import { Context } from '../../../services/context/Context';
+import { useRef } from 'react';
 
 const SigninScreen = ({ navigation }) => {
 
   const [context, setContext] = useContext(Context);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
 //   const [response, setResponse] = useState('')
 //  const  storeToken= async(user)  =>{
 //     try {
@@ -37,26 +37,25 @@ const SigninScreen = ({ navigation }) => {
    
 const [response, setResponse] = useState('');
 
-const onSignInPressed= async () => {
+const onSignInPressed= async (e) => {
 
-const data = { 
-      email: email,
-      password: password,
-    };
-    
-  const options = {
-    method: "POST",
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data),
+  if ( (!email) || (!password) ) {
+    return Alert.alert("L'un des champs n'est pas saisi.Veuillez trouvez votre compte pour se connecter.")
   }
-if ( (!email) || (!password) ) {
-  return Alert.alert("L'un des champs n'est pas saisi.Veuillez trouvez votre compte pour se connecter.")
-}
-else {
-
+  else {
+  const data = { 
+        email: email,
+        password: password,
+      };
+      
+    const options = {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data),
+    }
   fetch(env.BACKEND_SERVER_URL+"/login", options)
     .then((res) =>  {
      
@@ -90,7 +89,7 @@ else {
             // const socket = io.connect(env.BACKEND_SERVER_URL, {
             //   query: {token: data.token}
             // })
-            return navigation.push("Recommandation");
+            return navigation.replace("AppNavigator");
           }
         })
       }
@@ -131,7 +130,7 @@ const onPressFacebook=()=>{
     <Button
       containerStyle={styles.loginContainer}
       style={styles.loginText}
-      onPress={() => onSignInPressed()}>
+      onPress={onSignInPressed}>
       Se connecter
     </Button>
     <Text style={styles.or}>OU</Text>

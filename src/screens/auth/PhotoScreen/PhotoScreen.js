@@ -120,7 +120,7 @@ const PhotoScreen = ({ navigation }) => {
         </TouchableOpacity>
         <Button
           containerStyle={styles.suivantContainer}
-          onPress={() => onPressHandler("Recommandation")}>
+          onPress={() => onPressHandler("AppNavigator")}>
           <Icon name="forward"
             size={70}
           />

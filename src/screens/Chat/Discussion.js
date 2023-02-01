@@ -106,6 +106,7 @@ const handleNewMessage = () => {
       console.log("2) my messageLIst: ",chatMessages);
       //setChatMessages(MessageList);
   //  }, 200)
+  setMessage("")
 
 };
   return (
@@ -187,7 +188,7 @@ const styles = StyleSheet.create({
       fontWeight: "600",
   },
   chatscreen: {
-      backgroundColor: "#F7F7F7",
+      backgroundColor: "#F747F7",
       flex: 1,
       padding: 10,
       position: "relative",

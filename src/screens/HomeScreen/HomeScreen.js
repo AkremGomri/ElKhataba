@@ -38,7 +38,6 @@ const HomeScreen = () => {
 
       fetch(env.BACKEND_SERVER_URL +"/recommanded", options )
         .then((res) => {
-          console.warn("status : ",res.status);
           res.json()
             .then((data) => {
               console.log(data);

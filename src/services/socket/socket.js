@@ -1,12 +1,16 @@
-import io from "socket.io-client"
-import {getData, getToken} from '../../services/auth/asyncStorage'
-import env from "../../../env"
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable prettier/prettier */
+import io from 'socket.io-client';
+import {getData, getToken} from '../../services/auth/asyncStorage';
+import env from '../../../env';
 
-var MessageList = []
+var MessageList = [];
 
-const run = (backend, token) => io.connect(backend, {         
-    query: {token: token}
-})
+// handshake
+const run = (backend, token) => io.connect(backend, {
+    query: {token: token},
+});
 
 // const s = io.connect(env.BACKEND_SERVER_URL, {         
 //     query: {token: getToken()}
