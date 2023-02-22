@@ -19,11 +19,11 @@ const run = (backend, token) => io.connect(backend, {
 const listen = (socket) => {
     
 
-    socket.emit('test', "this is a test");
+    // socket.emit('test', "this is a test");
     socket.on('connect', (s) => {
         // console.log("connected: " + socket.connected);
-        console.log("I am connected with id: ", socket.id);
-        socket.emit("authentification", getData("userId"));
+        // console.log("I am connected with id: ", socket.id);
+        // socket.emit("authentification", getData("userId"));
     })
 
     socket.on("disconnect", (reason) => {
@@ -65,9 +65,9 @@ const listen = (socket) => {
         console.log("x set to ", res.data);
         x = res.data
     })
-    socket.on("new user connected", (senderSocketId, senderId) => {
-        console.log("Friend with this id: " + senderId + " is connected");
-        console.log("senderSocketId: ",senderSocketId);
+    socket.on("new friend just connected", (senderSocketId, senderId) => {
+        // console.log("Friend with this id: " + senderId + " is connected");
+        // console.log("senderSocketId: ",senderSocketId);
         socket.emit("notify he got connected", senderSocketId, senderId)
     })
 
@@ -90,7 +90,7 @@ const disconnect = () =>{
 }
 const startDiscussion = (socket, destinationId) => {
     console.log('startDiscussion: ',destinationId);
-    socket.emit('join private room', destinationId);
+    socket.emit('join private ;', destinationId);
 }
 
 const getMessageList = (roomId) => {

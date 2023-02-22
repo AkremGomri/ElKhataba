@@ -25,7 +25,7 @@ import Chat from "./src/screens/Chat/Chat";
 import Discussion from "./src/screens/Chat/Discussion";
 import { options } from "./options";
 import { Context } from "./src/services/context/Context";
-// import { store } from './src/redux/store';
+import store from './src/redux/utils/store';
 import { Provider } from "react-redux";
 
 import type { Node } from "react";
@@ -36,7 +36,7 @@ const App: () => Node = ({ navigation }) => {
   const [context, setContext] = useState(null);
   return (
     // <Provider store={store}>
-    // <Provider store={store}>
+    <Provider store={store}>
     <Context.Provider value={[context, setContext]}>
       <NavigationContainer style={styles.root}>
         <Stack.Navigator initialRouteName="WelcomeScreen">
@@ -124,7 +124,7 @@ const App: () => Node = ({ navigation }) => {
         </Stack.Navigator>
       </NavigationContainer>
     </Context.Provider>
-    // </Provider>
+     </Provider>
   );
 };
 

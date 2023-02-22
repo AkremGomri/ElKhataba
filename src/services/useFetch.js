@@ -9,7 +9,6 @@ export const useFetch = (url, method='GET', requestData = null) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        console.log("helllo");
         if (!url) return
         setIsPending(true)
         async function fetchData() {
@@ -31,6 +30,7 @@ export const useFetch = (url, method='GET', requestData = null) => {
             const response = await fetch(env.BACKEND_SERVER_URL + url, options)
             const data = await response.json()
             setData(data)
+            console.log("daattta ",data);
         } catch (err) {
             console.log(err)
             setError(true)

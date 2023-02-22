@@ -45,11 +45,9 @@ useEffect(() => {
         context.on("private message", fn2),
     ])
 
-// return () => {
-//     // before the component is destroyed
-//     // unbind all event handlers used in this component
-//     socket.off("private message", fn2);
-//   };
+return () => {
+    socket.off("private message", fn2);
+  };
 //   const MessageList = socket.getMessageList(roomId);
 //   setChatMessages(MessageList);
 }, [context])

@@ -6,12 +6,16 @@ import { useEffect } from 'react';
 import Notifs from './../../components/Notifications';
 import env from '../../../env';
 import { getToken } from '../../services/auth/asyncStorage';
+import { useDispatch, useSelector } from 'react-redux';
+import { setNbNotif } from '../../redux/features/notification';
 
 export default function Notification(props) {
 
+  const dispatch = useDispatch();
+  const nbNotifs = useSelector(state => {
+    return state.notifications.number})
     useEffect(() => {
-      console.warn("nbNotifs: ",props.nbNotifs);
-      if(props.nbNotifs>0){
+      if(nbNotifs>0){
         fetchData() // only notify backend if there are some new notifications
       }
 
@@ -31,7 +35,7 @@ export default function Notification(props) {
             if(!res.ok) Alert.alert("connection problem")
             else res.json()
               .then((data) => {
-                if(data.success) props.setNbNotifs(0);
+                if(data.success) dispatch(setNbNotif(0));
               })
           });
       }

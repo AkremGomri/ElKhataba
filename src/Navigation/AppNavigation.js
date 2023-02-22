@@ -41,13 +41,22 @@ import MatchesScreen from "../screens/Matches/MatchesScreen";
 import Chat from "../screens/Chat/Chat";
 import Discussion from "../screens/Chat/Discussion";
 import { useFetch } from '../services/useFetch';
+import { useContext } from 'react';
+import { Context } from './../services/context/Context';
+import { useDispatch, useSelector } from "react-redux";
+import { setIAmConnected } from './../redux/features/SocketIO';
+import { selectIAmConnected } from "../redux/utils/selectors";
+// import { setNbNotif, addNbNotif } from "../redux/features/notification";
 
 export default AppNavigation = () => {
 
-  const { data, isLoading, error, setData } = useFetch(`/getMyNotifs`);
+  const { data: notifs, isLoading, error, setData: setNotifs } = useFetch(`/getMyNotifs`);
+
+  // a funtion that takes in input two arguments and sum them up in return using javascript
+  function sum(a, b){}
 
   function updateNotif(id, field, value) {
-    setData(
+    setNotifs(
       data.map((notif) => {
         if (notif._id === id) notif[field] = value;
         return notif;
@@ -56,7 +65,71 @@ export default AppNavigation = () => {
     console.warn("compeleted");
   }
 
-  const [newNotifsNumber, setNewNotifsNumber] = useState(0);
+  const [socket, setSocket] = useContext(Context);
+  const dispatch = useDispatch();
+  // const nbNotifs = useSelector(state => {
+  //   return state.notifications.number})
+  const [nbNotifs, setNbNotifs] = useState(0)  
+
+  const isConnected = useSelector(state => state.socketIO.isConnected)
+
+  useEffect(() => {
+    let x =0;
+    console.log("AppNavigation::notifs: ",notifs);
+    notifs.forEach((notif, index) => {
+      if(notif.isnew){
+        console.warn("this one is new");
+        x++;
+      }
+    })
+    setNbNotifs(x)
+
+    socket.on('connect', () => {
+      dispatch(setIAmConnected(true))
+    });
+
+    socket.on('disconnect', () => {
+      dispatch(setIAmConnected(false))
+    });
+
+    socket.on('pong', () => {
+      // setLastPong(new Date().toISOString());
+    });
+
+    socket.on('newNotification', (newNotif) => {
+      setNotifs([newNotif,
+        ...notifs
+      ])
+      console.log('this is totally new: '+nbNotifs);
+      // setNbNotifs(nbNotifs+1)
+      console.log('after: '+nbNotifs);
+    })
+
+    socket.on('deleteNotification', (data) => {
+      console.log("entreing deleteNotifications " + notifs);
+      setNotifs(notifs.map((notif) => {
+        console.log("hereeeeeeeeee");
+        console.log("type: ",notif.type," senderId: ",senderId);
+        if(notif.type !== data.type || notif.senderId !== senderId){
+          return notif
+        } else {
+          console.log("deleted 1");
+          if(notif.isnew){
+            console.log("doing......");
+            setNbNotifs(nbNotifs-1)
+          }
+        }
+      }))
+      console.log("notifs are: "+notifs);
+    })
+
+    return () => {
+      socket.off('connect');
+      socket.off('disconnect');
+      socket.off('pong');
+      socket.off('newNotification');
+    };
+  }, [notifs]);
 
   // useEffect(() => {
   //   async function fetchNotifs() {
@@ -92,6 +165,14 @@ export default AppNavigation = () => {
   //   fetchNotifs();
   // }, []);
 
+  const CustomHomeHeader = ({ navigation, route }) => {
+    return (
+      <View style={styles.header}>
+        <Text style={styles.headerText}>{isConnected? "you are connected !": "you are off line"}</Text>
+      </View>
+    );
+  };
+
   return (
     <Tabs.Navigator
       initialRouteName="Home"
@@ -114,14 +195,12 @@ export default AppNavigation = () => {
         name="notifications"
         children={() => (
           <Notification
-            nbNotifs={newNotifsNumber}
-            setNbNotifs={setNewNotifsNumber}
             update={updateNotif}
-            notifs={data}
+            notifs={notifs}
           />
         )}
         options={{
-          tabBarBadge: newNotifsNumber > 0 ? newNotifsNumber : null,
+          tabBarBadge: nbNotifs > 0 ? nbNotifs : null,
           tabBarIcon: ({ color, size }) => (
             <IconFeather name="bell" color={color} size={36} />
           ),
@@ -146,6 +225,8 @@ export default AppNavigation = () => {
         options={{
           // tabBarButton: () => null,
           // tabBarVisible: true,
+          header: () => <CustomHomeHeader /> ,
+
           tabBarIcon: ({ color, size }) => (
             <IconAntDesign name="home" color={color} size={36} />
           ),

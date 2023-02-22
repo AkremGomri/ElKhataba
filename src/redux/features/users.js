@@ -18,7 +18,7 @@ export default function reducer(state = null, action) {
     if (action.type === toggleHeart.toString()) {
         state.map(user => {
             if(user.id === action.payload){
-                user.
+                // user.
             }
         })
         return state === true ? false : true

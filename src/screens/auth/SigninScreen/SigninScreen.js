@@ -17,9 +17,9 @@ import { AppStyles } from '../../../styles/generalStyles/AppStyles';
 import env from '../../../../env';
 import styles from '../styles';
 import { image, logoFb } from '../../../../assets/images/index';
-import socket from '../../../services/socket/socket';
 import { Context } from '../../../services/context/Context';
-import { useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { setIAmConnected } from './../../../redux/features/SocketIO';
 
 const SigninScreen = ({ navigation }) => {
 
@@ -36,6 +36,7 @@ const SigninScreen = ({ navigation }) => {
 //   }
    
 const [response, setResponse] = useState('');
+const dispatch = useDispatch();
 
 const onSignInPressed= async (e) => {
 
@@ -75,20 +76,17 @@ const onSignInPressed= async (e) => {
           if(response.error){
             return Alert.alert("vérifier l'email et le mot de passe: ", response.error);
           } else {
-            /* safa */
-            // console.log(data);
-            // storeToken(JSON.stringify(data));
-            // return navigation.push("BirthDate");
-            /* safa */
+
             console.warn("data: ",data);
             AsyncStorage.storeToken(data.token);
             AsyncStorage.storeData("userId" ,data.userId);
-            so = socket.run(env.BACKEND_SERVER_URL, data.token);
-            setContext(so);
-            socket.listen(so);
-            // const socket = io.connect(env.BACKEND_SERVER_URL, {
-            //   query: {token: data.token}
-            // })
+
+            const socket = io(env.BACKEND_SERVER_URL, {
+              query: {token: data.token},
+          });
+          dispatch(setIAmConnected(true))
+          setContext(socket);
+
             return navigation.replace("AppNavigator");
           }
         })
@@ -149,7 +147,6 @@ const onPressFacebook=()=>{
     
   </View>
     </ImageBackground>
-    
   )
 };
 
