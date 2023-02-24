@@ -23,7 +23,7 @@ const listen = (socket) => {
     socket.on('connect', (s) => {
         // console.log("connected: " + socket.connected);
         // console.log("I am connected with id: ", socket.id);
-        // socket.emit("authentification", getData("userId"));
+        socket.emit("authentification", getData("userId"));
     })
 
     socket.on("disconnect", (reason) => {

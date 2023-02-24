@@ -109,7 +109,7 @@ export default AppNavigation = () => {
       console.log("entreing deleteNotifications " + notifs);
       setNotifs(notifs.map((notif) => {
         console.log("hereeeeeeeeee");
-        console.log("type: ",notif.type," senderId: ",senderId);
+        console.log("akrem");
         if(notif.type !== data.type || notif.senderId !== senderId){
           return notif
         } else {
