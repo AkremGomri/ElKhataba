@@ -2,7 +2,7 @@ import { View, Text, FlatList, TouchableOpacity, Image, Stack, Alert, ScrollView
 import React, { useState, useEffect, useContext } from 'react';
 import { getToken } from '../../services/auth/asyncStorage';
 import { ListItem, SearchBar } from "react-native-elements";
-import { Badge, Icon, withBadge } from '@rneui/themed';
+// import { Badge, Icon, withBadge } from '@rneui/themed';
 import styles from './styles'
 import env from '../../../env';
 import socket from '../../services/socket/socket';
@@ -100,10 +100,10 @@ const Chat = (props) => {
                   source={item.Photo ? {uri: item.Photo}: (item.gender == "homme") ? require("../../../assets/images/man.png") : require("../../../assets/images/woman.png")
                      
                   }></Image>
-          <Badge
+          {/* <Badge
             status="error"
             containerStyle={{ position: 'absolute', top:1, left: 60 }}
-          />
+          /> */}
           {/*  <Badge
             status="success"
             containerStyle={{ position: 'absolute', top:1, left: 60 }}

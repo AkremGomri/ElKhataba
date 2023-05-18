@@ -21,7 +21,6 @@
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/native-stack": "^6.6.2",
     "@reduxjs/toolkit": "^1.9.2",
-    "@rneui/themed": "^4.0.0-rc.7",
     "@stream-io/flat-list-mvcp": "^0.10.2",
     "immer": "^9.0.19",
     "la": "^0.8.1",

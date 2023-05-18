@@ -30,8 +30,8 @@ import IconFeather from "react-native-vector-icons/Feather";
 import IconCommunity from "react-native-vector-icons/MaterialCommunityIcons";
 import OnConstruction from "../screens/OnConstruction";
 import Notification from "../screens/Notification/Notification";
-import { Icon, withBadge } from "@rneui/themed";
-const BadgedIcon = withBadge(15)(Icon);
+// import { Icon, withBadge } from "@rneui/themed";
+// const BadgedIcon = withBadge(15)(Icon);
 const { width, height } = Dimensions.get("window");
 const Tabs = createBottomTabNavigator();
 import { getToken } from "../services/auth/asyncStorage";
@@ -239,8 +239,8 @@ export default AppNavigation = () => {
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            //  <IconFeather name="message-square" color={color} size={36} />
-            <BadgedIcon type="ionicon" name="ios-chatbubbles" color={color} />
+             <IconFeather name="message-square" color={color} size={36} />
+            // <BadgedIcon type="ionicon" name="ios-chatbubbles" color={color} />
           ),
         }}
       />

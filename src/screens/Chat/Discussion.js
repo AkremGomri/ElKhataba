@@ -5,7 +5,6 @@ import { getData } from '../../services/auth/asyncStorage';
 import MessageComponent from "../../components/Message/MessageComponent";
 import socket from '../../services/socket/socket';
 import { Context } from '../../services/context/Context';
-import { acc } from 'react-native-reanimated';
 
 const Discussion= ({ route, navigation }) =>{
   
