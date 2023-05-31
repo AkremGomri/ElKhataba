@@ -1,10 +1,11 @@
 
-import { getData} from './asyncStorage';
+import { getData } from './asyncStorage';
 import env from '../../../env';
-import {  Alert
+import {
+    Alert
 } from 'react-native'
 
-export const getUser = async () => {
+const getUser = async () => {
     const options = {
         method: "GET",
         headers: {
@@ -17,7 +18,7 @@ export const getUser = async () => {
         .then(response => response.json())
         .then(data => {
             console.log(data);
-            return   JSON.stringify(data);
+            return JSON.stringify(data);
 
 
         })
@@ -26,4 +27,22 @@ export const getUser = async () => {
 
 }
 
-export default getUser;
+const getUserById = async (id) => {
+    const options = {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json',
+            'localtonet-skip-warning':true
+        },
+    }
+    return await fetch(env.BACKEND_SERVER_URL +'/api/user/'+ id, options)
+
+        
+        // .then(data => {
+        //     console.log(data);
+        //     return JSON.stringify(data);
+        // });
+}
+
+
+export { getUser, getUserById };

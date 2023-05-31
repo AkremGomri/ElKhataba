@@ -14,28 +14,39 @@ const searchUsers = async (search) => {
     return await fetch(env.BACKEND_SERVER_URL + "/api/user/name/?query=" + search, options);
 }
 
-const sendMessage = async (message,receiverId, senderId) => {
-    var obj={
-        content:message,
-        senderId:senderId,
-        receiverId:receiverId,
-    }
+    const sendMessage = async (message,receiverId, senderId) => {
+        var obj={
+            content:message,
+            sender:senderId,
+            receiver:receiverId,
+        }
+        console.log('sending message', obj)
+        const options = {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'localtonet-skip-warning':true
+            },
+            body: JSON.stringify(obj),
+        }
+
+        return await fetch(env.BACKEND_SERVER_URL + '/api/message', options)
+            .then(response => response.json());
+    } 
+
+const getChatByIds = async (sender, receiver) => {
+    console.log('getting chat', sender, receiver)
     const options = {
         method: "POST",
         headers: {
-            'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'localtonet-skip-warning':true
         },
-        body: JSON.stringify(obj),
-    }
-
-    return await fetch(env.BACKEND_SERVER_URL + '', options)
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            return   JSON.stringify(data);
-        });
-} 
+        body: JSON.stringify({sender, receiver}) 
+    };
+    return await fetch(env.BACKEND_SERVER_URL + "/api/message/room/chat" , options);
+}
 
 
-export {sendMessage,searchUsers};
+export {sendMessage,searchUsers, getChatByIds};
