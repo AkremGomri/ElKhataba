@@ -7,6 +7,7 @@ import styles from './styles'
 import env from '../../../env';
 import socket from '../../services/socket/socket';
 import { Context } from '../../services/context/Context';
+import { searchUsers } from '../../services/chat/chatService';
 
 Array.prototype.chunk = function (n) {
   if (!this.length) {
@@ -24,52 +25,27 @@ const Chat = (props) => {
   const ac = new AbortController();
   useEffect(() => {
     Promise.all([
-      fetchData(),
+
+      searchFunction('')
+      //fetchData(),
      // setFilteredDataSource(usersList)
     ])
     return () => ac.abort();
   }, [])
-  async function fetchData() {
-    const token = await getToken();
-  const  options = {
-      method:"POST",
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token,
-      },
-      signal: ac.signal
-    }
-    fetch(env.BACKEND_SERVER_URL + "/getMyMatches", options)
-      .then((res) => {
-        console.warn("status : ", res.status);
-        res.json()
-          .then((responseJson) => {
-            setUsersList(responseJson.data.Matches);
-            console.log("utilisateursss", usersList);
-          })
-      })
-  }
+
 
  function searchFunction(text) {
-    // Check if searched text is not blank
-  if (text) {
-    const newData = usersList.filter(function (item) {
-      const itemData = item.fullname 
-        ? item.fullname.toUpperCase() 
-        : ''.toUpperCase();
-        const pseudoData= item.pseudo
-        ? item.pseudo.toUpperCase()
-        : ''.toUpperCase();
-      const textData = text.toUpperCase();
-      return itemData.indexOf(textData) > -1 || pseudoData.indexOf(textData) > -1;
-    });
-    setFilteredDataSource(newData);
-    //setdata(newData);
+ searchUsers(text).then((res) => {
+      res.json()
+        
+        .then((responseJson) => {
+          console.log("responseJson: ",responseJson);
+          setUsersList(responseJson.data);
+          setFilteredDataSource(responseJson.data);
+        })
+    })
     setSearch(text);
-  } else {
-    setFilteredDataSource(usersList);
-    setSearch(text);
-  }
+ 
 };
   return (
    // <ScrollView keyboardShouldPersistTaps='always' >
