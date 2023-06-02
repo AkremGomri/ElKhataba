@@ -104,7 +104,7 @@ data={filteredDataSource!==null?filteredDataSource:usersList}
         //  props.navigation.navigate("Discussion");
            ///👇🏻 Navigates to the Messaging screen
            console.log(item.fullname);
-        socket.startDiscussion(context, item._id)
+        // socket.startDiscussion(context, item._id)
 
     props.navigation.navigate("Discussion", {
         name: item.fullname,

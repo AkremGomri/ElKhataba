@@ -1,102 +1,70 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-trailing-spaces */
 /* eslint-disable prettier/prettier */
-import io from 'socket.io-client';
-import {getData, getToken} from '../../services/auth/asyncStorage';
+import { io } from 'socket.io-client';
+import { getData, getToken } from '../../services/auth/asyncStorage';
+import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import env from '../../../env';
+import { getChatByIds } from '../chat/chatService';
 
 var MessageList = [];
+var messages = new BehaviorSubject([]);
+var messages$ = messages.asObservable();
+// this is ID of logged in user
+// it can be used to check if message sender is this user or other one
+var userId = null;
+// it will be used to check if the message is for the current chat room
+var roomId=null;
 
-// handshake
-const run = (backend, token) => io.connect(backend, {
-    query: {token: token},
-});
 
-// const s = io.connect(env.BACKEND_SERVER_URL, {         
-//     query: {token: getToken()}
-// })
-  
-const listen = (socket) => {
-    
-
-    // socket.emit('test', "this is a test");
-    socket.on('connect', (s) => {
-        // console.log("connected: " + socket.connected);
-        // console.log("I am connected with id: ", socket.id);
-        socket.emit("authentification", getData("userId"));
-    })
-
-    socket.on("disconnect", (reason) => {
-        console.log(" you have diconnected with reason: " + reason); // undefined
+var socket = null;
+try {
+    socket = io(env.BACKEND_SERVER_URL, {
+        query: { token: getToken() },
+        extraHeaders: {
+            'localtonet-skip-warning': true
+        },
     });
-    
-    socket.on("connect_error", (reason) => {
-        console.log("connect_error reason2: " + reason);
-        // setTimeout(() => {
-        //     socket.connect();
-        // }, 1000);
+    socket.on('connect', function () {
+        console.log('connected to server');
+        // register user to this connection
+        getData("userId").then((userId) => {
+            socket.emit('register', userId.value);
+            socket.on('incomingMessage', (data) => {
+                console.log("incomingMessage: ", roomId,data.room_id);
+                // check if the message is for the current user
+                if (data.room_id == roomId) {
+                    firstValueFrom(messages$).then((msgs) => {
+                        console.log("msgs subscribed: ", msgs.length);
+                        msgs.push({ ...data, name: (data.sender_id == userId) ? 'You' : data.sender_name });
+                        messages.next(msgs);
+                    });
+                }
+                else {
+                    console.log("message is not for this room. Handle accordingly");
+                }
+            })
+        });
     });
-
-    socket.io.on("reconnection_attempt", () => {
-        console.log("attempting to reconnect");
-    });
-/*********************** CHOUFLI7AL  **********/
-    socket.on("user connected", (data) => {
-        console.log("new user: ",data);
-        socket.emit('trying to connect with the new user', data.userId)
-    })
-
-    socket.io.on("reconnect", () => {
-        console.log("reconnect");
-    });
-
-    // socket.on("message", (data) => {
-    //     console.log("data : ",data);
-    // });
-
-    // socket.on("private message", (data, senderId, roomId, date) => {
-    //     console.log("dataaaaaaaa : ",data);
-    //     console.log("from : ",senderId);
-    //     console.log("roomId : ",roomId);
-    //     MessageList.push({senderId, msg: data, roomId, date });
-    // });
-
-    socket.on("room entred", (res) => {
-        console.log("x set to ", res.data);
-        x = res.data
-    })
-    socket.on("new friend just connected", (senderSocketId, senderId) => {
-        // console.log("Friend with this id: " + senderId + " is connected");
-        // console.log("senderSocketId: ",senderSocketId);
-        socket.emit("notify he got connected", senderSocketId, senderId)
-    })
-
-    socket.on("come join", (roomId) => {
-        console.log("trying to join: ",roomId);
-        socket.emit("join room", roomId)
-    })
+}
+catch (err) {
+    console.log(err);
 }
 
-const sendMessage = (socket, message, destinationId) => {
-    // console.log("sendMessage: socketId: ",socket.userId);
-    // roomId = [ destinationId, socket.userId].sort().join("");
-    // console.log("sendMessage: room: ",roomId);
-    
-    socket.emit("private message",{msg: message, userId: destinationId, date: new Date() });
+const switchChat = async (userId) => {
+    console.log("switchChat");
+    //let msgs= [...messages.value];
+    messages.next([]);
+    let currentUserId = await getData("userId");
+
+    let chat = await getChatByIds(currentUserId.value, userId);
+    roomId = chat.room_id;
+    userId = currentUserId.value;
+    let msgs = chat.roomChat.map(x => { return { ...x, name: (x.sender == userId) ? 'You' : x.sender_name } });
+    // sort msgs by time
+    msgs.sort((a, b) => new Date(a.date) - new Date(b.date));
+    console.log("settings msgs: ", msgs.length)
+    messages.next(msgs);
 }
 
-const disconnect = () =>{
-    socket.emit('disconn', userId);
-}
-const startDiscussion = (socket, destinationId) => {
-    console.log('startDiscussion: ',destinationId);
-    socket.emit('join private ;', destinationId);
-}
-
-const getMessageList = (roomId) => {
-    console.log(MessageList);
-    const result = MessageList.filter((elem) => elem.roomId == roomId)
-    return result;
-}
-
-export default {run, listen, sendMessage, disconnect, startDiscussion, getMessageList};
+export default { socket, messages$, switchChat };

@@ -24,7 +24,7 @@
     "@stream-io/flat-list-mvcp": "^0.10.2",
     "immer": "^9.0.19",
     "la": "^0.8.1",
-    "moment": "^2.29.3",
+    "moment": "^2.29.4",
     "nan": "^2.16.0",
     "pod": "^0.9.0",
     "radio-buttons-react-native": "^1.0.4",
@@ -54,6 +54,7 @@
     "react-navigation": "^4.4.4",
     "react-redux": "^8.0.5",
     "redux": "^4.2.0",
+    "rxjs": "^7.8.1",
     "socket.io-client": "^4.5.4"
   },
   "devDependencies": {

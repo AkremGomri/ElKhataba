@@ -3,7 +3,7 @@ import {  Alert
 } from 'react-native'
 
 const searchUsers = async (search) => {
-    console.log("________________search: ",search,env.BACKEND_SERVER_URL + "/api/user/name/?query=" + search);
+    
     const options = {
         method: "GET",
         headers: {
@@ -18,9 +18,9 @@ const searchUsers = async (search) => {
         var obj={
             content:message,
             sender:senderId,
-            receiver:receiverId,
+            receiver:receiverId
         }
-        console.log('sending message', obj)
+        console.log("obj",obj);
         const options = {
             method: "POST",
             headers: {
@@ -36,7 +36,6 @@ const searchUsers = async (search) => {
     } 
 
 const getChatByIds = async (sender, receiver) => {
-    console.log('getting chat', sender, receiver)
     const options = {
         method: "POST",
         headers: {
@@ -45,7 +44,7 @@ const getChatByIds = async (sender, receiver) => {
         },
         body: JSON.stringify({sender, receiver}) 
     };
-    return await fetch(env.BACKEND_SERVER_URL + "/api/message/room/chat" , options);
+    return await fetch(env.BACKEND_SERVER_URL + "/api/message/room/chat" , options).then(response => response.json());
 }
 
 

@@ -1,15 +1,14 @@
 import React, { useLayoutEffect, useState, useContext, useEffect, useRef, useCallback } from 'react'
 import 'react-native-gesture-handler';
-import { View, Text, FlatList,  StyleSheet, TextInput, Pressable, Alert } from 'react-native'
+import { View, Text, FlatList, StyleSheet, TextInput, Pressable, Alert } from 'react-native'
 import { getData } from '../../services/auth/asyncStorage';
 import MessageComponent from "../../components/Message/MessageComponent";
 import socket from '../../services/socket/socket';
 import { Context } from '../../services/context/Context';
 import { getChatByIds, sendMessage } from '../../services/chat/chatService';
-import {  getUserById } from '../../services/auth/userService';
+import { getUserById } from '../../services/auth/userService';
 
 const Discussion = ({ route, navigation }) => {
-
     const [context, setContext] = useContext(Context);
     //   const messageList = useRef();
     const [chatMessages, setChatMessages] = useState([]);
@@ -26,47 +25,58 @@ const Discussion = ({ route, navigation }) => {
     const [roomId, setRoomId] = useState()
     // const ac = new AbortController();
     useEffect(() => {
-        async function fn() {
-
-            let userId = await getData("userId");
-            userId = userId.value;
-            setRoomId([id, userId].sort().join(""));
-            setSenderId(userId);
-            setReceiverId(id);
-            Promise.all([
+         getData("userId").then((res) => {
+        let userId = res.value;
+        setRoomId([id, userId].sort().join(""));
+        setSenderId(userId);
+        setReceiverId(id);
+         Promise.all([
             getUserById(id).then(response => response.json()).then((res) => {
-                console.log("receiver: ", res);
+                // console.log("receiver: ", res);
                 setReceiver(res);
             }),
             getUserById(userId).then(response => response.json()).then((res) => {
-                console.log("sender: ", res);
+                // console.log("sender: ", res);
                 setSender(res);
-            })]).then(() => {
-            // get chat messages
-            getChatByIds(userId, id)
-            .then((res) => res.json())
-                .then((data) => {
-                    console.log("data: ", data);
-                    setChatMessages(data.roomChat.map(x=>{return {...x,name:(x.sender==userId)?'You':receiver?.fullname}}));
-                });
-            });
+            })]).then(async () => {
+             await socket.switchChat(id);
+            })
+        // // get chat messages
+        // getChatByIds(userId, id)
+        //     .then((data) => {
+        //         let msgs = data.roomChat.map(x => { return { ...x, name: (x.sender == userId) ? 'You' : x.sender_name } });
+        //         // sort msgs by time
+        //         msgs.sort((a, b) => new Date(a.date) - new Date(b.date));
+        //         console.log("settings msgs: ", msgs.length)
+        //         setChatMessages(msgs);
+
+        //     });
+        });
+        
+        var messagesSubscription = null;
+        messagesSubscription = socket.messages$.subscribe((data) => {
+            console.log('new message received: ', data.length);
+            setChatMessages(data??[]);
+        });
+
+        return () => {
+            messagesSubscription?.unsubscribe();
         }
-
-        fn()
     }, [])
-
-    const fn2 = useCallback((data, senderId, roomId, date) => {
-        console.log("3) fn2::chatMessages: ", chatMessages);
-        console.log("3.5) data: ", data);
-        const list = chatMessages.push({ senderId, msg: data, roomId, date });
-        console.log("4) fn2::list: ", list);
-        // messageList.current.textContent = list;
-        setChatMessages([...chatMessages]);
-        // console.log("wallah la fhemt chy: ",chatMessages);
-    }, []);
+    // const fn2 = useCallback((data, senderId, roomId, date) => {
+    //     console.log("3) fn2::chatMessages: ", chatMessages);
+    //     console.log("3.5) data: ", data);
+    //     const list = chatMessages.push({ senderId, msg: data, roomId, date });
+    //     console.log("4) fn2::list: ", list);
+    //     // messageList.current.textContent = list;
+    //     setChatMessages([...chatMessages]);
+    //     // console.log("wallah la fhemt chy: ",chatMessages);
+    // }, []);
 
     //const ac=new AbortController();
     useEffect(() => {
+        // subscribe to incoming messages
+
         Promise.all([
             //context.on("private message", fn2),
 
@@ -106,32 +116,18 @@ const Discussion = ({ route, navigation }) => {
         logs the username, message, and the timestamp to the console.
      */
     const handleNewMessage = () => {
-        const hour =
-            new Date().getHours() < 10
-                ? `0${new Date().getHours()}`
-                : `${new Date().getHours()}`;
-
-        const mins =
-            new Date().getMinutes() < 10
-                ? `0${new Date().getMinutes()}`
-                : `${new Date().getMinutes()}`;
-
-        console.log("1) ", {
-            message,
-            user,
-            timestamp: { hour, mins },
-        });
-        console.log(message, user);
+        // console.log(message, user);
         if (message) {
             setIsSending(true);
             sendMessage(message, receiverId, senderId)
                 .then((data) => {
-                    console.log("data: ", data);
+                    // console.log("data: ", data);
                     var newChat = [...chatMessages];
-                    var msg=data.messages;
+                    var msg = data.messages;
                     console.log("msg: ", msg);
-                    newChat.push({...msg,name:(msg.sender==senderId)?'You':receiver?.fullname});
-                    setChatMessages([...newChat]);
+                    newChat.push({ ...msg, name: (msg.sender == senderId) ? 'You' : receiver?.fullname });
+                    console.log("settings msgs: ", newChat.length)
+                    setChatMessages(newChat);
                 })
                 .catch((error) => {
                     Alert.alert("Error", error.message);
@@ -156,7 +152,7 @@ const Discussion = ({ route, navigation }) => {
                         data={chatMessages}
                         renderItem={({ item }) => (
                             // (item.senderId == user)?
-                            <MessageComponent message={item} user={user} photo={Photo} />
+                            <MessageComponent message={item} user={user} />
                         )}
                         keyExtractor={(item, index) => `${item.date} - ${index}`}
                     />
