@@ -1,20 +1,38 @@
 import { View, Text,StyleSheet,Image } from "react-native";
 import React, { useEffect } from "react";
+import  moment from 'moment';
 //import { Ionicons } from "@expo/vector-icons";
 import IconFeather from 'react-native-vector-icons/Feather';
-export default function MessageComponent({ message, user,photo }) {
+export default function MessageComponent({ message, user }) {
+    // console.log("message: ",message);
     const status = message.senderId !== user;
-
+    var photo=message.photo;
+if(!photo || photo=='')photo=(message.gender == "homme") ? require("../../../assets/images/man.png") : require("../../../assets/images/woman.png")
     useEffect(() => {
-        console.log("message: ",message);
-        console.log("message msg ",message.msg);
-        console.log("message userId: ",message.senderId);
+        // console.log("message: ",message);
+        // console.log("message msg ",message.msg);
+        // console.log("message userId: ",message.senderId);
 
-        console.log(user);
+        // console.log(user);
        // console.log(photo);
     
     }, [])
     
+    const getMessageTime= (date) => {
+        let msgDate = moment.utc(date).local();
+        let currentDate = moment();
+        let diff = currentDate.diff(msgDate, 'days');
+        if (diff == 0) {
+            return msgDate.format('hh:mm a');
+        }
+        else if (diff == 1) {
+            return 'Yesterday';
+        }
+        else {
+            return msgDate.format('DD/MM/YYYY');
+        }
+
+    }
 
     return (
         <View>
@@ -28,7 +46,7 @@ export default function MessageComponent({ message, user,photo }) {
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Image
                     style={{ width: 60, height: 60 ,borderRadius: 400/ 2}}
-                    source= {{uri: photo}}
+                    source= {require("../../../assets/images/man.png")}
                     >
 
                     </Image>
@@ -39,10 +57,11 @@ export default function MessageComponent({ message, user,photo }) {
                                 : [styles.mmessage, { backgroundColor: "rgb(194, 243, 194)" }]
                         }
                     >
-                        <Text>{message.msg}</Text>
+                        <Text>{message.name}</Text>
+                        <Text>{message.content}</Text>
                     </View>
                 </View>
-                <Text style={{ marginLeft: 40 }}>{message.date}</Text>
+                <Text style={{ marginLeft: 40 }}>{getMessageTime(message.time)}</Text>
             </View>
         </View>
     );
