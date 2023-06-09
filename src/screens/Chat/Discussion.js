@@ -7,6 +7,7 @@ import socket from '../../services/socket/socket';
 import { Context } from '../../services/context/Context';
 import { getChatByIds, sendMessage } from '../../services/chat/chatService';
 import { getUserById } from '../../services/auth/userService';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 const Discussion = ({ route, navigation }) => {
     const [context, setContext] = useContext(Context);
@@ -16,10 +17,12 @@ const Discussion = ({ route, navigation }) => {
     const [user, setUser] = useState("");
     const [senderId, setSenderId] = useState("");
     const [receiverId, setReceiverId] = useState("");
+    const [file, setFile] = useState('');
     const [sender, setSender] = useState(null);
     const [receiver, setReceiver] = useState(null);
     const [isSending, setIsSending] = useState(false);
     const { name, id, Photo } = route.params;
+    let scrollRef = React.useRef(null);
 
 
     const [roomId, setRoomId] = useState()
@@ -64,15 +67,6 @@ const Discussion = ({ route, navigation }) => {
             messagesSubscription?.unsubscribe();
         }
     }, [])
-    // const fn2 = useCallback((data, senderId, roomId, date) => {
-    //     console.log("3) fn2::chatMessages: ", chatMessages);
-    //     console.log("3.5) data: ", data);
-    //     const list = chatMessages.push({ senderId, msg: data, roomId, date });
-    //     console.log("4) fn2::list: ", list);
-    //     // messageList.current.textContent = list;
-    //     setChatMessages([...chatMessages]);
-    //     // console.log("wallah la fhemt chy: ",chatMessages);
-    // }, []);
 
     //const ac=new AbortController();
     useEffect(() => {
@@ -120,7 +114,7 @@ const Discussion = ({ route, navigation }) => {
         // console.log(message, user);
         if (message) {
             setIsSending(true);
-            sendMessage(message, receiverId, senderId)
+            sendMessage(message, receiverId, senderId, file)
                 .then((data) => {
                     // console.log("data: ", data);
                     var newChat = [...chatMessages];
@@ -139,6 +133,18 @@ const Discussion = ({ route, navigation }) => {
                 });
         }
     };
+
+    const handleFile=async ()=>{
+        var result = await launchImageLibrary({
+            mediaType: 'photo',
+            selectionLimit: 1,
+            includeBase64: true,
+            });
+            if (!result.didCancel) {
+                console.log("result: ",result.assets[0]);
+                setFile(result.assets[0]);
+            }
+    }
     return (
 
         <View style={styles.messagingscreen}>
@@ -151,6 +157,7 @@ const Discussion = ({ route, navigation }) => {
                 {chatMessages[0] && (
                     <FlatList
                         data={chatMessages}
+                        scroll
                         renderItem={({ item }) => (
                             // (item.senderId == user)?
                             <MessageComponent message={item} user={senderId} />
@@ -160,7 +167,16 @@ const Discussion = ({ route, navigation }) => {
                 )}
             </View>
 
-            <View style={styles.messaginginputContainer}>
+            <View style={styles.messagingInputContainer}>
+            <Pressable
+                    style={styles.fileButtonContainer}
+                    onPress={handleFile}
+                >
+                    <View>
+                        <Text
+                            style={{ color: "#f2f0f1", fontSize: 20 }}>File</Text>
+                    </View>
+                </Pressable>
                 <TextInput
                     style={styles.messaginginput}
                     onChangeText={(value) => setMessage(value)}
@@ -256,9 +272,9 @@ const styles = StyleSheet.create({
     messagingscreen: {
         flex: 1,
     },
-    messaginginputContainer: {
+    messagingInputContainer: {
         width: "100%",
-        minHeight: 100,
+        minHeight: 50,
         backgroundColor: "white",
         paddingVertical: 30,
         paddingHorizontal: 15,
@@ -267,7 +283,8 @@ const styles = StyleSheet.create({
     },
     messaginginput: {
         borderWidth: 1,
-        padding: 15,
+        padding: 5,
+        paddingHorizontal:10,
         flex: 1,
         marginRight: 10,
         borderRadius: 20,
@@ -278,6 +295,13 @@ const styles = StyleSheet.create({
         borderRadius: 3,
         alignItems: "center",
         justifyContent: "center",
+        borderRadius: 50,
+    },
+    fileButtonContainer: {
+        width: 50,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "green",
         borderRadius: 50,
     },
     modalbutton: {

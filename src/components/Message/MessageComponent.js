@@ -4,20 +4,19 @@ import moment from 'moment';
 //import { Ionicons } from "@expo/vector-icons";
 import IconFeather from 'react-native-vector-icons/Feather';
 export default function MessageComponent({ message, user }) {
-    // console.log("message: ",message);
+    console.log("message: ",message);
+    // if(message._id=="6483574835b8eadb2bbf0b98")message.sender_id="6483574835b8eadb2bbf0b98";
+    // message.content="test contents";
+
     const isMyMessage = message.sender_id === user;
-    console.log("isMyMessage: ", isMyMessage, message, user);
+    
     var photo = message.photo;
     if (!photo || photo == '') photo = (message.gender == "homme") ? require("../../../assets/images/man.png") : require("../../../assets/images/woman.png")
     useEffect(() => {
-        // console.log("message: ",message);
-        // console.log("message msg ",message.msg);
-        // console.log("message userId: ",message.senderId);
 
-        // console.log(user);
-        // console.log(photo);
 
     }, [])
+    const msgPhoto = message.photo ==null || message.photo==""?null:message.photo;
 
     const getMessageTime = (date) => {
         let msgDate = moment.utc(date).local();
@@ -57,6 +56,11 @@ export default function MessageComponent({ message, user }) {
                     </Image>
                     <View style={styles.message}>
                         <Text style={styles.name}>{message.name}</Text>
+                        {/* <Image
+                        style={{ width: 60, height: 60, borderRadius: 400 / 2 }}
+                        source={{uri:msgPhoto}}
+                    >
+                    </Image> */}
                         <Text>{message.content}</Text>
                     </View>
                 </View>

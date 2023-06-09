@@ -14,25 +14,34 @@ const searchUsers = async (search) => {
     return await fetch(env.BACKEND_SERVER_URL + "/api/user/name/?query=" + search, options);
 }
 
-    const sendMessage = async (message,receiverId, senderId) => {
-        var obj={
-            content:message,
-            sender:senderId,
-            receiver:receiverId
-        }
-        console.log("obj",obj);
+    const sendMessage = async (message,receiverId, senderId, file) => {
+        console.log("obj: ",JSON.stringify(file))
+       var extension  = file?.fileName?.split('.')?.pop()??'';
+        // if we have file, it will be sent as multipart/form-data
+        // otherwise, it will be sent as application/json
+        var obj = {
+            content: message,
+            sender: senderId,
+            receiver: receiverId,
+            file: file?.base64,
+            filename: file?.fileName,
+            filetype: extension,
+        };
         const options = {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json',
+                'Content-Type': 'multipart/form-data',
                 'localtonet-skip-warning':true
             },
-            body: JSON.stringify(obj),
+            body: JSON.stringify(obj)
+            //  files
+
         }
 
         return await fetch(env.BACKEND_SERVER_URL + '/api/message', options)
-            .then(response => response.json());
+            .then(response => response.json())
+            .catch(e=>{console.log(e.message); throw e;});
     } 
 
 const getChatByIds = async (sender, receiver) => {
