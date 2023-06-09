@@ -56,6 +56,7 @@ const Discussion = ({ route, navigation }) => {
         var messagesSubscription = null;
         messagesSubscription = socket.messages$.subscribe((data) => {
             console.log('new message received: ', data.length);
+
             setChatMessages(data??[]);
         });
 
@@ -125,7 +126,7 @@ const Discussion = ({ route, navigation }) => {
                     var newChat = [...chatMessages];
                     var msg = data.messages;
                     console.log("msg: ", msg);
-                    newChat.push({ ...msg, name: (msg.sender == senderId) ? 'You' : receiver?.fullname });
+                    // newChat.push({ ...msg, name: (msg.sender == senderId) ? 'You' : receiver?.fullname });
                     console.log("settings msgs: ", newChat.length)
                     setChatMessages(newChat);
                 })
@@ -152,7 +153,7 @@ const Discussion = ({ route, navigation }) => {
                         data={chatMessages}
                         renderItem={({ item }) => (
                             // (item.senderId == user)?
-                            <MessageComponent message={item} user={user} />
+                            <MessageComponent message={item} user={senderId} />
                         )}
                         keyExtractor={(item, index) => `${item.date} - ${index}`}
                     />
