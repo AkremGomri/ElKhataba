@@ -2,11 +2,15 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import React, { useEffect } from "react";
 import moment from 'moment';
 //import { Ionicons } from "@expo/vector-icons";
+import { useWindowDimensions } from 'react-native';
+
 import IconFeather from 'react-native-vector-icons/Feather';
 export default function MessageComponent({ message, user }) {
     console.log("message: ",message);
-    // if(message._id=="6483574835b8eadb2bbf0b98")message.sender_id="6483574835b8eadb2bbf0b98";
-    // message.content="test contents";
+
+    const { height, width } = useWindowDimensions();
+    if(message._id=="6483574835b8eadb2bbf0b98")message.sender_id="6483574835b8eadb2bbf0b98";
+    message.content="test contents from message component test contents from message comp asdf asdf asdf ";
 
     const isMyMessage = message.sender_id === user;
     
@@ -45,22 +49,21 @@ export default function MessageComponent({ message, user }) {
                     alignItems: "center",
                     backgroundColor: isMyMessage?"rgb(194, 243, 194)":"#e2e2e2",
                     borderRadius:10,
-                    paddingVertical:5,
-                    paddingHorizontal:10,
-                    width:'80%'
+                    padding:5,
+                    width:width-80,
                 }}>
                     <Image
                         style={{ width: 60, height: 60, borderRadius: 400 / 2 }}
                         source={require("../../../assets/images/man.png")}
                     >
                     </Image>
-                    <View style={styles.message}>
+                    <View style={{...styles.message, width:width-160}}>
                         <Text style={styles.name}>{message.name}</Text>
-                        {/* <Image
-                        style={{ width: 60, height: 60, borderRadius: 400 / 2 }}
+                        {msgPhoto && <Image
+                        style={{ width:100,height:100, maxWidth: width-220, maxHeight: 220, borderRadius:5 }}
                         source={{uri:msgPhoto}}
                     >
-                    </Image> */}
+                    </Image>}
                         <Text>{message.content}</Text>
                     </View>
                 </View>
@@ -72,19 +75,7 @@ export default function MessageComponent({ message, user }) {
 
 
 const styles = StyleSheet.create({
-    modalContainer: {
-        width: "100%",
-        borderTopColor: "#ddd",
-        borderTopWidth: 1,
-        elevation: 1,
-        height: 400,
-        backgroundColor: "#fff",
-        position: "absolute",
-        bottom: 0,
-        zIndex: 10,
-        paddingVertical: 50,
-        paddingHorizontal: 20,
-    },
+
     messageContainer: {
         width: '100%',
     },
@@ -97,7 +88,9 @@ const styles = StyleSheet.create({
         padding: 5
     },
     message:{
-        flexGrow:1
+        //flexGrow:1
+        
+
     },
     name: {
         fontWeight: "bold",
