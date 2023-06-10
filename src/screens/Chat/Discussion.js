@@ -8,6 +8,8 @@ import { Context } from '../../services/context/Context';
 import { getChatByIds, sendMessage } from '../../services/chat/chatService';
 import { getUserById } from '../../services/auth/userService';
 import { launchImageLibrary } from 'react-native-image-picker';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faPaperclip} from '@fortawesome/free-solid-svg-icons'
 
 const Discussion = ({ route, navigation }) => {
     const [context, setContext] = useContext(Context);
@@ -150,13 +152,14 @@ const Discussion = ({ route, navigation }) => {
         <View style={styles.messagingscreen}>
             <View
                 style={[
-                    styles.messagingscreen,
+                    styles.chatWrapper,
                     { paddingVertical: 15, paddingHorizontal: 10 },
                 ]}
             >
                 {chatMessages[0] && (
                     <FlatList
                         data={chatMessages}
+                        style={styles.chat}
                         scroll
                         renderItem={({ item }) => (
                             // (item.senderId == user)?
@@ -172,13 +175,10 @@ const Discussion = ({ route, navigation }) => {
                     style={styles.fileButtonContainer}
                     onPress={handleFile}
                 >
-                    <View>
-                        <Text
-                            style={{ color: "#f2f0f1", fontSize: 20 }}>File</Text>
-                    </View>
+                    <FontAwesomeIcon icon={faPaperclip} size={20} color="#000" />
                 </Pressable>
                 <TextInput
-                    style={styles.messaginginput}
+                    style={styles.messagingInput}
                     onChangeText={(value) => setMessage(value)}
                     value={message}
                 />
@@ -198,90 +198,28 @@ const Discussion = ({ route, navigation }) => {
 }
 
 const styles = StyleSheet.create({
-    loginscreen: {
+    chatWrapper: {
+        backgroundColor:"#fff",
         flex: 1,
-        backgroundColor: "#EEF1FF",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 12,
-        width: "100%",
     },
-    loginheading: {
-        fontSize: 26,
-        marginBottom: 10,
+    chat:{
+        display: "flex",
+        flexDirection: "column-reverse",
     },
-    logininputContainer: {
-        width: "100%",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    logininput: {
-        borderWidth: 1,
-        width: "90%",
-        padding: 8,
-        borderRadius: 2,
-    },
-    loginbutton: {
-        backgroundColor: "green",
-        padding: 12,
-        marginVertical: 10,
-        width: "60%",
-        borderRadius: "50%",
-        elevation: 1,
-    },
-    loginbuttonText: {
-        textAlign: "center",
-        color: "#fff",
-        fontWeight: "600",
-    },
-    chatscreen: {
-        backgroundColor: "#F747F7",
-        flex: 1,
-        padding: 10,
-        position: "relative",
-    },
-    chatheading: {
-        fontSize: 24,
-        fontWeight: "bold",
-        color: "green",
-    },
-    chattopContainer: {
-        backgroundColor: "#F7F7F7",
-        height: 70,
-        width: "100%",
-        padding: 20,
-        justifyContent: "center",
-        marginBottom: 15,
-        elevation: 2,
-    },
-    chatheader: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-    },
-    chatlistContainer: {
-        paddingHorizontal: 10,
-    },
-    chatemptyContainer: {
-        width: "100%",
-        height: "80%",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    chatemptyText: { fontWeight: "bold", fontSize: 24, paddingBottom: 30 },
+
     messagingscreen: {
         flex: 1,
+        backgroundColor:'red'
     },
     messagingInputContainer: {
         width: "100%",
-        minHeight: 50,
         backgroundColor: "white",
-        paddingVertical: 30,
-        paddingHorizontal: 15,
+        paddingBottom: 10,
+        paddingHorizontal: 10,
         justifyContent: "center",
         flexDirection: "row",
     },
-    messaginginput: {
+    messagingInput: {
         borderWidth: 1,
         padding: 5,
         paddingHorizontal:10,
@@ -298,10 +236,9 @@ const styles = StyleSheet.create({
         borderRadius: 50,
     },
     fileButtonContainer: {
-        width: 50,
+        width: 30,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "green",
         borderRadius: 50,
     },
     modalbutton: {

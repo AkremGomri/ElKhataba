@@ -10,6 +10,9 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "@fortawesome/react-native-fontawesome": "^0.3.0",
     "@react-native-camera-roll/camera-roll": "^5.1.0",
     "@react-native-community/datetimepicker": "^6.2.0",
     "@react-native-community/masked-view": "^0.1.11",
@@ -48,7 +51,7 @@
     "react-native-screens": "^3.14.0",
     "react-native-select-dropdown": "^2.0.3",
     "react-native-share": "^8.0.0",
-    "react-native-svg": "^13.5.0",
+    "react-native-svg": "^13.9.0",
     "react-native-vector-icons": "^9.2.0",
     "react-native-video": "^5.2.1",
     "react-navigation": "^4.4.4",
