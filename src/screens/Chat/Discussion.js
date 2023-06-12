@@ -9,7 +9,7 @@ import { getChatByIds, sendMessage } from '../../services/chat/chatService';
 import { getUserById } from '../../services/auth/userService';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faPaperclip} from '@fortawesome/free-solid-svg-icons'
+import { faPaperclip } from '@fortawesome/free-solid-svg-icons'
 
 const Discussion = ({ route, navigation }) => {
     const [context, setContext] = useContext(Context);
@@ -30,39 +30,39 @@ const Discussion = ({ route, navigation }) => {
     const [roomId, setRoomId] = useState()
     // const ac = new AbortController();
     useEffect(() => {
-         getData("userId").then((res) => {
-        let userId = res.value;
-        setRoomId([id, userId].sort().join(""));
-        setSenderId(userId);
-        setReceiverId(id);
-         Promise.all([
-            getUserById(id).then(response => response.json()).then((res) => {
-                // console.log("receiver: ", res);
-                setReceiver(res);
-            }),
-            getUserById(userId).then(response => response.json()).then((res) => {
-                // console.log("sender: ", res);
-                setSender(res);
-            })]).then(async () => {
-             await socket.switchChat(id);
-            })
-        // // get chat messages
-        // getChatByIds(userId, id)
-        //     .then((data) => {
-        //         let msgs = data.roomChat.map(x => { return { ...x, name: (x.sender == userId) ? 'You' : x.sender_name } });
-        //         // sort msgs by time
-        //         msgs.sort((a, b) => new Date(a.date) - new Date(b.date));
-        //         console.log("settings msgs: ", msgs.length)
-        //         setChatMessages(msgs);
+        getData("userId").then((res) => {
+            let userId = res.value;
+            setRoomId([id, userId].sort().join(""));
+            setSenderId(userId);
+            setReceiverId(id);
+            Promise.all([
+                getUserById(id).then(response => response.json()).then((res) => {
+                    // console.log("receiver: ", res);
+                    setReceiver(res);
+                }),
+                getUserById(userId).then(response => response.json()).then((res) => {
+                    // console.log("sender: ", res);
+                    setSender(res);
+                })]).then(async () => {
+                    await socket.switchChat(id);
+                })
+            // // get chat messages
+            // getChatByIds(userId, id)
+            //     .then((data) => {
+            //         let msgs = data.roomChat.map(x => { return { ...x, name: (x.sender == userId) ? 'You' : x.sender_name } });
+            //         // sort msgs by time
+            //         msgs.sort((a, b) => new Date(a.date) - new Date(b.date));
+            //         console.log("settings msgs: ", msgs.length)
+            //         setChatMessages(msgs);
 
-        //     });
+            //     });
         });
-        
+
         var messagesSubscription = null;
         messagesSubscription = socket.messages$.subscribe((data) => {
             console.log('new message received: ', data.length);
 
-            setChatMessages(data??[]);
+            setChatMessages(data ?? []);
         });
 
         return () => {
@@ -136,16 +136,16 @@ const Discussion = ({ route, navigation }) => {
         }
     };
 
-    const handleFile=async ()=>{
+    const handleFile = async () => {
         var result = await launchImageLibrary({
             mediaType: 'photo',
             selectionLimit: 1,
             includeBase64: true,
-            });
-            if (!result.didCancel) {
-                console.log("result: ",result.assets[0]);
-                setFile(result.assets[0]);
-            }
+        });
+        if (!result.didCancel) {
+            // console.log("result: ",result.assets[0]);
+            setFile(result.assets[0]);
+        }
     }
     return (
 
@@ -169,9 +169,9 @@ const Discussion = ({ route, navigation }) => {
                     />
                 )}
             </View>
-
             <View style={styles.messagingInputContainer}>
-            <Pressable
+                {/* <View style={{ height: 50 }}>{file && <Image source={{ uri: file.uri }} style={{ width: 50, height: 50 }} />}</View> */}
+                <Pressable
                     style={styles.fileButtonContainer}
                     onPress={handleFile}
                 >
@@ -199,17 +199,17 @@ const Discussion = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
     chatWrapper: {
-        backgroundColor:"#fff",
+        backgroundColor: "#fff",
         flex: 1,
     },
-    chat:{
+    chat: {
         display: "flex",
         flexDirection: "column-reverse",
     },
 
     messagingscreen: {
         flex: 1,
-        backgroundColor:'red'
+        backgroundColor: 'red'
     },
     messagingInputContainer: {
         width: "100%",
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     messagingInput: {
         borderWidth: 1,
         padding: 5,
-        paddingHorizontal:10,
+        paddingHorizontal: 10,
         flex: 1,
         marginRight: 10,
         borderRadius: 20,
