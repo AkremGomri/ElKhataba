@@ -18,7 +18,7 @@ const Discussion = ({ route, navigation }) => {
     const [message, setMessage] = useState("");
     const [senderId, setSenderId] = useState("");
     const [receiverId, setReceiverId] = useState("");
-    const [file, setFile] = useState('');
+    const [file, setFile] = useState(null);
     const [sender, setSender] = useState(null);
     const [receiver, setReceiver] = useState(null);
     const [isSending, setIsSending] = useState(false);
@@ -138,10 +138,8 @@ const Discussion = ({ route, navigation }) => {
                     />
                 )}
             </View>
-
-            {file && <View>
+            {file!=null && <View>
                 <Image source={{ uri: file?.uri }} style={{ width: 70, height: 70 }} />
-                {/* cross button to clear image */}
                 <Pressable
                     style={styles.clearImage}
                     onPress={() => setFile(null)}
