@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useState, useContext, useEffect, useRef, useCallback } from 'react'
 import 'react-native-gesture-handler';
-import { View, Text, FlatList, StyleSheet, TextInput, Pressable, Alert } from 'react-native'
+import { View, Text, FlatList, StyleSheet, TextInput, Pressable, Alert, Image } from 'react-native'
 import { getData } from '../../services/auth/asyncStorage';
 import MessageComponent from "../../components/Message/MessageComponent";
 import socket from '../../services/socket/socket';
@@ -10,6 +10,7 @@ import { getUserById } from '../../services/auth/userService';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPaperclip } from '@fortawesome/free-solid-svg-icons'
+import { colors } from 'react-native-elements';
 
 const Discussion = ({ route, navigation }) => {
     const [context, setContext] = useContext(Context);
@@ -113,27 +114,28 @@ const Discussion = ({ route, navigation }) => {
         logs the username, message, and the timestamp to the console.
      */
     const handleNewMessage = () => {
-        // console.log(message, user);
-        if (message) {
-            setIsSending(true);
-            sendMessage(message, receiverId, senderId, file)
-                .then((data) => {
-                    // console.log("data: ", data);
-                    var newChat = [...chatMessages];
-                    var msg = data.messages;
-                    console.log("msg: ", msg);
-                    // newChat.push({ ...msg, name: (msg.sender == senderId) ? 'You' : receiver?.fullname });
-                    console.log("settings msgs: ", newChat.length)
-                    setChatMessages(newChat);
-                })
-                .catch((error) => {
-                    Alert.alert("Error", error.message);
-                })
-                .finally(() => {
-                    setMessage("");
-                    setIsSending(false);
-                });
-        }
+        // to avoid sending message if both message and file are empty
+        if (message || file) return;
+
+        setIsSending(true);
+        sendMessage(message, receiverId, senderId, file)
+            .then((data) => {
+                // console.log("data: ", data);
+                var newChat = [...chatMessages];
+                var msg = data.messages;
+                console.log("msg: ", msg);
+                // newChat.push({ ...msg, name: (msg.sender == senderId) ? 'You' : receiver?.fullname });
+                console.log("settings msgs: ", newChat.length)
+                setChatMessages(newChat);
+            })
+            .catch((error) => {
+                Alert.alert("Error", error.message);
+            })
+            .finally(() => {
+                setMessage("");
+                setIsSending(false);
+            });
+
     };
 
     const handleFile = async () => {
@@ -143,7 +145,6 @@ const Discussion = ({ route, navigation }) => {
             includeBase64: true,
         });
         if (!result.didCancel) {
-            // console.log("result: ",result.assets[0]);
             setFile(result.assets[0]);
         }
     }
@@ -153,24 +154,38 @@ const Discussion = ({ route, navigation }) => {
             <View
                 style={[
                     styles.chatWrapper,
-                    { paddingVertical: 15, paddingHorizontal: 10 },
+                    { paddingVertical: 15, paddingHorizontal: 10, overflow: 'scroll' },
                 ]}
             >
                 {chatMessages[0] && (
                     <FlatList
                         data={chatMessages}
                         style={styles.chat}
-                        scroll
+                        ref={(it) => (scrollRef.current = it)}
+                        onContentSizeChange={() =>
+                            scrollRef.current?.scrollToEnd({ animated: false })
+                        }
                         renderItem={({ item }) => (
-                            // (item.senderId == user)?
                             <MessageComponent message={item} user={senderId} />
                         )}
                         keyExtractor={(item, index) => `${item.date} - ${index}`}
                     />
                 )}
             </View>
+
+            {file && <View>
+                <Image source={{ uri: file?.uri }} style={{ width: 70, height: 70 }} />
+                {/* cross button to clear image */}
+                <Pressable
+                    style={styles.clearImage}
+                    onPress={() => setFile(null)}
+                >
+                    <Text style={{ color: '#fff', fontSize: 18 }}>x</Text>
+                </Pressable>
+            </View>
+            }
             <View style={styles.messagingInputContainer}>
-                {/* <View style={{ height: 50 }}>{file && <Image source={{ uri: file.uri }} style={{ width: 50, height: 50 }} />}</View> */}
+                {/* {file && <Image source={{ uri: file.uri }} style={{ width: 50, height: 50 }} />} */}
                 <Pressable
                     style={styles.fileButtonContainer}
                     onPress={handleFile}
@@ -201,15 +216,14 @@ const styles = StyleSheet.create({
     chatWrapper: {
         backgroundColor: "#fff",
         flex: 1,
+        overflow: 'scroll',
     },
     chat: {
-        display: "flex",
-        flexDirection: "column-reverse",
     },
 
     messagingscreen: {
         flex: 1,
-        backgroundColor: 'red'
+        backgroundColor: '#fff'
     },
     messagingInputContainer: {
         width: "100%",
@@ -226,6 +240,18 @@ const styles = StyleSheet.create({
         flex: 1,
         marginRight: 10,
         borderRadius: 20,
+    },
+    clearImage: {
+        position: 'absolute',
+        top: 0,
+        // we have to add 45 because button with is 25 and width of image is 70 i.e., 45+25=70
+        left: 45,
+        width: 25,
+        height: 25,
+        borderRadius: 50,
+        backgroundColor: '#00000099',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     messagingbuttonContainer: {
         width: "30%",
