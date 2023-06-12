@@ -1,23 +1,21 @@
-import React, { useLayoutEffect, useState, useContext, useEffect, useRef, useCallback } from 'react'
+import React, { useLayoutEffect, useState, useContext, useEffect } from 'react'
 import 'react-native-gesture-handler';
 import { View, Text, FlatList, StyleSheet, TextInput, Pressable, Alert, Image } from 'react-native'
 import { getData } from '../../services/auth/asyncStorage';
 import MessageComponent from "../../components/Message/MessageComponent";
 import socket from '../../services/socket/socket';
 import { Context } from '../../services/context/Context';
-import { getChatByIds, sendMessage } from '../../services/chat/chatService';
+import { sendMessage } from '../../services/chat/chatService';
 import { getUserById } from '../../services/auth/userService';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPaperclip } from '@fortawesome/free-solid-svg-icons'
-import { colors } from 'react-native-elements';
 
 const Discussion = ({ route, navigation }) => {
     const [context, setContext] = useContext(Context);
     //   const messageList = useRef();
     const [chatMessages, setChatMessages] = useState([]);
     const [message, setMessage] = useState("");
-    const [user, setUser] = useState("");
     const [senderId, setSenderId] = useState("");
     const [receiverId, setReceiverId] = useState("");
     const [file, setFile] = useState('');
@@ -47,16 +45,6 @@ const Discussion = ({ route, navigation }) => {
                 })]).then(async () => {
                     await socket.switchChat(id);
                 })
-            // // get chat messages
-            // getChatByIds(userId, id)
-            //     .then((data) => {
-            //         let msgs = data.roomChat.map(x => { return { ...x, name: (x.sender == userId) ? 'You' : x.sender_name } });
-            //         // sort msgs by time
-            //         msgs.sort((a, b) => new Date(a.date) - new Date(b.date));
-            //         console.log("settings msgs: ", msgs.length)
-            //         setChatMessages(msgs);
-
-            //     });
         });
 
         var messagesSubscription = null;
@@ -70,25 +58,6 @@ const Discussion = ({ route, navigation }) => {
             messagesSubscription?.unsubscribe();
         }
     }, [])
-
-    //const ac=new AbortController();
-    useEffect(() => {
-        // subscribe to incoming messages
-
-        Promise.all([
-            //context.on("private message", fn2),
-
-        ])
-
-        return () => {
-            //socket.off("private message", fn2);
-        };
-        //   const MessageList = socket.getMessageList(roomId);
-        //   setChatMessages(MessageList);
-    }, [context])
-
-
-    //👇🏻 Access the chatroom's name and id
 
     //👇🏻 This function gets the username saved on AsyncStorage
     const getUserId = async () => {
@@ -123,9 +92,6 @@ const Discussion = ({ route, navigation }) => {
                 // console.log("data: ", data);
                 var newChat = [...chatMessages];
                 var msg = data.messages;
-                console.log("msg: ", msg);
-                // newChat.push({ ...msg, name: (msg.sender == senderId) ? 'You' : receiver?.fullname });
-                console.log("settings msgs: ", newChat.length)
                 setChatMessages(newChat);
             })
             .catch((error) => {
