@@ -21,8 +21,8 @@ const searchUsers = async (search) => {
         // otherwise, it will be sent as application/json
         var obj = {
             content: message,
-            sender: '64806a5106f17a0d2c1c1558',//senderId,
-            receiver: '6481af888e2dffa6a40bf714',//receiverId,
+            sender: senderId,
+            receiver: receiverId,
             file: file?.base64,
             fileName: file?.fileName,
             fileType: extension,
@@ -33,7 +33,6 @@ const searchUsers = async (search) => {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'localtonet-skip-warning':true
             },
             body: JSON.stringify(obj)
             //  files
