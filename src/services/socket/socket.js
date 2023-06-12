@@ -58,6 +58,7 @@ const switchChat = async (userId) => {
     let currentUserId = await getData("userId");
 
     let chat = await getChatByIds(currentUserId.value, userId);
+    console.log("chat: ", chat)
     roomId = chat.room_id;
     userId = currentUserId.value;
     let msgs = chat.roomChat.map(x => { return { ...x, name: (x.sender == userId) ? 'You' : x.sender_name } });

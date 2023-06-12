@@ -9,19 +9,23 @@ export default function MessageComponent({ message, user }) {
     console.log("message: ",message);
 
     const { height, width } = useWindowDimensions();
-    if(message._id=="6483574835b8eadb2bbf0b98")message.sender_id="6483574835b8eadb2bbf0b98";
-    message.content="test contents from message component test contents from message comp asdf asdf asdf ";
+    // if(message._id=="6483574835b8eadb2bbf0b98")message.sender_id="6483574835b8eadb2bbf0b98";
+    // message.content="test contents from message component test contents from message comp asdf asdf asdf ";
 
     const isMyMessage = message.sender_id === user;
     
+    /// photo of sender
+    /// it will always be null
     var photo = message.photo;
     if (!photo || photo == '') photo = (message.gender == "homme") ? require("../../../assets/images/man.png") : require("../../../assets/images/woman.png")
-    useEffect(() => {
 
+    /// file photo of message content
+    const msgPhoto = message.file ==null || message.file==""?null:message.file;
 
-    }, [])
-    const msgPhoto = message.photo ==null || message.photo==""?null:message.photo;
-
+    /// get message time
+    /// if message is today, return hh:mm a
+    /// if message is yesterday, return yesterday
+    /// if message is older than yesterday, return DD/MM/YYYY
     const getMessageTime = (date) => {
         let msgDate = moment.utc(date).local();
         let currentDate = moment();
