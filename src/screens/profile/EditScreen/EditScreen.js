@@ -46,15 +46,55 @@ const EditScreen = ({ navigation, route,}) => {
     ];
    
     const onFileSelected = (image) => {
-        console.log("c'est l'image choisie" ,image);
-        closeSheet();
+        const {data, ...rest} = image
+        const uploadToServer = async () =>{
+            try {
+                const nameAndType = image.path.split('/').pop()
+                const type = nameAndType.split('.').pop();
+                const name = nameAndType.split('.')[0];
+                const fileZip = {
+                    file: image.data,
+                    fileName: name,
+                    fileType: type
+                }
+                console.log(fileZip)
+                const options = {
+                    method: "PUT",
+                    // mode: "no-cors", // no-cors, *cors, same-origin
+                    // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+                    // credentials: "omit", // include, *same-origin, omit
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        // 'Authorization': 'Bearer '
+                    },
+                    body: JSON.stringify(fileZip),
+                }
+        
+                 fetch("http://localhost:3000/api/user/update-profile/64837888d356e89a7c03b8fc", options)
+                .then((res) => {
+                    console.log("success-====>",res)
+                    debugger
+                })
+                .catch((err) => {
+                    console.log("error----  ", err)
+                })
+
+            }
+            catch (err) {
+                console.log("error-====>",err)
+            }
+          
+        }
+        uploadToServer();
+        closeSheet(); 
         setLocalFile(image);
         setPhoto(image["path"]);
-        console.log(Photo);
-        setUploadSucceeded(true);    
+        setUploadSucceeded(true);   
+
       };
     const closeSheet = () => {
-        if (sheetRef.current) {
+        if (sheetRef?.current) {
           sheetRef.current.close();
         }
       };

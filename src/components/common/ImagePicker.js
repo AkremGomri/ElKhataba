@@ -19,6 +19,7 @@ const ImagePicker = React.forwardRef(({onFileSelected,onDeleteImage}, ref) => {
           height: 300,
           cropping: true,
           freeStyleCropEnabled: true,
+          includeBase64: true
         })
           .then((images) => {
             onFileSelected(images);
@@ -35,6 +36,7 @@ const ImagePicker = React.forwardRef(({onFileSelected,onDeleteImage}, ref) => {
           height: 300,
           cropping: true,
           freeStyleCropEnabled: true,
+          includeBase64: true
         })
           .then((images) => {
             onFileSelected(images);
