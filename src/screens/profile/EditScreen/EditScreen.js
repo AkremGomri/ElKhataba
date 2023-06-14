@@ -71,13 +71,12 @@ const EditScreen = ({ navigation, route,}) => {
                     body: JSON.stringify(fileZip),
                 }
         
-                 fetch("http://localhost:3000/api/user/update-profile/64837888d356e89a7c03b8fc", options)
+                // replace 64837888d356e89a7c03b8fc with ${userID}
+                 fetch(`${env.BACKEND_SERVER_URL}/api/user/update-profile/64837888d356e89a7c03b8fc`, options)
                 .then((res) => {
-                    console.log("success-====>",res)
-                    debugger
+             
                 })
                 .catch((err) => {
-                    console.log("error----  ", err)
                 })
 
             }
