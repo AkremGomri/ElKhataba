@@ -31,11 +31,9 @@ try {
         getData("userId").then((userId) => {
             socket.emit('register', userId.value);
             socket.on('incomingMessage', (data) => {
-                console.log("incomingMessage: ", roomId,data.room_id);
                 // check if the message is for the current user
                 if (data.room_id == roomId) {
                     firstValueFrom(messages$).then((msgs) => {
-                        console.log("msgs subscribed: ", msgs.length);
                         msgs.push({ ...data, name: (data.sender_id == userId) ? 'You' : data.sender_name });
                         messages.next(msgs);
                     });

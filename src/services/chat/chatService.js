@@ -15,7 +15,7 @@ const searchUsers = async (search) => {
 }
 
     const sendMessage = async (message,receiverId, senderId, file) => {
-        console.log("obj: ",JSON.stringify(file))
+        console.log(message,receiverId, senderId, file);
        var extension  = file?.fileName?.split('.')?.pop()??'';
         // if we have file, it will be sent as multipart/form-data
         // otherwise, it will be sent as application/json

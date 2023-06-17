@@ -36,11 +36,9 @@ const Discussion = ({ route, navigation }) => {
             setReceiverId(id);
             Promise.all([
                 getUserById(id).then(response => response.json()).then((res) => {
-                    // console.log("receiver: ", res);
                     setReceiver(res);
                 }),
                 getUserById(userId).then(response => response.json()).then((res) => {
-                    // console.log("sender: ", res);
                     setSender(res);
                 })]).then(async () => {
                     await socket.switchChat(id);
@@ -49,8 +47,6 @@ const Discussion = ({ route, navigation }) => {
 
         var messagesSubscription = null;
         messagesSubscription = socket.messages$.subscribe((data) => {
-            console.log('new message received: ', data.length);
-
             setChatMessages(data ?? []);
         });
 
@@ -84,14 +80,13 @@ const Discussion = ({ route, navigation }) => {
      */
     const handleNewMessage = () => {
         // to avoid sending message if both message and file are empty
-        if (message || file) return;
-
+        if (!message && !file) return;
         setIsSending(true);
         sendMessage(message, receiverId, senderId, file)
             .then((data) => {
-                // console.log("data: ", data);
                 var newChat = [...chatMessages];
                 var msg = data.messages;
+                // console.log("message: ", msg)
                 setChatMessages(newChat);
             })
             .catch((error) => {
