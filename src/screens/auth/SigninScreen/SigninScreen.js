@@ -59,6 +59,7 @@ const onSignInPressed= async (e) => {
           });
           dispatch(setIAmConnected(true))
           setContext(socket);
+            socket.emit('register', data.userId);
 
             return navigation.replace("AppNavigator");
           }
@@ -77,7 +78,7 @@ const onSignInPressed= async (e) => {
       body: JSON.stringify(data),
     }
     onSuccess({
-      "userId": "6481af888e2dffa6a40bf714",
+      "userId": "649303ae1c444f0d4e9d6c6d",
       "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDgxYWY4ODhlMmRmZmE2YTQwYmY3MTQiLCJpYXQiOjE2ODYzMDk1MzIsImV4cCI6MTY4NjM5NTkzMn0.P_TcOsuAFZfNCCQkarw0qRXcljEbj_i7xRy2ZMoW4OI"
       });
     return;

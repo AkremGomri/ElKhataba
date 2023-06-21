@@ -10,6 +10,7 @@ import { getUserById } from '../../services/auth/userService';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPaperclip } from '@fortawesome/free-solid-svg-icons'
+import { firstValueFrom } from 'rxjs';
 
 const Discussion = ({ route, navigation }) => {
     const [context, setContext] = useContext(Context);
@@ -19,19 +20,19 @@ const Discussion = ({ route, navigation }) => {
     const [senderId, setSenderId] = useState("");
     const [receiverId, setReceiverId] = useState("");
     const [file, setFile] = useState(null);
+    const [user, setUser] = useState(null);
     const [sender, setSender] = useState(null);
     const [receiver, setReceiver] = useState(null);
     const [isSending, setIsSending] = useState(false);
     const { name, id, Photo } = route.params;
     let scrollRef = React.useRef(null);
 
-
     const [roomId, setRoomId] = useState()
     // const ac = new AbortController();
     useEffect(() => {
         getData("userId").then((res) => {
             let userId = res.value;
-            setRoomId([id, userId].sort().join(""));
+            
             setSenderId(userId);
             setReceiverId(id);
             Promise.all([
@@ -40,18 +41,31 @@ const Discussion = ({ route, navigation }) => {
                 }),
                 getUserById(userId).then(response => response.json()).then((res) => {
                     setSender(res);
-                })]).then(async () => {
-                    await socket.switchChat(id);
+                })
+            ]).then(async () => {
+                await socket.switchChat(id);
                 })
         });
 
-        var messagesSubscription = null;
-        messagesSubscription = socket.messages$.subscribe((data) => {
+        
+        var messagesSubscription = [];
+        messagesSubscription.push(socket.roomId$.subscribe((data) => {
+            // console.log('new room id received: ', data);
+            setRoomId(data);
+        }));
+        messagesSubscription.push(socket.messages$.subscribe(async (data) => {
+            var _roomId=await firstValueFrom(socket.roomId$);
+            // console.log('new message received: ', data.length, _roomId);
+
+            // data.forEach((msg) => {console.log(msg)})
+            // filter data to get only messages for this room
+            data = data.filter((msg) => msg.room_id == _roomId);
+            // console.log('new message received: ', data.length, roomId);
             setChatMessages(data ?? []);
-        });
+        }));
 
         return () => {
-            messagesSubscription?.unsubscribe();
+            messagesSubscription?.forEach(x=>{x?.unsubscribe()});
         }
     }, [])
 
@@ -64,7 +78,7 @@ const Discussion = ({ route, navigation }) => {
                 setUser(id);
             }
         } catch (e) {
-            console.error("Error while loading username!");
+            console.error("Error while loading username!", e);
         }
     };
 

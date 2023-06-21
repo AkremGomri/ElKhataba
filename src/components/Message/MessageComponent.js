@@ -9,8 +9,6 @@ export default function MessageComponent({ message, user }) {
     console.log("message: ",message);
 
     const { height, width } = useWindowDimensions();
-    // if(message._id=="6483574835b8eadb2bbf0b98")message.sender_id="6483574835b8eadb2bbf0b98";
-    // message.content="test contents from message component test contents from message comp asdf asdf asdf ";
 
     const isMyMessage = message.sender_id === user;
     

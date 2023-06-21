@@ -39,6 +39,7 @@ const searchUsers = async (search) => {
 
         }
 
+        console.log("options: ",options);
         return await fetch(env.BACKEND_SERVER_URL + '/api/message', options)
             .then(response =>{
                 console.log("response: ",response);
@@ -55,6 +56,7 @@ const getChatByIds = async (sender, receiver) => {
         },
         body: JSON.stringify({sender, receiver}) 
     };
+    console.log("options: ",options);
     return await fetch(env.BACKEND_SERVER_URL + "/api/message/room/chat" , options).then(response => response.json());
 }
 

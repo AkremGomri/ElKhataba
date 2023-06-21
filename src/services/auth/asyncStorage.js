@@ -17,7 +17,7 @@ export const storeData = async (key, value) => {
   // get item
   export const getData = async (key) => {
     try {
-      const value = '64837888d356e89a7c03b8fc';//await AsyncStorage.getItem(key)
+      const value = await AsyncStorage.getItem(key)
       return {
           success: true,
           value
