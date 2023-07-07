@@ -1,4 +1,3 @@
-
 import { getData } from './asyncStorage';
 import env from '../../../env';
 import {
@@ -35,13 +34,7 @@ const getUserById = async (id) => {
             'localtonet-skip-warning':true
         },
     }
-    return await fetch(env.BACKEND_SERVER_URL +'/api/user/'+ id, options)
-
-        
-        // .then(data => {
-        //     console.log(data);
-        //     return JSON.stringify(data);
-        // });
+    return await fetch(env.BACKEND_SERVER_URL +'/user/'+ id, options)
 }
 
 

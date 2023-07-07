@@ -4,6 +4,7 @@ import {AsyncStorage} from "react-native";
 export const storeData = async (key, value) => {		
     try {
       await AsyncStorage.setItem(key, value);
+      const test = await AsyncStorage.getItem(key);     
       return {
           success: true
       }
@@ -17,7 +18,7 @@ export const storeData = async (key, value) => {
   // get item
   export const getData = async (key) => {
     try {
-      const value = await AsyncStorage.getItem(key)
+      const value = await AsyncStorage.getItem(key);//'649303931c444f0d4e9d6c68'; // uzair token id 
       return {
           success: true,
           value

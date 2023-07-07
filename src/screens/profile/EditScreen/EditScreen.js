@@ -72,7 +72,7 @@ const EditScreen = ({ navigation, route,}) => {
                 }
         
                 // replace 64837888d356e89a7c03b8fc with ${userID}
-                 fetch(`${env.BACKEND_SERVER_URL}/api/user/update-profile/64837888d356e89a7c03b8fc`, options)
+                 fetch(`${env.BACKEND_SERVER_URL}/user/update-profile/${userID}`, options)
                 .then((res) => {
              
                 })

@@ -11,11 +11,10 @@ const searchUsers = async (search) => {
             'localtonet-skip-warning':true
         }};
 
-    return await fetch(env.BACKEND_SERVER_URL + "/api/user/name/?query=" + search, options);
+    return await fetch(env.BACKEND_SERVER_URL + "/user/name/?query=" + search, options);
 }
 
     const sendMessage = async (message,receiverId, senderId, file) => {
-        console.log(message,receiverId, senderId, file);
        var extension  = file?.fileName?.split('.')?.pop()??'';
         // if we have file, it will be sent as multipart/form-data
         // otherwise, it will be sent as application/json
@@ -40,7 +39,7 @@ const searchUsers = async (search) => {
         }
 
         console.log("options: ",options);
-        return await fetch(env.BACKEND_SERVER_URL + '/api/message', options)
+        return await fetch(env.BACKEND_SERVER_URL + '/message', options)
             .then(response =>{
                 console.log("response: ",response);
                 return response.json()})
@@ -57,7 +56,7 @@ const getChatByIds = async (sender, receiver) => {
         body: JSON.stringify({sender, receiver}) 
     };
     console.log("options: ",options);
-    return await fetch(env.BACKEND_SERVER_URL + "/api/message/room/chat" , options).then(response => response.json());
+    return await fetch(env.BACKEND_SERVER_URL + "/message/room/chat" , options).then(response => response.json());
 }
 
 

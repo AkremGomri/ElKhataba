@@ -30,16 +30,19 @@ const Discussion = ({ route, navigation }) => {
     const [roomId, setRoomId] = useState()
     // const ac = new AbortController();
     useEffect(() => {
-        getData("userId").then((res) => {
-            let userId = res.value;
-            
-            setSenderId(userId);
+        console.log("Route:  ",  route.params)      
+        getData("userData").then((res) => {
+
+            let user = JSON.parse(res.value);
+            console.log(id, res)
+            setUser(user)
+            setSenderId(user._id);
             setReceiverId(id);
             Promise.all([
                 getUserById(id).then(response => response.json()).then((res) => {
                     setReceiver(res);
                 }),
-                getUserById(userId).then(response => response.json()).then((res) => {
+                getUserById(user._id).then(response => response.json()).then((res) => {
                     setSender(res);
                 })
             ]).then(async () => {
@@ -50,18 +53,15 @@ const Discussion = ({ route, navigation }) => {
         
         var messagesSubscription = [];
         messagesSubscription.push(socket.roomId$.subscribe((data) => {
-            // console.log('new room id received: ', data);
+            console.log('new room id received: ', data);
             setRoomId(data);
         }));
         messagesSubscription.push(socket.messages$.subscribe(async (data) => {
+            console.log('====>', data)
             var _roomId=await firstValueFrom(socket.roomId$);
-            // console.log('new message received: ', data.length, _roomId);
-
-            // data.forEach((msg) => {console.log(msg)})
-            // filter data to get only messages for this room
-            data = data.filter((msg) => msg.room_id == _roomId);
-            // console.log('new message received: ', data.length, roomId);
             setChatMessages(data ?? []);
+
+
         }));
 
         return () => {
@@ -72,8 +72,6 @@ const Discussion = ({ route, navigation }) => {
     //👇🏻 This function gets the username saved on AsyncStorage
     const getUserId = async () => {
         try {
-            //const value = Json.parse(getData());
-            //console.log("value: ",value);
             if (id !== null) {
                 setUser(id);
             }
@@ -98,9 +96,22 @@ const Discussion = ({ route, navigation }) => {
         setIsSending(true);
         sendMessage(message, receiverId, senderId, file)
             .then((data) => {
+                const msg =  data.messages;
+                const newMessage = {
+                    "_id": msg._id, 
+                    "content": msg.content,
+                     "file": msg?.file || "", 
+                     "gender": user?.gender || '' ,
+                      "name": user.fullname || "",
+                      "room_id": msg.room_id, 
+                      "sender_id": msg.sender, 
+                    "sender_name": user.fullname || "",
+                     "time": msg.time
+                    }
+                
+
                 var newChat = [...chatMessages];
-                var msg = data.messages;
-                // console.log("message: ", msg)
+                newChat.push(newMessage)
                 setChatMessages(newChat);
             })
             .catch((error) => {

@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-trailing-spaces */
 /* eslint-disable prettier/prettier */
-import { io } from 'socket.io-client';
-import { getData, getToken } from '../../services/auth/asyncStorage';
+
+import { getData } from '../../services/auth/asyncStorage';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import env from '../../../env';
 import { getChatByIds } from '../chat/chatService';
@@ -14,23 +14,16 @@ var roomId = new BehaviorSubject(null);
 var roomId$ = roomId.asObservable();
 // this is ID of logged in user
 // it can be used to check if message sender is this user or other one
-var userId = null;
-
-
-
 var socket = null;
-try {
-    socket = io(env.BACKEND_SERVER_URL, {
-        query: { token: getToken() },
-        extraHeaders: {
-            'localtonet-skip-warning': true
-        },
-    });
+const connectSocket = async (soc) =>{
+
+    socket = soc;
     socket.on('connect', function () {
         console.log('connected to server');
         // register user to this connection
         getData("userId").then((userId) => {
-            socket.emit('register', userId.value);
+            console.log("44444444444444444444444444444444444444444444444444444444444444444444444444444444", userId)
+            socket.emit('register', userId);
             socket.on('incomingMessage', (data) => {
                 console.log('NEW MESSAGE RECEIVED: ', data);
                 // check if the message is for the current user
@@ -44,12 +37,10 @@ try {
                 //     console.log("message is not for this room. Handle accordingly");
                 // }
             })
-        });
+        }).catch(err => console.log('error in user id ', err ));
     });
 }
-catch (err) {
-    console.log(err);
-}
+
 
 const switchChat = async (userId) => {
     console.log("switchChat", userId);
@@ -70,4 +61,4 @@ const switchChat = async (userId) => {
     return chat.room_id;
 }
 
-export default { socket, messages$, switchChat, roomId$ };
+export default { socket, messages$, switchChat, roomId$, connectSocket };

@@ -34,15 +34,14 @@ const Chat = (props) => {
 
   function searchFunction(text) {
     searchUsers(text).then((res) => {
-      res.json()
 
+      res.json()
         .then((responseJson) => {
           setUsersList(responseJson.data);
           setFilteredDataSource(responseJson.data);
         })
     })
     setSearch(text);
-
   };
   return (
     // <ScrollView keyboardShouldPersistTaps='always' >
@@ -98,7 +97,6 @@ const Chat = (props) => {
                     //  props.navigation.navigate("Discussion");
                     ///👇🏻 Navigates to the Messaging screen
                     // socket.startDiscussion(context, item._id)
-
                     props.navigation.navigate("Discussion", {
                       name: item.fullname,
                       id: item._id,

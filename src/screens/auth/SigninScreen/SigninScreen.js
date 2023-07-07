@@ -20,12 +20,13 @@ import { image, logoFb } from '../../../../assets/images/index';
 import { Context } from '../../../services/context/Context';
 import { useDispatch } from 'react-redux';
 import { setIAmConnected } from './../../../redux/features/SocketIO';
+import SocketIO from '../../../services/socket/socket';
 
 const SigninScreen = ({ navigation }) => {
 
   const [context, setContext] = useContext(Context);
-  const [email, setEmail] = useState('test@test.test');
-  const [password, setPassword] = useState('test');
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
 //   const [response, setResponse] = useState('')
 //  const  storeToken= async(user)  =>{
 //     try {
@@ -39,28 +40,32 @@ const [response, setResponse] = useState('');
 const dispatch = useDispatch();
 
 const onSignInPressed= async (e) => {
-
   if ( (!email) || (!password) ) {
     return Alert.alert("L'un des champs n'est pas saisi.Veuillez trouvez votre compte pour se connecter.")
   }
   else {
-    const onSuccess = (data) => {
+    const onSuccess = async (data) => {
       setResponse(data);
           if(response.error){
             return Alert.alert("vérifier l'email et le mot de passe: ", response.error);
           } else {
-
-            console.warn("data: ",data);
-            AsyncStorage.storeToken(data.token);
-            AsyncStorage.storeData("userId" ,data.userId);
-
-            const socket = io(env.BACKEND_SERVER_URL, {
+            
+            console.warn("data===> ",data);
+            await AsyncStorage.storeToken(data.token);
+            await AsyncStorage.storeData("userId" ,data.userId);
+            await AsyncStorage.storeData("userData", JSON.stringify(data.user));
+            
+            const socket = io(env.BACKEND_Socket, {
               query: {token: data.token},
+              extraHeaders: {
+                'localtonet-skip-warning': true
+            },
           });
+          SocketIO.connectSocket(socket);
+          
           dispatch(setIAmConnected(true))
           setContext(socket);
             socket.emit('register', data.userId);
-
             return navigation.replace("AppNavigator");
           }
     }
@@ -77,14 +82,11 @@ const onSignInPressed= async (e) => {
       },
       body: JSON.stringify(data),
     }
-    onSuccess({
-      "userId": "649303ae1c444f0d4e9d6c6d",
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDgxYWY4ODhlMmRmZmE2YTQwYmY3MTQiLCJpYXQiOjE2ODYzMDk1MzIsImV4cCI6MTY4NjM5NTkzMn0.P_TcOsuAFZfNCCQkarw0qRXcljEbj_i7xRy2ZMoW4OI"
-      });
-    return;
-  fetch(env.BACKEND_SERVER_URL+"/login", options)
+
+  console.log(env.BACKEND_SERVER_URL+"/user/login", options)
+  fetch(env.BACKEND_SERVER_URL+"/user/login", options)
     .then((res) =>  {
-     
+     console.log(res)
       if(res.status === 500){
         Alert.alert("alerte saisie","vérifier la connection s'il vous plait: ", [
           {
