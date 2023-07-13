@@ -1,6 +1,6 @@
 import { View, Text, FlatList, TouchableOpacity, Image, Stack, Alert, ScrollView } from 'react-native'
 import React, { useState, useEffect, useContext } from 'react';
-import { getToken } from '../../services/auth/asyncStorage';
+import { getData, getToken } from '../../services/auth/asyncStorage';
 import { ListItem, SearchBar } from "react-native-elements";
 // import { Badge, Icon, withBadge } from '@rneui/themed';
 import styles from './styles'
@@ -36,9 +36,13 @@ const Chat = (props) => {
     searchUsers(text).then((res) => {
 
       res.json()
-        .then((responseJson) => {
-          setUsersList(responseJson.data);
-          setFilteredDataSource(responseJson.data);
+        .then(async (responseJson) => {
+          // filter logged in user from users list
+
+          const userId = (await getData("userId")).value;
+          let users= responseJson.data.filter((user) => user._id !== userId);
+          setUsersList(users);
+          setFilteredDataSource(users);
         })
     })
     setSearch(text);
