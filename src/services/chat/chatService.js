@@ -26,7 +26,8 @@ const searchUsers = async (search) => {
             fileName: file?.fileName,
             fileType: extension,
         };
-        // console.log("obj: ",JSON.stringify(obj));
+        //console.log("obj length: ",JSON.stringify(obj).length);
+
         const options = {
             method: "POST",
             headers: {
@@ -38,10 +39,13 @@ const searchUsers = async (search) => {
 
         }
 
-        console.log("options: ",options);
+        //console.log("options: ",options);
         return await fetch(env.BACKEND_SERVER_URL + '/message', options)
             .then(response =>{
                 console.log("response: ",response);
+                if(response.status === 413){
+                    throw new Error("File too large to upload to server. Please select a smaller file.");
+                }
                 return response.json()})
             .catch(e=>{console.log(e.message); throw e;});
     } 

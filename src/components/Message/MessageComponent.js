@@ -6,7 +6,7 @@ import { useWindowDimensions } from 'react-native';
 
 import IconFeather from 'react-native-vector-icons/Feather';
 export default function MessageComponent({ message, user }) {
-    console.log("message: ",message);
+    // console.log("message: ",message);
 
     const { height, width } = useWindowDimensions();
 

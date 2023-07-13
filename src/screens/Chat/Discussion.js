@@ -113,6 +113,7 @@ const Discussion = ({ route, navigation }) => {
                 var newChat = [...chatMessages];
                 newChat.push(newMessage)
                 setChatMessages(newChat);
+                setFile(null);
             })
             .catch((error) => {
                 Alert.alert("Error", error.message);
@@ -131,6 +132,8 @@ const Discussion = ({ route, navigation }) => {
             includeBase64: true,
         });
         if (!result.didCancel) {
+            // show file size in MBs with 2 decimal points
+            //console.log(result.assets[0].fileSize / (1024*1024));
             setFile(result.assets[0]);
         }
     }
