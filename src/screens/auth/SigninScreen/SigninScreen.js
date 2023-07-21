@@ -1,7 +1,6 @@
 /* eslint-disable quotes */
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import { useContext } from 'react';
 import { View,
    Text,TouchableOpacity,
   Image,
@@ -9,7 +8,6 @@ import { View,
   Alert,ImageBackground,
   FlatList,
   } from 'react-native';
-import io from "socket.io-client"
 import AsyncStorage from '../../../services/auth/asyncStorage';
 import Button from 'react-native-button';
 import { useState, useEffect } from 'react';
@@ -17,16 +15,13 @@ import { AppStyles } from '../../../styles/generalStyles/AppStyles';
 import env from '../../../../env';
 import styles from '../styles';
 import { image, logoFb } from '../../../../assets/images/index';
-import { Context } from '../../../services/context/Context';
-import { useDispatch } from 'react-redux';
-import { setIAmConnected } from './../../../redux/features/SocketIO';
-import SocketIO from '../../../services/socket/socket';
 
 const SigninScreen = ({ navigation }) => {
 
-  const [context, setContext] = useContext(Context);
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
 //   const [response, setResponse] = useState('')
 //  const  storeToken= async(user)  =>{
 //     try {
@@ -37,56 +32,29 @@ const SigninScreen = ({ navigation }) => {
 //   }
    
 const [response, setResponse] = useState('');
-const dispatch = useDispatch();
 
-const onSignInPressed= async (e) => {
-  if ( (!email) || (!password) ) {
-    return Alert.alert("L'un des champs n'est pas saisi.Veuillez trouvez votre compte pour se connecter.")
+const onSignInPressed= async () => {
+
+const data = { 
+      email: email,
+      password: password,
+    };
+    
+  const options = {
+    method: "POST",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data),
   }
-  else {
-    const onSuccess = async (data) => {
-      setResponse(data);
-          if(response.error){
-            return Alert.alert("vérifier l'email et le mot de passe: ", response.error);
-          } else {
-            
-            console.warn("data===> ",data);
-            await AsyncStorage.storeToken(data.token);
-            await AsyncStorage.storeData("userId" ,data.userId);
-            await AsyncStorage.storeData("userData", JSON.stringify(data.user));
-            
-            const socket = io(env.BACKEND_Socket, {
-              query: {token: data.token},
-              extraHeaders: {
-                'localtonet-skip-warning': true
-            },
-          });
-          SocketIO.connectSocket(socket);
-          
-          dispatch(setIAmConnected(true))
-          setContext(socket);
-            socket.emit('register', data.userId);
-            return navigation.replace("AppNavigator");
-          }
-    }
-  const data = { 
-        email: email,
-        password: password,
-      };
-      
-    const options = {
-      method: "POST",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data),
-    }
+if ( (!email) || (!password) ) {
+  return alert.Alert("L'un des champs n'est pas saisi.Veuillez trouvez votre compte pour se connecter.")
+}
+else {
 
-  console.log(env.BACKEND_SERVER_URL+"/user/login", options)
-  fetch(env.BACKEND_SERVER_URL+"/user/login", options)
+  fetch(env.BACKEND_SERVER_URL +"/login", options)
     .then((res) =>  {
-     console.log(res)
       if(res.status === 500){
         Alert.alert("alerte saisie","vérifier la connection s'il vous plait: ", [
           {
@@ -99,13 +67,25 @@ const onSignInPressed= async (e) => {
       }  else{
         res.json()
         .then((data) => {
-          onSuccess(data);
+          setResponse(data);
+          console.warn("error: " + response.error);
+          if(response.error){
+            return alert.Alert("vérifier l'email et le mot de passe: ", response.error);
+          } else {
+            /* safa */
+            // console.log(data);
+            // storeToken(JSON.stringify(data));
+            // return navigation.push("BirthDate");
+            /* safa */
+            console.warn("data: ",data);
+            AsyncStorage.storeToken(data.token);
+            AsyncStorage.storeData("userId" ,data.userId);
+            return navigation.push("BirthDate");
+          }
         })
       }
       })
-    .catch((err)=> {
-      Alert.alert("problem connecting to the server: " + err);
-    })
+    .catch((err) => alert.Alert("problem connecting to the server: " + err))
 }
   
 
@@ -141,7 +121,7 @@ const onPressFacebook=()=>{
     <Button
       containerStyle={styles.loginContainer}
       style={styles.loginText}
-      onPress={onSignInPressed}>
+      onPress={() => onSignInPressed()}>
       Se connecter
     </Button>
     <Text style={styles.or}>OU</Text>
@@ -155,11 +135,17 @@ const onPressFacebook=()=>{
       Se connecter via FaceBook.
     </Button> */}
     
+    {/* <FlatList
+        data={data}
+        renderItem={({ item, index, separators }) => <Text item={item} > {item.email} </Text>}
+        keyExtractor={item => item._id}
+      /> */}
     { response.message && <Text>{response.message}</Text> }
     { response.error && <Text>erreur</Text> }
     
   </View>
     </ImageBackground>
+    
   )
 };
 
