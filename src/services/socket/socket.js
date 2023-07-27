@@ -22,8 +22,7 @@ const connectSocket = async (soc) =>{
         console.log('connected to server');
         // register user to this connection
         getData("userId").then((userId) => {
-            console.log("44444444444444444444444444444444444444444444444444444444444444444444444444444444", userId)
-            socket.emit('register', userId);
+           socket.emit('register', userId);
             socket.on('incomingMessage', (data) => {
                 console.log('NEW MESSAGE RECEIVED: ', data);
                 // check if the message is for the current user

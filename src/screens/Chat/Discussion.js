@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState, useContext, useEffect } from 'react'
+import React, { useLayoutEffect, useState, useContext, useEffect, useReducer } from 'react'
 import 'react-native-gesture-handler';
 import { View, Text, FlatList, StyleSheet, TextInput, Pressable, Alert, Image } from 'react-native'
 import { getData } from '../../services/auth/asyncStorage';
@@ -57,18 +57,17 @@ const Discussion = ({ route, navigation }) => {
             setRoomId(data);
         }));
         messagesSubscription.push(socket.messages$.subscribe(async (data) => {
-            console.log('====>', data)
+            console.log('====> new message', )
             var _roomId=await firstValueFrom(socket.roomId$);
             setChatMessages(data ?? []);
-
-
+            forceUpdate();
         }));
 
         return () => {
             messagesSubscription?.forEach(x=>{x?.unsubscribe()});
         }
     }, [])
-
+    const forceUpdate = useReducer(x => x + 1, 0)[1]
     //👇🏻 This function gets the username saved on AsyncStorage
     const getUserId = async () => {
         try {
