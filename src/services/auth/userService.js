@@ -13,7 +13,7 @@ const getUser = async () => {
         },
     }
     const userId = (await getData("userId")).value;
-    await fetch(env.BACKEND_SERVER_URL + ":" + env.PORT + '/' + userId, options)
+    await fetch(env.BACKEND_SERVER_URL + ":" + env.PORT + '/user/' + userId, options)
         .then(response => response.json())
         .then(data => {
             console.log(data);
@@ -31,10 +31,10 @@ const getUserById = async (id) => {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
-            'localtonet-skip-warning':true
+            'localtonet-skip-warning': true
         },
     }
-    return await fetch(env.BACKEND_SERVER_URL +'/user/'+ id, options)
+    return await fetch(env.BACKEND_SERVER_URL + '/user/' + id, options)
 }
 
 

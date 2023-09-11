@@ -2,9 +2,9 @@
 import {
   View, Text, StyleSheet, ImageBackground, Image,
   ImagePickerIOS, AsyncStorage, TouchableOpacity,
-  Alert,ScrollView
+  Alert, ScrollView
 } from 'react-native'
-import React, { useState, useRef ,useEffect} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import ImagePicker from '../../../components/common/ImagePicker2';
 //import * as ImagePicker from 'react-native-image-picker';
 //import { launchImageLibrary } from 'react-native-image-picker';
@@ -14,7 +14,7 @@ import Button from 'react-native-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ImageComponent from '../../../components/image/ImageComponent';
 import styles from '../styles';
-import { image ,DefaultMan,DefaultWoman} from '../../../../assets/images';
+import { image, DefaultMan, DefaultWoman } from '../../../../assets/images';
 
 const PhotoScreen = ({ navigation }) => {
   const sheetRef = useRef(null);
@@ -24,10 +24,10 @@ const PhotoScreen = ({ navigation }) => {
   const [Photo, setPhoto] = useState('');
   const [user, setUser] = useState('');
   useEffect(() => {
-      getUser();
-    }, []);
- 
-    async function getUser() {
+    getUser();
+  }, []);
+
+  async function getUser() {
     const options = {
       method: "GET",
       headers: {
@@ -35,17 +35,17 @@ const PhotoScreen = ({ navigation }) => {
         'Content-Type': 'application/json',
       },
     }
-    const userId= (await getData("userId")).value;
-    fetch(env.BACKEND_SERVER_URL +'/'+userId, options)
-        .then(response =>response.json())
-           .then(data =>{
-              setUser(data);
-              console.log(user);
-               
-  })
-        .catch((err) => Alert.alert("problem connecting to the server: " + err))
+    const userId = (await getData("userId")).value;
+    fetch(env.BACKEND_SERVER_URL + '/user/' + userId, options)
+      .then(response => response.json())
+      .then(data => {
+        setUser(data);
+        console.log(user);
 
-    }
+      })
+      .catch((err) => Alert.alert("problem connecting to the server: " + err))
+
+  }
   const onFileSelected = (image) => {
     console.log("c'est l'image choisie", image);
     closeSheet();
@@ -81,7 +81,7 @@ const PhotoScreen = ({ navigation }) => {
       body: JSON.stringify(data1),
     }
     const userId = (await getData("userId")).value;
-    fetch(env.BACKEND_SERVER_URL + "/ques/" + userId, options)
+    fetch(env.BACKEND_SERVER_URL + "/user/ques/" + userId, options)
       .then((res) => {
         console.log("hethi el reponse", res);
         navigation.push(name);
@@ -100,36 +100,36 @@ const PhotoScreen = ({ navigation }) => {
         src={Photo}
       />
     } else {
-      return  ((user.gender==="femme" ) ? <Image source={DefaultWoman} style={styles.detailPhoto}/> :
-      <Image source={DefaultMan} style={styles.detailPhoto}/>    
-       )
+      return ((user.gender === "femme") ? <Image source={DefaultWoman} style={styles.detailPhoto} /> :
+        <Image source={DefaultMan} style={styles.detailPhoto} />
+      )
 
     }
   }
   return (
     <ImageBackground source={image} resizeMode="cover" style={styles.image}>
-<ScrollView>
-<View style={styles.container}>
-        <Text style={styles.topTitle} >Inscrivez-vous gratuitement</Text>
-        <Text style={[styles.title, styles.leftTitle]}>Votre Photo</Text>
+      <ScrollView>
+        <View style={styles.container}>
+          <Text style={styles.topTitle} >Inscrivez-vous gratuitement</Text>
+          <Text style={[styles.title, styles.leftTitle]}>Votre Photo</Text>
 
-        {renderFile()}
-        <TouchableOpacity onPress={() => openSheet()} style={[styles.signupContainer, { marginTop: 50 }]}  >
+          {renderFile()}
+          <TouchableOpacity onPress={() => openSheet()} style={[styles.signupContainer, { marginTop: 50 }]}  >
 
-          <Text style={styles.signupText} >Select File</Text>
-        </TouchableOpacity>
-        <Button
-          containerStyle={styles.suivantContainer}
-          onPress={() => onPressHandler("AppNavigator")}>
-          <Icon name="forward"
-            size={70}
-          />
-        </Button>
-        <ImagePicker onFileSelected={onFileSelected} ref={sheetRef} />
-      </View>
+            <Text style={styles.signupText} >Select File</Text>
+          </TouchableOpacity>
+          <Button
+            containerStyle={styles.suivantContainer}
+            onPress={() => onPressHandler("AppNavigator")}>
+            <Icon name="forward"
+              size={70}
+            />
+          </Button>
+          <ImagePicker onFileSelected={onFileSelected} ref={sheetRef} />
+        </View>
 
-</ScrollView>
-      
+      </ScrollView>
+
     </ImageBackground>
   )
 };

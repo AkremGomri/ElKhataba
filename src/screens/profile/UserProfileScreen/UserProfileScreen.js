@@ -73,7 +73,7 @@ const UserProfileScreen = ({ navigation }) => {
         'Authorization': 'Bearer ' + token,
       },
     }
-    fetch(env.BACKEND_SERVER_URL + "/logout", options)
+    fetch(env.BACKEND_SERVER_URL + "/user/logout", options)
       .then((res) => {
         console.log(res.status);
         console.log('successfully loged out');

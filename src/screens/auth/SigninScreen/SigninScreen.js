@@ -84,7 +84,6 @@ const SigninScreen = ({ navigation }) => {
         body: JSON.stringify(data),
       }
 
-      console.log(env.BACKEND_SERVER_URL + "/user/login", options)
       fetch(env.BACKEND_SERVER_URL + "/user/login", options)
         .then((res) => {
           console.log(res)

@@ -70,7 +70,6 @@ const EditScreen = ({ navigation, route, }) => {
                     fileName: name,
                     fileType: type
                 }
-                console.log(`${env.BACKEND_SERVER_URL}/user/update-profile/${userId}`)
                 const options = {
                     method: "PUT",
                     // mode: "no-cors", // no-cors, *cors, same-origin
@@ -141,7 +140,6 @@ const EditScreen = ({ navigation, route, }) => {
             }
             const userId = (await getData("userId")).value;
 
-            console.log('updating profile', env.BACKEND_SERVER_URL + '/user/update-bio/' + userId)
             fetch(env.BACKEND_SERVER_URL + '/user/update-bio/' + userId, options)
                 .then((res) => {
                     console.log(res.status);
@@ -170,7 +168,7 @@ const EditScreen = ({ navigation, route, }) => {
             body: JSON.stringify({ Photo: "" }),
         }
 
-        fetch(env.BACKEND_SERVER_URL + '/ques/' + userId, options)
+        fetch(env.BACKEND_SERVER_URL + '/user/ques/' + userId, options)
             .then((res) => navigation.push("Profile"))
             .catch((err) => error)
 

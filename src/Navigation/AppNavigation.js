@@ -50,10 +50,10 @@ import { selectIAmConnected } from "../redux/utils/selectors";
 
 export default AppNavigation = () => {
 
-  const { data: notifs, isLoading, error, setData: setNotifs } = useFetch(`/getMyNotifs`);
+  const { data: notifs, isLoading, error, setData: setNotifs } = useFetch(`/user/getMyNotifs`);
 
   // a funtion that takes in input two arguments and sum them up in return using javascript
-  function sum(a, b){}
+  function sum(a, b) { }
 
   function updateNotif(id, field, value) {
     setNotifs(
@@ -69,15 +69,15 @@ export default AppNavigation = () => {
   const dispatch = useDispatch();
   // const nbNotifs = useSelector(state => {
   //   return state.notifications.number})
-  const [nbNotifs, setNbNotifs] = useState(0)  
+  const [nbNotifs, setNbNotifs] = useState(0)
 
   const isConnected = useSelector(state => state.socketIO.isConnected)
 
   useEffect(() => {
-    let x =0;
-    console.log("AppNavigation::notifs: ",notifs);
+    let x = 0;
+    console.log("AppNavigation::notifs: ", notifs);
     notifs.forEach((notif, index) => {
-      if(notif.isnew){
+      if (notif.isnew) {
         console.warn("this one is new");
         x++;
       }
@@ -100,9 +100,9 @@ export default AppNavigation = () => {
       setNotifs([newNotif,
         ...notifs
       ])
-      console.log('this is totally new: '+nbNotifs);
+      console.log('this is totally new: ' + nbNotifs);
       // setNbNotifs(nbNotifs+1)
-      console.log('after: '+nbNotifs);
+      console.log('after: ' + nbNotifs);
     })
 
     socket.on('deleteNotification', (data) => {
@@ -110,17 +110,17 @@ export default AppNavigation = () => {
       setNotifs(notifs.map((notif) => {
         console.log("hereeeeeeeeee");
         console.log("akrem");
-        if(notif.type !== data.type || notif.senderId !== senderId){
+        if (notif.type !== data.type || notif.senderId !== senderId) {
           return notif
         } else {
           console.log("deleted 1");
-          if(notif.isnew){
+          if (notif.isnew) {
             console.log("doing......");
-            setNbNotifs(nbNotifs-1)
+            setNbNotifs(nbNotifs - 1)
           }
         }
       }))
-      console.log("notifs are: "+notifs);
+      console.log("notifs are: " + notifs);
     })
 
     return () => {
@@ -168,7 +168,7 @@ export default AppNavigation = () => {
   const CustomHomeHeader = ({ navigation, route }) => {
     return (
       <View style={styles.header}>
-        <Text style={styles.headerText}>{isConnected? "you are connected !": "you are off line"}</Text>
+        <Text style={styles.headerText}>{isConnected ? "you are connected !" : "you are off line"}</Text>
       </View>
     );
   };
@@ -225,7 +225,7 @@ export default AppNavigation = () => {
         options={{
           // tabBarButton: () => null,
           // tabBarVisible: true,
-          header: () => <CustomHomeHeader /> ,
+          header: () => <CustomHomeHeader />,
 
           tabBarIcon: ({ color, size }) => (
             <IconAntDesign name="home" color={color} size={36} />
@@ -239,7 +239,7 @@ export default AppNavigation = () => {
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-             <IconFeather name="message-square" color={color} size={36} />
+            <IconFeather name="message-square" color={color} size={36} />
             // <BadgedIcon type="ionicon" name="ios-chatbubbles" color={color} />
           ),
         }}
